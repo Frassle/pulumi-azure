@@ -1,10 +1,12 @@
 [[constraint]]
-  branch = "master"
+  branch = "dotnet"
   name = "github.com/pulumi/pulumi"
+  source = "github.com/Frassle/pulumi"
 
 [[constraint]]
-  branch = "master"
+  branch = "dotnet"
   name = "github.com/pulumi/pulumi-terraform"
+  source = "github.com/Frassle/pulumi-terraform"
 
 [[constraint]]
   branch = "pulumi-master"
