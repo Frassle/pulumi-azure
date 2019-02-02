@@ -9,6 +9,8 @@ NODE_MODULE_NAME := @pulumi/azure
 TFGEN           := pulumi-tfgen-${PACK}
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         := $(shell scripts/get-version)
+VERSIONPREFIX   := $(shell echo $(VERSION) | cut -d- -f1 | cut --complement -c1)
+VERSIONSUFFIX   := $(shell echo $(VERSION) | cut -d- --complement -f1)
 PYPI_VERSION    := $(shell scripts/get-py-version)
 
 TESTPARALLELISM := 10
@@ -64,7 +66,7 @@ install::
 		(yarn unlink > /dev/null 2>&1 || true) && \
 		yarn link
 	cd ${PACKDIR}/python/bin && $(PIP) install --user -e .
-	cd ${PACKDIR}/dotnet/ && dotnet publish
+	cd ${PACKDIR}/dotnet/ && dotnet pack -c Release /p:VersionPrefix=$(VERSIONPREFIX) /p:VersionSuffix=$(VERSIONSUFFIX)
 
 test_all::
 	PATH=$(PULUMI_BIN):$(PATH) go test -v -count=1 -cover -timeout 1h -parallel ${TESTPARALLELISM} ./examples
