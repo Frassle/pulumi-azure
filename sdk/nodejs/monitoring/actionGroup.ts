@@ -4,45 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Action Group within Azure Monitor.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "monitoring-resources",
- * });
- * const azurerm_monitor_action_group_test = new azure.monitoring.ActionGroup("test", {
- *     emailReceivers: [
- *         {
- *             emailAddress: "admin@contoso.com",
- *             name: "sendtoadmin",
- *         },
- *         {
- *             emailAddress: "devops@contoso.com",
- *             name: "sendtodevops",
- *         },
- *     ],
- *     name: "CriticalAlertsAction",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     shortName: "p0action",
- *     smsReceivers: [{
- *         countryCode: "1",
- *         name: "oncallmsg",
- *         phoneNumber: "1231231234",
- *     }],
- *     webhookReceivers: [{
- *         name: "callmyapiaswell",
- *         serviceUri: "http://example.com/alert",
- *     }],
- * });
- * ```
- */
 export class ActionGroup extends pulumi.CustomResource {
     /**
      * Get an existing ActionGroup resource's state with the given name, ID, and optional extra
@@ -56,37 +17,13 @@ export class ActionGroup extends pulumi.CustomResource {
         return new ActionGroup(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * One or more `email_receiver` blocks as defined below.
-     */
     public readonly emailReceivers: pulumi.Output<{ emailAddress: string, name: string }[] | undefined>;
-    /**
-     * Whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. Defaults to `true`.
-     */
     public readonly enabled: pulumi.Output<boolean | undefined>;
-    /**
-     * The name of the webhook receiver. Names must be unique (case-insensitive) across all receivers within an action group.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Action Group instance.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The short name of the action group. This will be used in SMS messages.
-     */
     public readonly shortName: pulumi.Output<string>;
-    /**
-     * One or more `sms_receiver ` blocks as defined below.
-     */
     public readonly smsReceivers: pulumi.Output<{ countryCode: string, name: string, phoneNumber: string }[] | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * One or more `webhook_receiver ` blocks as defined below.
-     */
     public readonly webhookReceivers: pulumi.Output<{ name: string, serviceUri: string }[] | undefined>;
 
     /**
@@ -134,37 +71,13 @@ export class ActionGroup extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ActionGroup resources.
  */
 export interface ActionGroupState {
-    /**
-     * One or more `email_receiver` blocks as defined below.
-     */
     readonly emailReceivers?: pulumi.Input<pulumi.Input<{ emailAddress: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
-    /**
-     * Whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. Defaults to `true`.
-     */
     readonly enabled?: pulumi.Input<boolean>;
-    /**
-     * The name of the webhook receiver. Names must be unique (case-insensitive) across all receivers within an action group.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Action Group instance.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The short name of the action group. This will be used in SMS messages.
-     */
     readonly shortName?: pulumi.Input<string>;
-    /**
-     * One or more `sms_receiver ` blocks as defined below.
-     */
     readonly smsReceivers?: pulumi.Input<pulumi.Input<{ countryCode: pulumi.Input<string>, name: pulumi.Input<string>, phoneNumber: pulumi.Input<string> }>[]>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * One or more `webhook_receiver ` blocks as defined below.
-     */
     readonly webhookReceivers?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, serviceUri: pulumi.Input<string> }>[]>;
 }
 
@@ -172,36 +85,12 @@ export interface ActionGroupState {
  * The set of arguments for constructing a ActionGroup resource.
  */
 export interface ActionGroupArgs {
-    /**
-     * One or more `email_receiver` blocks as defined below.
-     */
     readonly emailReceivers?: pulumi.Input<pulumi.Input<{ emailAddress: pulumi.Input<string>, name: pulumi.Input<string> }>[]>;
-    /**
-     * Whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. Defaults to `true`.
-     */
     readonly enabled?: pulumi.Input<boolean>;
-    /**
-     * The name of the webhook receiver. Names must be unique (case-insensitive) across all receivers within an action group.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Action Group instance.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The short name of the action group. This will be used in SMS messages.
-     */
     readonly shortName: pulumi.Input<string>;
-    /**
-     * One or more `sms_receiver ` blocks as defined below.
-     */
     readonly smsReceivers?: pulumi.Input<pulumi.Input<{ countryCode: pulumi.Input<string>, name: pulumi.Input<string>, phoneNumber: pulumi.Input<string> }>[]>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * One or more `webhook_receiver ` blocks as defined below.
-     */
     readonly webhookReceivers?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, serviceUri: pulumi.Input<string> }>[]>;
 }

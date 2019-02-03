@@ -4,28 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a local network gateway connection over which specific connections can be configured.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "localNetworkGWTest",
- * });
- * const azurerm_local_network_gateway_home = new azure.network.LocalNetworkGateway("home", {
- *     addressSpaces: ["10.0.0.0/16"],
- *     gatewayAddress: "12.13.14.15",
- *     location: azurerm_resource_group_test.location,
- *     name: "backHome",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * ```
- */
 export class LocalNetworkGateway extends pulumi.CustomResource {
     /**
      * Get an existing LocalNetworkGateway resource's state with the given name, ID, and optional extra
@@ -39,39 +17,12 @@ export class LocalNetworkGateway extends pulumi.CustomResource {
         return new LocalNetworkGateway(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The list of string CIDRs representing the
-     * address spaces the gateway exposes.
-     */
     public readonly addressSpaces: pulumi.Output<string[]>;
-    /**
-     * A `bgp_settings` block as defined below containing the
-     * Local Network Gateway's BGP speaker settings.
-     */
     public readonly bgpSettings: pulumi.Output<{ asn: number, bgpPeeringAddress: string, peerWeight: number } | undefined>;
-    /**
-     * The IP address of the gateway to which to
-     * connect.
-     */
     public readonly gatewayAddress: pulumi.Output<string>;
-    /**
-     * The location/region where the local network gateway is
-     * created. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the local network gateway. Changing this
-     * forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to
-     * create the local network gateway.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -123,39 +74,12 @@ export class LocalNetworkGateway extends pulumi.CustomResource {
  * Input properties used for looking up and filtering LocalNetworkGateway resources.
  */
 export interface LocalNetworkGatewayState {
-    /**
-     * The list of string CIDRs representing the
-     * address spaces the gateway exposes.
-     */
     readonly addressSpaces?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * A `bgp_settings` block as defined below containing the
-     * Local Network Gateway's BGP speaker settings.
-     */
     readonly bgpSettings?: pulumi.Input<{ asn: pulumi.Input<number>, bgpPeeringAddress: pulumi.Input<string>, peerWeight?: pulumi.Input<number> }>;
-    /**
-     * The IP address of the gateway to which to
-     * connect.
-     */
     readonly gatewayAddress?: pulumi.Input<string>;
-    /**
-     * The location/region where the local network gateway is
-     * created. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the local network gateway. Changing this
-     * forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the local network gateway.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -163,38 +87,11 @@ export interface LocalNetworkGatewayState {
  * The set of arguments for constructing a LocalNetworkGateway resource.
  */
 export interface LocalNetworkGatewayArgs {
-    /**
-     * The list of string CIDRs representing the
-     * address spaces the gateway exposes.
-     */
     readonly addressSpaces: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * A `bgp_settings` block as defined below containing the
-     * Local Network Gateway's BGP speaker settings.
-     */
     readonly bgpSettings?: pulumi.Input<{ asn: pulumi.Input<number>, bgpPeeringAddress: pulumi.Input<string>, peerWeight?: pulumi.Input<number> }>;
-    /**
-     * The IP address of the gateway to which to
-     * connect.
-     */
     readonly gatewayAddress: pulumi.Input<string>;
-    /**
-     * The location/region where the local network gateway is
-     * created. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the local network gateway. Changing this
-     * forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the local network gateway.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

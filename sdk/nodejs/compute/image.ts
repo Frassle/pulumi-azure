@@ -4,50 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage a custom virtual machine image that can be used to create virtual machines.
- * 
- * ## Example Usage Creating from VHD
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acctest",
- * });
- * const azurerm_image_test = new azure.compute.Image("test", {
- *     location: "West US",
- *     name: "acctest",
- *     osDisk: {
- *         blobUri: "{blob_uri}",
- *         osState: "Generalized",
- *         osType: "Linux",
- *         sizeGb: 30,
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * ```
- * 
- * ## Example Usage Creating from Virtual Machine (VM must be generalized beforehand)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acctest",
- * });
- * const azurerm_image_test = new azure.compute.Image("test", {
- *     location: "West US",
- *     name: "acctest",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sourceVirtualMachineId: "{vm_id}",
- * });
- * ```
- */
 export class Image extends pulumi.CustomResource {
     /**
      * Get an existing Image resource's state with the given name, ID, and optional extra
@@ -61,36 +17,12 @@ export class Image extends pulumi.CustomResource {
         return new Image(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * One or more `data_disk` elements as defined below.
-     */
     public readonly dataDisks: pulumi.Output<{ blobUri: string, caching?: string, lun?: number, managedDiskId?: string, sizeGb: number }[] | undefined>;
-    /**
-     * Specified the supported Azure location where the resource exists.
-     * Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the image. Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * One or more `os_disk` elements as defined below.
-     */
     public readonly osDisk: pulumi.Output<{ blobUri: string, caching?: string, managedDiskId: string, osState?: string, osType?: string, sizeGb: number } | undefined>;
-    /**
-     * The name of the resource group in which to create
-     * the image. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The Virtual Machine ID from which to create the image.
-     */
     public readonly sourceVirtualMachineId: pulumi.Output<string | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -136,36 +68,12 @@ export class Image extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Image resources.
  */
 export interface ImageState {
-    /**
-     * One or more `data_disk` elements as defined below.
-     */
     readonly dataDisks?: pulumi.Input<pulumi.Input<{ blobUri?: pulumi.Input<string>, caching?: pulumi.Input<string>, lun?: pulumi.Input<number>, managedDiskId?: pulumi.Input<string>, sizeGb?: pulumi.Input<number> }>[]>;
-    /**
-     * Specified the supported Azure location where the resource exists.
-     * Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the image. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * One or more `os_disk` elements as defined below.
-     */
     readonly osDisk?: pulumi.Input<{ blobUri?: pulumi.Input<string>, caching?: pulumi.Input<string>, managedDiskId?: pulumi.Input<string>, osState?: pulumi.Input<string>, osType?: pulumi.Input<string>, sizeGb?: pulumi.Input<number> }>;
-    /**
-     * The name of the resource group in which to create
-     * the image. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The Virtual Machine ID from which to create the image.
-     */
     readonly sourceVirtualMachineId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -173,35 +81,11 @@ export interface ImageState {
  * The set of arguments for constructing a Image resource.
  */
 export interface ImageArgs {
-    /**
-     * One or more `data_disk` elements as defined below.
-     */
     readonly dataDisks?: pulumi.Input<pulumi.Input<{ blobUri?: pulumi.Input<string>, caching?: pulumi.Input<string>, lun?: pulumi.Input<number>, managedDiskId?: pulumi.Input<string>, sizeGb?: pulumi.Input<number> }>[]>;
-    /**
-     * Specified the supported Azure location where the resource exists.
-     * Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the image. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * One or more `os_disk` elements as defined below.
-     */
     readonly osDisk?: pulumi.Input<{ blobUri?: pulumi.Input<string>, caching?: pulumi.Input<string>, managedDiskId?: pulumi.Input<string>, osState?: pulumi.Input<string>, osType?: pulumi.Input<string>, sizeGb?: pulumi.Input<number> }>;
-    /**
-     * The name of the resource group in which to create
-     * the image. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The Virtual Machine ID from which to create the image.
-     */
     readonly sourceVirtualMachineId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

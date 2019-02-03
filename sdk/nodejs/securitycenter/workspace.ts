@@ -4,35 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages the subscription's Security Center Workspace.
- * 
- * > **NOTE:** Owner access permission is required.
- * 
- * > **NOTE:** The subscription's pricing model can not be `Free` for this to have any affect.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_example = new azure.core.ResourceGroup("example", {
- *     location: "westus",
- *     name: "tfex-security-workspace",
- * });
- * const azurerm_log_analytics_workspace_example = new azure.operationalinsights.AnalyticsWorkspace("example", {
- *     location: azurerm_resource_group_example.location,
- *     name: "tfex-security-workspace",
- *     resourceGroupName: azurerm_resource_group_example.name,
- *     sku: "PerGB2018",
- * });
- * const azurerm_security_center_workspace_example = new azure.securitycenter.Workspace("example", {
- *     scope: "/subscriptions/00000000-0000-0000-0000-000000000000",
- *     workspaceId: azurerm_log_analytics_workspace_example.id,
- * });
- * ```
- */
 export class Workspace extends pulumi.CustomResource {
     /**
      * Get an existing Workspace resource's state with the given name, ID, and optional extra
@@ -46,13 +17,7 @@ export class Workspace extends pulumi.CustomResource {
         return new Workspace(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The scope of VMs to send their security data to the desired workspace, unless overridden by a setting with more specific scope.
-     */
     public readonly scope: pulumi.Output<string>;
-    /**
-     * The ID of the Log Analytics Workspace to save the data in.
-     */
     public readonly workspaceId: pulumi.Output<string>;
 
     /**
@@ -88,13 +53,7 @@ export class Workspace extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Workspace resources.
  */
 export interface WorkspaceState {
-    /**
-     * The scope of VMs to send their security data to the desired workspace, unless overridden by a setting with more specific scope.
-     */
     readonly scope?: pulumi.Input<string>;
-    /**
-     * The ID of the Log Analytics Workspace to save the data in.
-     */
     readonly workspaceId?: pulumi.Input<string>;
 }
 
@@ -102,12 +61,6 @@ export interface WorkspaceState {
  * The set of arguments for constructing a Workspace resource.
  */
 export interface WorkspaceArgs {
-    /**
-     * The scope of VMs to send their security data to the desired workspace, unless overridden by a setting with more specific scope.
-     */
     readonly scope: pulumi.Input<string>;
-    /**
-     * The ID of the Log Analytics Workspace to save the data in.
-     */
     readonly workspaceId: pulumi.Input<string>;
 }

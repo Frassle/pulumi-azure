@@ -4,66 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Application Insights API key.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "tf-test",
- * });
- * const azurerm_application_insights_test = new azure.appinsights.Insights("test", {
- *     applicationType: "Web",
- *     location: "West Europe",
- *     name: "tf-test-appinsights",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_application_insights_api_key_authenticate_sdk_control_channel = new azure.appinsights.ApiKey("authenticate_sdk_control_channel", {
- *     applicationInsightsId: azurerm_application_insights_test.id,
- *     name: "tf-test-appinsights-authenticate-sdk-control-channel-api-key",
- *     readPermissions: ["agentconfig"],
- * });
- * const azurerm_application_insights_api_key_full_permissions = new azure.appinsights.ApiKey("full_permissions", {
- *     applicationInsightsId: azurerm_application_insights_test.id,
- *     name: "tf-test-appinsights-full-permissions-api-key",
- *     readPermissions: [
- *         "agentconfig",
- *         "aggregate",
- *         "api",
- *         "draft",
- *         "extendqueries",
- *         "search",
- *     ],
- *     writePermissions: ["annotations"],
- * });
- * const azurerm_application_insights_api_key_read_telemetry = new azure.appinsights.ApiKey("read_telemetry", {
- *     applicationInsightsId: azurerm_application_insights_test.id,
- *     name: "tf-test-appinsights-read-telemetry-api-key",
- *     readPermissions: [
- *         "aggregate",
- *         "api",
- *         "draft",
- *         "extendqueries",
- *         "search",
- *     ],
- * });
- * const azurerm_application_insights_api_key_write_annotations = new azure.appinsights.ApiKey("write_annotations", {
- *     applicationInsightsId: azurerm_application_insights_test.id,
- *     name: "tf-test-appinsights-write-annotations-api-key",
- *     writePermissions: ["annotations"],
- * });
- * 
- * export const authenticateSdkControlChannel = azurerm_application_insights_api_key_authenticate_sdk_control_channel.apiKey;
- * export const fullPermissionsApiKey = azurerm_application_insights_api_key_full_permissions.apiKey;
- * export const readTelemetryApiKey = azurerm_application_insights_api_key_read_telemetry.apiKey;
- * export const writeAnnotationsApiKey = azurerm_application_insights_api_key_write_annotations.apiKey;
- * ```
- */
 export class ApiKey extends pulumi.CustomResource {
     /**
      * Get an existing ApiKey resource's state with the given name, ID, and optional extra
@@ -77,26 +17,10 @@ export class ApiKey extends pulumi.CustomResource {
         return new ApiKey(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The API Key secret (Sensitive).
-     */
     public /*out*/ readonly apiKey: pulumi.Output<string>;
-    /**
-     * The ID of the Application Insights component on which the API key operates. Changing this forces a new resource to be created.
-     */
     public readonly applicationInsightsId: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Application Insights API key. Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies the list of read permissions granted to the API key. Valid values are `agentconfig`, `aggregate`, `api`, `draft`, `extendqueries`, `search`. Please note these values are case sensitive. Changing this forces a new resource to be created. 
-     */
     public readonly readPermissions: pulumi.Output<string[] | undefined>;
-    /**
-     * Specifies the list of write permissions granted to the API key. Valid values are `annotations`. Please note these values are case sensitive. Changing this forces a new resource to be created.
-     */
     public readonly writePermissions: pulumi.Output<string[] | undefined>;
 
     /**
@@ -135,26 +59,10 @@ export class ApiKey extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ApiKey resources.
  */
 export interface ApiKeyState {
-    /**
-     * The API Key secret (Sensitive).
-     */
     readonly apiKey?: pulumi.Input<string>;
-    /**
-     * The ID of the Application Insights component on which the API key operates. Changing this forces a new resource to be created.
-     */
     readonly applicationInsightsId?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Application Insights API key. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the list of read permissions granted to the API key. Valid values are `agentconfig`, `aggregate`, `api`, `draft`, `extendqueries`, `search`. Please note these values are case sensitive. Changing this forces a new resource to be created. 
-     */
     readonly readPermissions?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Specifies the list of write permissions granted to the API key. Valid values are `annotations`. Please note these values are case sensitive. Changing this forces a new resource to be created.
-     */
     readonly writePermissions?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
@@ -162,21 +70,8 @@ export interface ApiKeyState {
  * The set of arguments for constructing a ApiKey resource.
  */
 export interface ApiKeyArgs {
-    /**
-     * The ID of the Application Insights component on which the API key operates. Changing this forces a new resource to be created.
-     */
     readonly applicationInsightsId: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Application Insights API key. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the list of read permissions granted to the API key. Valid values are `agentconfig`, `aggregate`, `api`, `draft`, `extendqueries`, `search`. Please note these values are case sensitive. Changing this forces a new resource to be created. 
-     */
     readonly readPermissions?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Specifies the list of write permissions granted to the API key. Valid values are `annotations`. Please note these values are case sensitive. Changing this forces a new resource to be created.
-     */
     readonly writePermissions?: pulumi.Input<pulumi.Input<string>[]>;
 }

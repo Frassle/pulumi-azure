@@ -4,51 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Associates a Route Table with a Subnet within a Virtual Network.
- * 
- * -> **NOTE:** Subnet `<->` Route Table associations currently need to be configured on both this resource and using the `route_table_id` field on the `azurerm_subnet` resource. The next major version of the AzureRM Provider (2.0) will remove the `route_table_id` field from the `azurerm_subnet` resource such that this resource is used to link resources in future.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "example-resources",
- * });
- * const azurerm_route_table_test = new azure.network.RouteTable("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "example-routetable",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     routes: [{
- *         addressPrefix: "10.100.0.0/14",
- *         name: "example",
- *         nextHopInIpAddress: "10.10.1.1",
- *         nextHopType: "VirtualAppliance",
- *     }],
- * });
- * const azurerm_virtual_network_test = new azure.network.VirtualNetwork("test", {
- *     addressSpaces: ["10.0.0.0/16"],
- *     location: azurerm_resource_group_test.location,
- *     name: "example-network",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_subnet_test = new azure.network.Subnet("test", {
- *     addressPrefix: "10.0.2.0/24",
- *     name: "frontend",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     routeTableId: azurerm_route_table_test.id,
- *     virtualNetworkName: azurerm_virtual_network_test.name,
- * });
- * const azurerm_subnet_route_table_association_test = new azure.network.SubnetRouteTableAssociation("test", {
- *     routeTableId: azurerm_route_table_test.id,
- *     subnetId: azurerm_subnet_test.id,
- * });
- * ```
- */
 export class SubnetRouteTableAssociation extends pulumi.CustomResource {
     /**
      * Get an existing SubnetRouteTableAssociation resource's state with the given name, ID, and optional extra
@@ -62,13 +17,7 @@ export class SubnetRouteTableAssociation extends pulumi.CustomResource {
         return new SubnetRouteTableAssociation(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The ID of the Route Table which should be associated with the Subnet. Changing this forces a new resource to be created.
-     */
     public readonly routeTableId: pulumi.Output<string>;
-    /**
-     * The ID of the Subnet. Changing this forces a new resource to be created.
-     */
     public readonly subnetId: pulumi.Output<string>;
 
     /**
@@ -104,13 +53,7 @@ export class SubnetRouteTableAssociation extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SubnetRouteTableAssociation resources.
  */
 export interface SubnetRouteTableAssociationState {
-    /**
-     * The ID of the Route Table which should be associated with the Subnet. Changing this forces a new resource to be created.
-     */
     readonly routeTableId?: pulumi.Input<string>;
-    /**
-     * The ID of the Subnet. Changing this forces a new resource to be created.
-     */
     readonly subnetId?: pulumi.Input<string>;
 }
 
@@ -118,12 +61,6 @@ export interface SubnetRouteTableAssociationState {
  * The set of arguments for constructing a SubnetRouteTableAssociation resource.
  */
 export interface SubnetRouteTableAssociationArgs {
-    /**
-     * The ID of the Route Table which should be associated with the Subnet. Changing this forces a new resource to be created.
-     */
     readonly routeTableId: pulumi.Input<string>;
-    /**
-     * The ID of the Subnet. Changing this forces a new resource to be created.
-     */
     readonly subnetId: pulumi.Input<string>;
 }

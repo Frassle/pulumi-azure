@@ -4,112 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Redis Cache.
- * 
- * ## Example Usage (Basic)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "redis-resources",
- * });
- * const azurerm_redis_cache_test = new azure.redis.Cache("test", {
- *     capacity: 0,
- *     enableNonSslPort: false,
- *     family: "C",
- *     location: azurerm_resource_group_test.location,
- *     name: "tf-redis-basic",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     skuName: "Basic",
- * });
- * ```
- * 
- * ## Example Usage (Standard)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "redis-resources",
- * });
- * const azurerm_redis_cache_test = new azure.redis.Cache("test", {
- *     capacity: 2,
- *     enableNonSslPort: false,
- *     family: "C",
- *     location: azurerm_resource_group_test.location,
- *     name: "tf-redis-standard",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     skuName: "Standard",
- * });
- * ```
- * 
- * ## Example Usage (Premium with Clustering)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "redis-resources",
- * });
- * const azurerm_redis_cache_test = new azure.redis.Cache("test", {
- *     capacity: 1,
- *     enableNonSslPort: false,
- *     family: "P",
- *     location: azurerm_resource_group_test.location,
- *     name: "tf-redis-premium",
- *     redisConfiguration: {
- *         maxmemoryDelta: 2,
- *         maxmemoryPolicy: "allkeys-lru",
- *         maxmemoryReserved: 2,
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     shardCount: 3,
- *     skuName: "Premium",
- * });
- * ```
- * 
- * ## Example Usage (Premium with Backup)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "redis-resources",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "GRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "redissa",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_redis_cache_test = new azure.redis.Cache("test", {
- *     capacity: 3,
- *     enableNonSslPort: false,
- *     family: "P",
- *     location: azurerm_resource_group_test.location,
- *     name: "tf-redis-pbkup",
- *     redisConfiguration: {
- *         rdbBackupEnabled: true,
- *         rdbBackupFrequency: 60,
- *         rdbBackupMaxSnapshotCount: 1,
- *         rdbStorageConnectionString: pulumi.all([azurerm_storage_account_test.primaryBlobEndpoint, azurerm_storage_account_test.name, azurerm_storage_account_test.primaryAccessKey]).apply(([__arg0, __arg1, __arg2]) => `DefaultEndpointsProtocol=https;BlobEndpoint=${__arg0};AccountName=${__arg1};AccountKey=${__arg2}`),
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     skuName: "Premium",
- * });
- * ```
- */
 export class Cache extends pulumi.CustomResource {
     /**
      * Get an existing Cache resource's state with the given name, ID, and optional extra
@@ -123,83 +17,24 @@ export class Cache extends pulumi.CustomResource {
         return new Cache(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The size of the Redis cache to deploy. Valid values for a SKU `family` of C (Basic/Standard) are `0, 1, 2, 3, 4, 5, 6`, and for P (Premium) `family` are `1, 2, 3, 4`.
-     */
     public readonly capacity: pulumi.Output<number>;
-    /**
-     * Enable the non-SSL port (6789) - disabled by default.
-     */
     public readonly enableNonSslPort: pulumi.Output<boolean | undefined>;
-    /**
-     * The SKU family to use. Valid values are `C` and `P`, where C = Basic/Standard, P = Premium.
-     */
     public readonly family: pulumi.Output<string>;
-    /**
-     * The Hostname of the Redis Instance
-     */
     public /*out*/ readonly hostname: pulumi.Output<string>;
-    /**
-     * The location of the resource group.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the Redis instance. Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A list of `patch_schedule` blocks as defined below - only available for Premium SKU's.
-     */
     public readonly patchSchedules: pulumi.Output<{ dayOfWeek: string, startHourUtc?: number }[] | undefined>;
-    /**
-     * The non-SSL Port of the Redis Instance
-     */
     public /*out*/ readonly port: pulumi.Output<number>;
-    /**
-     * The Primary Access Key for the Redis Instance
-     */
     public /*out*/ readonly primaryAccessKey: pulumi.Output<string>;
-    /**
-     * The Static IP Address to assign to the Redis Cache when hosted inside the Virtual Network. Changing this forces a new resource to be created.
-     */
     public readonly privateStaticIpAddress: pulumi.Output<string>;
-    /**
-     * A `redis_configuration` as defined below - with some limitations by SKU - defaults/details are shown below.
-     */
     public readonly redisConfiguration: pulumi.Output<{ maxclients: number, maxmemoryDelta: number, maxmemoryPolicy?: string, maxmemoryReserved: number, notifyKeyspaceEvents?: string, rdbBackupEnabled?: boolean, rdbBackupFrequency?: number, rdbBackupMaxSnapshotCount?: number, rdbStorageConnectionString?: string }>;
-    /**
-     * The name of the resource group in which to
-     * create the Redis instance.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The Secondary Access Key for the Redis Instance
-     */
     public /*out*/ readonly secondaryAccessKey: pulumi.Output<string>;
-    /**
-     * *Only available when using the Premium SKU* The number of Shards to create on the Redis Cluster.
-     */
     public readonly shardCount: pulumi.Output<number | undefined>;
-    /**
-     * The SKU of Redis to use - can be either Basic, Standard or Premium.
-     */
     public readonly skuName: pulumi.Output<string>;
-    /**
-     * The SSL Port of the Redis Instance
-     */
     public /*out*/ readonly sslPort: pulumi.Output<number>;
-    /**
-     * The ID of the Subnet within which the Redis Cache should be deployed. Changing this forces a new resource to be created.
-     */
     public readonly subnetId: pulumi.Output<string | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * A list of a single item of the Availability Zone which the Redis Cache should be allocated in.
-     */
     public readonly zones: pulumi.Output<string | undefined>;
 
     /**
@@ -281,83 +116,24 @@ export class Cache extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Cache resources.
  */
 export interface CacheState {
-    /**
-     * The size of the Redis cache to deploy. Valid values for a SKU `family` of C (Basic/Standard) are `0, 1, 2, 3, 4, 5, 6`, and for P (Premium) `family` are `1, 2, 3, 4`.
-     */
     readonly capacity?: pulumi.Input<number>;
-    /**
-     * Enable the non-SSL port (6789) - disabled by default.
-     */
     readonly enableNonSslPort?: pulumi.Input<boolean>;
-    /**
-     * The SKU family to use. Valid values are `C` and `P`, where C = Basic/Standard, P = Premium.
-     */
     readonly family?: pulumi.Input<string>;
-    /**
-     * The Hostname of the Redis Instance
-     */
     readonly hostname?: pulumi.Input<string>;
-    /**
-     * The location of the resource group.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the Redis instance. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A list of `patch_schedule` blocks as defined below - only available for Premium SKU's.
-     */
     readonly patchSchedules?: pulumi.Input<pulumi.Input<{ dayOfWeek: pulumi.Input<string>, startHourUtc?: pulumi.Input<number> }>[]>;
-    /**
-     * The non-SSL Port of the Redis Instance
-     */
     readonly port?: pulumi.Input<number>;
-    /**
-     * The Primary Access Key for the Redis Instance
-     */
     readonly primaryAccessKey?: pulumi.Input<string>;
-    /**
-     * The Static IP Address to assign to the Redis Cache when hosted inside the Virtual Network. Changing this forces a new resource to be created.
-     */
     readonly privateStaticIpAddress?: pulumi.Input<string>;
-    /**
-     * A `redis_configuration` as defined below - with some limitations by SKU - defaults/details are shown below.
-     */
     readonly redisConfiguration?: pulumi.Input<{ maxclients?: pulumi.Input<number>, maxmemoryDelta?: pulumi.Input<number>, maxmemoryPolicy?: pulumi.Input<string>, maxmemoryReserved?: pulumi.Input<number>, notifyKeyspaceEvents?: pulumi.Input<string>, rdbBackupEnabled?: pulumi.Input<boolean>, rdbBackupFrequency?: pulumi.Input<number>, rdbBackupMaxSnapshotCount?: pulumi.Input<number>, rdbStorageConnectionString?: pulumi.Input<string> }>;
-    /**
-     * The name of the resource group in which to
-     * create the Redis instance.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The Secondary Access Key for the Redis Instance
-     */
     readonly secondaryAccessKey?: pulumi.Input<string>;
-    /**
-     * *Only available when using the Premium SKU* The number of Shards to create on the Redis Cluster.
-     */
     readonly shardCount?: pulumi.Input<number>;
-    /**
-     * The SKU of Redis to use - can be either Basic, Standard or Premium.
-     */
     readonly skuName?: pulumi.Input<string>;
-    /**
-     * The SSL Port of the Redis Instance
-     */
     readonly sslPort?: pulumi.Input<number>;
-    /**
-     * The ID of the Subnet within which the Redis Cache should be deployed. Changing this forces a new resource to be created.
-     */
     readonly subnetId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * A list of a single item of the Availability Zone which the Redis Cache should be allocated in.
-     */
     readonly zones?: pulumi.Input<string>;
 }
 
@@ -365,62 +141,18 @@ export interface CacheState {
  * The set of arguments for constructing a Cache resource.
  */
 export interface CacheArgs {
-    /**
-     * The size of the Redis cache to deploy. Valid values for a SKU `family` of C (Basic/Standard) are `0, 1, 2, 3, 4, 5, 6`, and for P (Premium) `family` are `1, 2, 3, 4`.
-     */
     readonly capacity: pulumi.Input<number>;
-    /**
-     * Enable the non-SSL port (6789) - disabled by default.
-     */
     readonly enableNonSslPort?: pulumi.Input<boolean>;
-    /**
-     * The SKU family to use. Valid values are `C` and `P`, where C = Basic/Standard, P = Premium.
-     */
     readonly family: pulumi.Input<string>;
-    /**
-     * The location of the resource group.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the Redis instance. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A list of `patch_schedule` blocks as defined below - only available for Premium SKU's.
-     */
     readonly patchSchedules?: pulumi.Input<pulumi.Input<{ dayOfWeek: pulumi.Input<string>, startHourUtc?: pulumi.Input<number> }>[]>;
-    /**
-     * The Static IP Address to assign to the Redis Cache when hosted inside the Virtual Network. Changing this forces a new resource to be created.
-     */
     readonly privateStaticIpAddress?: pulumi.Input<string>;
-    /**
-     * A `redis_configuration` as defined below - with some limitations by SKU - defaults/details are shown below.
-     */
     readonly redisConfiguration: pulumi.Input<{ maxclients?: pulumi.Input<number>, maxmemoryDelta?: pulumi.Input<number>, maxmemoryPolicy?: pulumi.Input<string>, maxmemoryReserved?: pulumi.Input<number>, notifyKeyspaceEvents?: pulumi.Input<string>, rdbBackupEnabled?: pulumi.Input<boolean>, rdbBackupFrequency?: pulumi.Input<number>, rdbBackupMaxSnapshotCount?: pulumi.Input<number>, rdbStorageConnectionString?: pulumi.Input<string> }>;
-    /**
-     * The name of the resource group in which to
-     * create the Redis instance.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * *Only available when using the Premium SKU* The number of Shards to create on the Redis Cluster.
-     */
     readonly shardCount?: pulumi.Input<number>;
-    /**
-     * The SKU of Redis to use - can be either Basic, Standard or Premium.
-     */
     readonly skuName: pulumi.Input<string>;
-    /**
-     * The ID of the Subnet within which the Redis Cache should be deployed. Changing this forces a new resource to be created.
-     */
     readonly subnetId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * A list of a single item of the Availability Zone which the Redis Cache should be allocated in.
-     */
     readonly zones?: pulumi.Input<string>;
 }

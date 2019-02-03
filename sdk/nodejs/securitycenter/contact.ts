@@ -4,25 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages the subscription's Security Center Contact.
- * 
- * > **NOTE:** Owner access permission is required. 
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_security_center_contact_example = new azure.securitycenter.Contact("example", {
- *     alertNotifications: true,
- *     alertsToAdmins: true,
- *     email: "contact@example.com",
- *     phone: "+1-555-555-5555",
- * });
- * ```
- */
 export class Contact extends pulumi.CustomResource {
     /**
      * Get an existing Contact resource's state with the given name, ID, and optional extra
@@ -36,21 +17,9 @@ export class Contact extends pulumi.CustomResource {
         return new Contact(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Whether to send security alerts notifications to the security contact.
-     */
     public readonly alertNotifications: pulumi.Output<boolean>;
-    /**
-     * Whether to send security alerts notifications to subscription admins.
-     */
     public readonly alertsToAdmins: pulumi.Output<boolean>;
-    /**
-     * The email of the Security Center Contact.
-     */
     public readonly email: pulumi.Output<string>;
-    /**
-     * The phone number of the Security Center Contact.
-     */
     public readonly phone: pulumi.Output<string>;
 
     /**
@@ -96,21 +65,9 @@ export class Contact extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Contact resources.
  */
 export interface ContactState {
-    /**
-     * Whether to send security alerts notifications to the security contact.
-     */
     readonly alertNotifications?: pulumi.Input<boolean>;
-    /**
-     * Whether to send security alerts notifications to subscription admins.
-     */
     readonly alertsToAdmins?: pulumi.Input<boolean>;
-    /**
-     * The email of the Security Center Contact.
-     */
     readonly email?: pulumi.Input<string>;
-    /**
-     * The phone number of the Security Center Contact.
-     */
     readonly phone?: pulumi.Input<string>;
 }
 
@@ -118,20 +75,8 @@ export interface ContactState {
  * The set of arguments for constructing a Contact resource.
  */
 export interface ContactArgs {
-    /**
-     * Whether to send security alerts notifications to the security contact.
-     */
     readonly alertNotifications: pulumi.Input<boolean>;
-    /**
-     * Whether to send security alerts notifications to subscription admins.
-     */
     readonly alertsToAdmins: pulumi.Input<boolean>;
-    /**
-     * The email of the Security Center Contact.
-     */
     readonly email: pulumi.Input<string>;
-    /**
-     * The phone number of the Security Center Contact.
-     */
     readonly phone: pulumi.Input<string>;
 }

@@ -4,70 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Azure Batch pool.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "%s",
- *     name: "testaccbatch",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "testaccsa",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_batch_account_test = new azure.batch.Account("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "testaccbatch",
- *     poolAllocationMode: "BatchService",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountId: azurerm_storage_account_test.id,
- *     tags: {
- *         env: "test",
- *     },
- * });
- * const azurerm_batch_pool_test = new azure.batch.Pool("test", {
- *     accountName: azurerm_batch_account_test.name,
- *     autoScale: {
- *         evaluationInterval: "PT15M",
- *         formula: "      startingNumberOfVMs = 1;\n      maxNumberofVMs = 25;\n      pendingTaskSamplePercent = $PendingTasks.GetSamplePercent(180 * TimeInterval_Second);\n      pendingTaskSamples = pendingTaskSamplePercent < 70 ? startingNumberOfVMs : avg($PendingTasks.GetSample(180 *   TimeInterval_Second));\n      $TargetDedicatedNodes=min(maxNumberofVMs, pendingTaskSamples);\n",
- *     },
- *     displayName: "Test Acc Pool Auto",
- *     name: "testaccpool",
- *     nodeAgentSkuId: "batch.node.ubuntu 16.04",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     startTask: {
- *         commandLine: "echo 'Hello World from $env'",
- *         environment: {
- *             env: "TEST",
- *         },
- *         maxTaskRetryCount: 1,
- *         userIdentity: {
- *             autoUser: {
- *                 elevationLevel: "NonAdmin",
- *                 scope: "Task",
- *             },
- *         },
- *         waitForSuccess: true,
- *     },
- *     storageImageReference: {
- *         offer: "UbuntuServer",
- *         publisher: "Canonical",
- *         sku: "16.04.0-LTS",
- *         version: "latest",
- *     },
- *     vmSize: "Standard_A1",
- * });
- * ```
- */
 export class Pool extends pulumi.CustomResource {
     /**
      * Get an existing Pool resource's state with the given name, ID, and optional extra
@@ -81,46 +17,16 @@ export class Pool extends pulumi.CustomResource {
         return new Pool(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the name of the Batch account in which the pool will be created. Changing this forces a new resource to be created.
-     */
     public readonly accountName: pulumi.Output<string>;
-    /**
-     * A `auto_scale` block that describes the scale settings when using auto scale.
-     */
     public readonly autoScale: pulumi.Output<{ evaluationInterval?: string, formula: string } | undefined>;
-    /**
-     * Specifies the display name of the Batch pool.
-     */
     public readonly displayName: pulumi.Output<string | undefined>;
-    /**
-     * A `fixed_scale` block that describes the scale settings when using fixed scale.
-     */
     public readonly fixedScale: pulumi.Output<{ resizeTimeout?: string, targetDedicatedNodes?: number, targetLowPriorityNodes?: number } | undefined>;
-    /**
-     * Specifies the name of the Batch pool. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies the Sku of the node agents that will be created in the Batch pool.
-     */
     public readonly nodeAgentSkuId: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Batch pool. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A `start_task` block that describes the start task settings for the Batch pool.
-     */
     public readonly startTask: pulumi.Output<{ commandLine: string, environment?: {[key: string]: any}, maxTaskRetryCount?: number, userIdentity: { autoUser?: { elevationLevel?: string, scope?: string }, userName?: string }, waitForSuccess?: boolean } | undefined>;
     public readonly stopPendingResizeOperation: pulumi.Output<boolean | undefined>;
-    /**
-     * A `storage_image_reference` for the virtual machines that will compose the Batch pool.
-     */
     public readonly storageImageReference: pulumi.Output<{ id?: string, offer: string, publisher: string, sku: string, version: string }>;
-    /**
-     * Specifies the size of the VM created in the Batch pool.
-     */
     public readonly vmSize: pulumi.Output<string>;
 
     /**
@@ -183,46 +89,16 @@ export class Pool extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Pool resources.
  */
 export interface PoolState {
-    /**
-     * Specifies the name of the Batch account in which the pool will be created. Changing this forces a new resource to be created.
-     */
     readonly accountName?: pulumi.Input<string>;
-    /**
-     * A `auto_scale` block that describes the scale settings when using auto scale.
-     */
     readonly autoScale?: pulumi.Input<{ evaluationInterval?: pulumi.Input<string>, formula: pulumi.Input<string> }>;
-    /**
-     * Specifies the display name of the Batch pool.
-     */
     readonly displayName?: pulumi.Input<string>;
-    /**
-     * A `fixed_scale` block that describes the scale settings when using fixed scale.
-     */
     readonly fixedScale?: pulumi.Input<{ resizeTimeout?: pulumi.Input<string>, targetDedicatedNodes?: pulumi.Input<number>, targetLowPriorityNodes?: pulumi.Input<number> }>;
-    /**
-     * Specifies the name of the Batch pool. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the Sku of the node agents that will be created in the Batch pool.
-     */
     readonly nodeAgentSkuId?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Batch pool. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A `start_task` block that describes the start task settings for the Batch pool.
-     */
     readonly startTask?: pulumi.Input<{ commandLine: pulumi.Input<string>, environment?: pulumi.Input<{[key: string]: any}>, maxTaskRetryCount?: pulumi.Input<number>, userIdentity: pulumi.Input<{ autoUser?: pulumi.Input<{ elevationLevel?: pulumi.Input<string>, scope?: pulumi.Input<string> }>, userName?: pulumi.Input<string> }>, waitForSuccess?: pulumi.Input<boolean> }>;
     readonly stopPendingResizeOperation?: pulumi.Input<boolean>;
-    /**
-     * A `storage_image_reference` for the virtual machines that will compose the Batch pool.
-     */
     readonly storageImageReference?: pulumi.Input<{ id?: pulumi.Input<string>, offer: pulumi.Input<string>, publisher: pulumi.Input<string>, sku: pulumi.Input<string>, version: pulumi.Input<string> }>;
-    /**
-     * Specifies the size of the VM created in the Batch pool.
-     */
     readonly vmSize?: pulumi.Input<string>;
 }
 
@@ -230,45 +106,15 @@ export interface PoolState {
  * The set of arguments for constructing a Pool resource.
  */
 export interface PoolArgs {
-    /**
-     * Specifies the name of the Batch account in which the pool will be created. Changing this forces a new resource to be created.
-     */
     readonly accountName: pulumi.Input<string>;
-    /**
-     * A `auto_scale` block that describes the scale settings when using auto scale.
-     */
     readonly autoScale?: pulumi.Input<{ evaluationInterval?: pulumi.Input<string>, formula: pulumi.Input<string> }>;
-    /**
-     * Specifies the display name of the Batch pool.
-     */
     readonly displayName?: pulumi.Input<string>;
-    /**
-     * A `fixed_scale` block that describes the scale settings when using fixed scale.
-     */
     readonly fixedScale?: pulumi.Input<{ resizeTimeout?: pulumi.Input<string>, targetDedicatedNodes?: pulumi.Input<number>, targetLowPriorityNodes?: pulumi.Input<number> }>;
-    /**
-     * Specifies the name of the Batch pool. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the Sku of the node agents that will be created in the Batch pool.
-     */
     readonly nodeAgentSkuId: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Batch pool. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A `start_task` block that describes the start task settings for the Batch pool.
-     */
     readonly startTask?: pulumi.Input<{ commandLine: pulumi.Input<string>, environment?: pulumi.Input<{[key: string]: any}>, maxTaskRetryCount?: pulumi.Input<number>, userIdentity: pulumi.Input<{ autoUser?: pulumi.Input<{ elevationLevel?: pulumi.Input<string>, scope?: pulumi.Input<string> }>, userName?: pulumi.Input<string> }>, waitForSuccess?: pulumi.Input<boolean> }>;
     readonly stopPendingResizeOperation?: pulumi.Input<boolean>;
-    /**
-     * A `storage_image_reference` for the virtual machines that will compose the Batch pool.
-     */
     readonly storageImageReference: pulumi.Input<{ id?: pulumi.Input<string>, offer: pulumi.Input<string>, publisher: pulumi.Input<string>, sku: pulumi.Input<string>, version: pulumi.Input<string> }>;
-    /**
-     * Specifies the size of the VM created in the Batch pool.
-     */
     readonly vmSize: pulumi.Input<string>;
 }

@@ -4,37 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Password associated with a Service Principal within Azure Active Directory.
- * 
- * > **NOTE:** The Azure Active Directory resources have been split out into [a new AzureAD Provider](http://terraform.io/docs/providers/azuread/index.html) - as such the AzureAD resources within the AzureRM Provider are deprecated and will be removed in the next major version (2.0). Information on how to migrate from the existing resources to the new AzureAD Provider can be found here.
- * 
- * -> **NOTE:** If you're authenticating using a Service Principal then it must have permissions to both `Read and write all applications` and `Sign in and read user profile` within the `Windows Azure Active Directory` API.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_azuread_application_test = new azure.ad.Application("test", {
- *     availableToOtherTenants: false,
- *     homepage: "http://homepage",
- *     identifierUris: ["http://uri"],
- *     name: "example",
- *     oauth2AllowImplicitFlow: true,
- *     replyUrls: ["http://replyurl"],
- * });
- * const azurerm_azuread_service_principal_test = new azure.ad.ServicePrincipal("test", {
- *     applicationId: azurerm_azuread_application_test.applicationId,
- * });
- * const azurerm_azuread_service_principal_password_test = new azure.ad.ServicePrincipalPassword("test", {
- *     endDate: "2020-01-01T01:02:03Z",
- *     servicePrincipalId: azurerm_azuread_service_principal_test.id,
- *     value: "VT=uSgbTanZhyz@%nL9Hpd+Tfay_MRV#",
- * });
- * ```
- */
 export class ServicePrincipalPassword extends pulumi.CustomResource {
     /**
      * Get an existing ServicePrincipalPassword resource's state with the given name, ID, and optional extra
@@ -48,25 +17,10 @@ export class ServicePrincipalPassword extends pulumi.CustomResource {
         return new ServicePrincipalPassword(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The End Date which the Password is valid until, formatted as a RFC3339 date string (e.g. `2018-01-01T01:02:03Z`). Changing this field forces a new resource to be created.
-     */
     public readonly endDate: pulumi.Output<string>;
-    /**
-     * A GUID used to uniquely identify this Key. If not specified a GUID will be created. Changing this field forces a new resource to be created.
-     */
     public readonly keyId: pulumi.Output<string>;
-    /**
-     * The ID of the Service Principal for which this password should be created. Changing this field forces a new resource to be created.
-     */
     public readonly servicePrincipalId: pulumi.Output<string>;
-    /**
-     * The Start Date which the Password is valid from, formatted as a RFC3339 date string (e.g. `2018-01-01T01:02:03Z`). If this isn't specified, the current date is used.  Changing this field forces a new resource to be created.
-     */
     public readonly startDate: pulumi.Output<string>;
-    /**
-     * The Password for this Service Principal.
-     */
     public readonly value: pulumi.Output<string>;
 
     /**
@@ -111,25 +65,10 @@ export class ServicePrincipalPassword extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ServicePrincipalPassword resources.
  */
 export interface ServicePrincipalPasswordState {
-    /**
-     * The End Date which the Password is valid until, formatted as a RFC3339 date string (e.g. `2018-01-01T01:02:03Z`). Changing this field forces a new resource to be created.
-     */
     readonly endDate?: pulumi.Input<string>;
-    /**
-     * A GUID used to uniquely identify this Key. If not specified a GUID will be created. Changing this field forces a new resource to be created.
-     */
     readonly keyId?: pulumi.Input<string>;
-    /**
-     * The ID of the Service Principal for which this password should be created. Changing this field forces a new resource to be created.
-     */
     readonly servicePrincipalId?: pulumi.Input<string>;
-    /**
-     * The Start Date which the Password is valid from, formatted as a RFC3339 date string (e.g. `2018-01-01T01:02:03Z`). If this isn't specified, the current date is used.  Changing this field forces a new resource to be created.
-     */
     readonly startDate?: pulumi.Input<string>;
-    /**
-     * The Password for this Service Principal.
-     */
     readonly value?: pulumi.Input<string>;
 }
 
@@ -137,24 +76,9 @@ export interface ServicePrincipalPasswordState {
  * The set of arguments for constructing a ServicePrincipalPassword resource.
  */
 export interface ServicePrincipalPasswordArgs {
-    /**
-     * The End Date which the Password is valid until, formatted as a RFC3339 date string (e.g. `2018-01-01T01:02:03Z`). Changing this field forces a new resource to be created.
-     */
     readonly endDate: pulumi.Input<string>;
-    /**
-     * A GUID used to uniquely identify this Key. If not specified a GUID will be created. Changing this field forces a new resource to be created.
-     */
     readonly keyId?: pulumi.Input<string>;
-    /**
-     * The ID of the Service Principal for which this password should be created. Changing this field forces a new resource to be created.
-     */
     readonly servicePrincipalId: pulumi.Input<string>;
-    /**
-     * The Start Date which the Password is valid from, formatted as a RFC3339 date string (e.g. `2018-01-01T01:02:03Z`). If this isn't specified, the current date is used.  Changing this field forces a new resource to be created.
-     */
     readonly startDate?: pulumi.Input<string>;
-    /**
-     * The Password for this Service Principal.
-     */
     readonly value: pulumi.Input<string>;
 }

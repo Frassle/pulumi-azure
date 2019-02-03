@@ -4,45 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Allows you to manage an Azure SQL Elastic Pool via the `2017-10-01-preview` API which allows for `vCore` and `DTU` based configurations.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "westeurope",
- *     name: "my-resource-group",
- * });
- * const azurerm_sql_server_test = new azure.sql.SqlServer("test", {
- *     administratorLogin: "4dm1n157r470r",
- *     administratorLoginPassword: "4-v3ry-53cr37-p455w0rd",
- *     location: azurerm_resource_group_test.location,
- *     name: "my-sql-server",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     version: "12.0",
- * });
- * const azurerm_mssql_elasticpool_test = new azure.mssql.ElasticPool("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "test-epool",
- *     perDatabaseSettings: {
- *         maxCapacity: 4,
- *         minCapacity: 0.250000,
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serverName: azurerm_sql_server_test.name,
- *     sku: {
- *         capacity: 4,
- *         family: "Gen5",
- *         name: "GP_Gen5",
- *         tier: "GeneralPurpose",
- *     },
- * });
- * ```
- */
 export class ElasticPool extends pulumi.CustomResource {
     /**
      * Get an existing ElasticPool resource's state with the given name, ID, and optional extra
@@ -57,41 +18,14 @@ export class ElasticPool extends pulumi.CustomResource {
     }
 
     public /*out*/ readonly elasticPoolProperties: pulumi.Output<{ creationDate: string, licenseType: string, maxSizeBytes: number, state: string, zoneRedundant: boolean }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The storage limit for the database elastic pool in bytes.
-     */
     public /*out*/ readonly maxSizeBytes: pulumi.Output<number>;
-    /**
-     * Specifies the SKU Name for this Elasticpool. The name of the SKU, will be either `vCore` based `tier` + `family` pattern (e.g. GP_Gen4, BC_Gen5) or the `DTU` based `BasicPool`, `StandardPool`, or `PremiumPool` pattern. 
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A `per_database_settings` block as defined below.
-     */
     public readonly perDatabaseSettings: pulumi.Output<{ maxCapacity: number, minCapacity: number }>;
-    /**
-     * The name of the resource group in which to create the elastic pool. This must be the same as the resource group of the underlying SQL server.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The name of the SQL Server on which to create the elastic pool. Changing this forces a new resource to be created.
-     */
     public readonly serverName: pulumi.Output<string>;
-    /**
-     * A `sku` block as defined below.
-     */
     public readonly sku: pulumi.Output<{ capacity: number, family?: string, name: string, tier: string }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Whether or not this elastic pool is zone redundant.
-     */
     public /*out*/ readonly zoneRedundant: pulumi.Output<boolean>;
 
     /**
@@ -153,41 +87,14 @@ export class ElasticPool extends pulumi.CustomResource {
  */
 export interface ElasticPoolState {
     readonly elasticPoolProperties?: pulumi.Input<{ creationDate?: pulumi.Input<string>, licenseType?: pulumi.Input<string>, maxSizeBytes?: pulumi.Input<number>, state?: pulumi.Input<string>, zoneRedundant?: pulumi.Input<boolean> }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The storage limit for the database elastic pool in bytes.
-     */
     readonly maxSizeBytes?: pulumi.Input<number>;
-    /**
-     * Specifies the SKU Name for this Elasticpool. The name of the SKU, will be either `vCore` based `tier` + `family` pattern (e.g. GP_Gen4, BC_Gen5) or the `DTU` based `BasicPool`, `StandardPool`, or `PremiumPool` pattern. 
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A `per_database_settings` block as defined below.
-     */
     readonly perDatabaseSettings?: pulumi.Input<{ maxCapacity: pulumi.Input<number>, minCapacity: pulumi.Input<number> }>;
-    /**
-     * The name of the resource group in which to create the elastic pool. This must be the same as the resource group of the underlying SQL server.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server on which to create the elastic pool. Changing this forces a new resource to be created.
-     */
     readonly serverName?: pulumi.Input<string>;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku?: pulumi.Input<{ capacity: pulumi.Input<number>, family?: pulumi.Input<string>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Whether or not this elastic pool is zone redundant.
-     */
     readonly zoneRedundant?: pulumi.Input<boolean>;
 }
 
@@ -195,32 +102,11 @@ export interface ElasticPoolState {
  * The set of arguments for constructing a ElasticPool resource.
  */
 export interface ElasticPoolArgs {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the SKU Name for this Elasticpool. The name of the SKU, will be either `vCore` based `tier` + `family` pattern (e.g. GP_Gen4, BC_Gen5) or the `DTU` based `BasicPool`, `StandardPool`, or `PremiumPool` pattern. 
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A `per_database_settings` block as defined below.
-     */
     readonly perDatabaseSettings: pulumi.Input<{ maxCapacity: pulumi.Input<number>, minCapacity: pulumi.Input<number> }>;
-    /**
-     * The name of the resource group in which to create the elastic pool. This must be the same as the resource group of the underlying SQL server.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server on which to create the elastic pool. Changing this forces a new resource to be created.
-     */
     readonly serverName: pulumi.Input<string>;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku: pulumi.Input<{ capacity: pulumi.Input<number>, family?: pulumi.Input<string>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

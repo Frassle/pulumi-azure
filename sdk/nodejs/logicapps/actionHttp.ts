@@ -4,32 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an HTTP Action within a Logic App Workflow
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "East US",
- *     name: "workflow-resources",
- * });
- * const azurerm_logic_app_workflow_test = new azure.logicapps.Workflow("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "workflow1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_logic_app_action_http_test = new azure.logicapps.ActionHttp("test", {
- *     logicAppId: azurerm_logic_app_workflow_test.id,
- *     method: "GET",
- *     name: "webhook",
- *     uri: "http://example.com/some-webhook",
- * });
- * ```
- */
 export class ActionHttp extends pulumi.CustomResource {
     /**
      * Get an existing ActionHttp resource's state with the given name, ID, and optional extra
@@ -43,29 +17,11 @@ export class ActionHttp extends pulumi.CustomResource {
         return new ActionHttp(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the HTTP Body that should be sent to the `uri` when this HTTP Action is triggered.
-     */
     public readonly body: pulumi.Output<string | undefined>;
-    /**
-     * Specifies a Map of Key-Value Pairs that should be sent to the `uri` when this HTTP Action is triggered.
-     */
     public readonly headers: pulumi.Output<{[key: string]: any} | undefined>;
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly logicAppId: pulumi.Output<string>;
-    /**
-     * Specifies the HTTP Method which should be used for this HTTP Action. Possible values include `DELETE`, `GET`, `PATCH`, `POST` and `PUT`.
-     */
     public readonly method: pulumi.Output<string>;
-    /**
-     * Specifies the name of the HTTP Action to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies the URI which will be called when this HTTP Action is triggered.
-     */
     public readonly uri: pulumi.Output<string>;
 
     /**
@@ -112,29 +68,11 @@ export class ActionHttp extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ActionHttp resources.
  */
 export interface ActionHttpState {
-    /**
-     * Specifies the HTTP Body that should be sent to the `uri` when this HTTP Action is triggered.
-     */
     readonly body?: pulumi.Input<string>;
-    /**
-     * Specifies a Map of Key-Value Pairs that should be sent to the `uri` when this HTTP Action is triggered.
-     */
     readonly headers?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly logicAppId?: pulumi.Input<string>;
-    /**
-     * Specifies the HTTP Method which should be used for this HTTP Action. Possible values include `DELETE`, `GET`, `PATCH`, `POST` and `PUT`.
-     */
     readonly method?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the HTTP Action to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the URI which will be called when this HTTP Action is triggered.
-     */
     readonly uri?: pulumi.Input<string>;
 }
 
@@ -142,28 +80,10 @@ export interface ActionHttpState {
  * The set of arguments for constructing a ActionHttp resource.
  */
 export interface ActionHttpArgs {
-    /**
-     * Specifies the HTTP Body that should be sent to the `uri` when this HTTP Action is triggered.
-     */
     readonly body?: pulumi.Input<string>;
-    /**
-     * Specifies a Map of Key-Value Pairs that should be sent to the `uri` when this HTTP Action is triggered.
-     */
     readonly headers?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly logicAppId: pulumi.Input<string>;
-    /**
-     * Specifies the HTTP Method which should be used for this HTTP Action. Possible values include `DELETE`, `GET`, `PATCH`, `POST` and `PUT`.
-     */
     readonly method: pulumi.Input<string>;
-    /**
-     * Specifies the name of the HTTP Action to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the URI which will be called when this HTTP Action is triggered.
-     */
     readonly uri: pulumi.Input<string>;
 }

@@ -4,89 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Managed Disk.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_virtual_network_test = new azure.network.VirtualNetwork("test", {
- *     addressSpaces: ["10.0.0.0/16"],
- *     location: "West US 2",
- *     name: "acctvn",
- *     resourceGroupName: "acctestRG",
- * });
- * const azurerm_managed_disk_datasourcemd = pulumi.output(azure.compute.getManagedDisk({
- *     name: "testManagedDisk",
- *     resourceGroupName: "acctestRG",
- * }));
- * const azurerm_subnet_test = new azure.network.Subnet("test", {
- *     addressPrefix: "10.0.2.0/24",
- *     name: "acctsub",
- *     resourceGroupName: "acctestRG",
- *     virtualNetworkName: azurerm_virtual_network_test.name,
- * });
- * const azurerm_network_interface_test = new azure.network.NetworkInterface("test", {
- *     ipConfigurations: [{
- *         name: "testconfiguration1",
- *         privateIpAddressAllocation: "Dynamic",
- *         subnetId: azurerm_subnet_test.id,
- *     }],
- *     location: "West US 2",
- *     name: "acctni",
- *     resourceGroupName: "acctestRG",
- * });
- * const azurerm_virtual_machine_test = new azure.compute.VirtualMachine("test", {
- *     location: "West US 2",
- *     name: "acctvm",
- *     networkInterfaceIds: [azurerm_network_interface_test.id],
- *     osProfile: {
- *         adminPassword: "Password1234!",
- *         adminUsername: "testadmin",
- *         computerName: "hostname",
- *     },
- *     osProfileLinuxConfig: {
- *         disablePasswordAuthentication: false,
- *     },
- *     resourceGroupName: "acctestRG",
- *     storageDataDisks: [
- *         {
- *             createOption: "Empty",
- *             diskSizeGb: Number.parseFloat("1023"),
- *             lun: 0,
- *             managedDiskType: "Standard_LRS",
- *             name: "datadisk_new",
- *         },
- *         {
- *             createOption: "Attach",
- *             diskSizeGb: azurerm_managed_disk_datasourcemd.apply(__arg0 => __arg0.diskSizeGb),
- *             lun: 1,
- *             managedDiskId: azurerm_managed_disk_datasourcemd.apply(__arg0 => __arg0.id),
- *             name: azurerm_managed_disk_datasourcemd.apply(__arg0 => __arg0.name),
- *         },
- *     ],
- *     storageImageReference: {
- *         offer: "UbuntuServer",
- *         publisher: "Canonical",
- *         sku: "16.04-LTS",
- *         version: "latest",
- *     },
- *     storageOsDisk: {
- *         caching: "ReadWrite",
- *         createOption: "FromImage",
- *         managedDiskType: "Standard_LRS",
- *         name: "myosdisk1",
- *     },
- *     tags: {
- *         environment: "staging",
- *     },
- *     vmSize: "Standard_DS1_v2",
- * });
- * ```
- */
 export function getManagedDisk(args: GetManagedDiskArgs, opts?: pulumi.InvokeOptions): Promise<GetManagedDiskResult> {
     return pulumi.runtime.invoke("azure:compute/getManagedDisk:getManagedDisk", {
         "name": args.name,
@@ -100,13 +17,7 @@ export function getManagedDisk(args: GetManagedDiskArgs, opts?: pulumi.InvokeOpt
  * A collection of arguments for invoking getManagedDisk.
  */
 export interface GetManagedDiskArgs {
-    /**
-     * Specifies the name of the Managed Disk.
-     */
     readonly name: string;
-    /**
-     * Specifies the name of the resource group.
-     */
     readonly resourceGroupName: string;
     readonly tags?: {[key: string]: any};
     readonly zones?: string[];
@@ -117,33 +28,12 @@ export interface GetManagedDiskArgs {
  */
 export interface GetManagedDiskResult {
     readonly createOption: string;
-    /**
-     * The size of the managed disk in gigabytes.
-     */
     readonly diskSizeGb: number;
-    /**
-     * The operating system for managed disk. Valid values are `Linux` or `Windows`
-     */
     readonly osType: string;
-    /**
-     * ID of an existing managed disk that the current resource was created from.
-     */
     readonly sourceResourceId: string;
-    /**
-     * The source URI for the managed disk
-     */
     readonly sourceUri: string;
-    /**
-     * The storage account type for the managed disk.
-     */
     readonly storageAccountType: string;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags: {[key: string]: any};
-    /**
-     * A collection containing the availability zone the managed disk is allocated in.
-     */
     readonly zones: string[];
     /**
      * id is the provider-assigned unique ID for this managed resource.

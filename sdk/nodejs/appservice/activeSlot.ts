@@ -4,30 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Promotes an App Service Slot to Production within an App Service.
- * 
- * -> **Note:** When using Slots - the `app_settings`, `connection_string` and `site_config` blocks on the `azurerm_app_service` resource will be overwritten when promoting a Slot using the `azurerm_app_service_active_slot` resource.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * import * as random from "@pulumi/random";
- * 
- * const azurerm_app_service_test = new azure.appservice.AppService("test", {});
- * const azurerm_app_service_plan_test = new azure.appservice.Plan("test", {});
- * const azurerm_app_service_slot_test = new azure.appservice.Slot("test", {});
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {});
- * const random_id_server = new random.RandomId("server", {});
- * const azurerm_app_service_active_slot_test = new azure.appservice.ActiveSlot("test", {
- *     appServiceName: azurerm_app_service_test.name,
- *     appServiceSlotName: azurerm_app_service_slot_test.name,
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * ```
- */
 export class ActiveSlot extends pulumi.CustomResource {
     /**
      * Get an existing ActiveSlot resource's state with the given name, ID, and optional extra
@@ -41,17 +17,8 @@ export class ActiveSlot extends pulumi.CustomResource {
         return new ActiveSlot(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The name of the App Service within which the Slot exists.  Changing this forces a new resource to be created.
-     */
     public readonly appServiceName: pulumi.Output<string>;
-    /**
-     * The name of the App Service Slot which should be promoted to the Production Slot within the App Service.
-     */
     public readonly appServiceSlotName: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which the App Service exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -92,17 +59,8 @@ export class ActiveSlot extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ActiveSlot resources.
  */
 export interface ActiveSlotState {
-    /**
-     * The name of the App Service within which the Slot exists.  Changing this forces a new resource to be created.
-     */
     readonly appServiceName?: pulumi.Input<string>;
-    /**
-     * The name of the App Service Slot which should be promoted to the Production Slot within the App Service.
-     */
     readonly appServiceSlotName?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the App Service exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -110,16 +68,7 @@ export interface ActiveSlotState {
  * The set of arguments for constructing a ActiveSlot resource.
  */
 export interface ActiveSlotArgs {
-    /**
-     * The name of the App Service within which the Slot exists.  Changing this forces a new resource to be created.
-     */
     readonly appServiceName: pulumi.Input<string>;
-    /**
-     * The name of the App Service Slot which should be promoted to the Production Slot within the App Service.
-     */
     readonly appServiceSlotName: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the App Service exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

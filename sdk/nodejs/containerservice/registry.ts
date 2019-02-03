@@ -4,67 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Azure Container Registry.
- * 
- * > **Note:** All arguments including the access key will be stored in the raw state as plain-text.
- * [Read more about sensitive data in state](https://www.terraform.io/docs/state/sensitive-data.html).
- * 
- * ## Example Usage
- * 
- * ### Classic (unmanaged) Container Registry
- * 
- * When using the `Classic` SKU, you need to provide the Azure storage account.
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "resourceGroup1",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "GRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "storageaccount1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_container_registry_test = new azure.containerservice.Registry("test", {
- *     adminEnabled: true,
- *     location: azurerm_resource_group_test.location,
- *     name: "containerRegistry1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: "Classic",
- *     storageAccountId: azurerm_storage_account_test.id,
- * });
- * ```
- * ### Managed Container Registry
- * 
- * When using a SKU other than `Classic`, Azure Container Registry manages the storage account for you.
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_rg = new azure.core.ResourceGroup("rg", {
- *     location: "West US",
- *     name: "resourceGroup1",
- * });
- * const azurerm_container_registry_acr = new azure.containerservice.Registry("acr", {
- *     adminEnabled: false,
- *     georeplicationLocations: [
- *         "East US",
- *         "West Europe",
- *     ],
- *     location: azurerm_resource_group_rg.location,
- *     name: "containerRegistry1",
- *     resourceGroupName: azurerm_resource_group_rg.name,
- *     sku: "Premium",
- * });
- * ```
- */
 export class Registry extends pulumi.CustomResource {
     /**
      * Get an existing Registry resource's state with the given name, ID, and optional extra
@@ -78,50 +17,17 @@ export class Registry extends pulumi.CustomResource {
         return new Registry(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies whether the admin user is enabled. Defaults to `false`.
-     */
     public readonly adminEnabled: pulumi.Output<boolean | undefined>;
-    /**
-     * The Password associated with the Container Registry Admin account - if the admin account is enabled.
-     */
     public /*out*/ readonly adminPassword: pulumi.Output<string>;
-    /**
-     * The Username associated with the Container Registry Admin account - if the admin account is enabled.
-     */
     public /*out*/ readonly adminUsername: pulumi.Output<string>;
-    /**
-     * A list of Azure locations where the container registry should be geo-replicated.
-     */
     public readonly georeplicationLocations: pulumi.Output<string[] | undefined>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The URL that can be used to log into the container registry.
-     */
     public /*out*/ readonly loginServer: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Container Registry. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Container Registry. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The SKU name of the the container registry. Possible values are `Classic` (which was previously `Basic`), `Basic`, `Standard` and `Premium`.
-     */
     public readonly sku: pulumi.Output<string | undefined>;
     public readonly storageAccount: pulumi.Output<{ accessKey: string, name: string } | undefined>;
-    /**
-     * The ID of a Storage Account which must be located in the same Azure Region as the Container Registry.
-     */
     public readonly storageAccountId: pulumi.Output<string | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -177,50 +83,17 @@ export class Registry extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Registry resources.
  */
 export interface RegistryState {
-    /**
-     * Specifies whether the admin user is enabled. Defaults to `false`.
-     */
     readonly adminEnabled?: pulumi.Input<boolean>;
-    /**
-     * The Password associated with the Container Registry Admin account - if the admin account is enabled.
-     */
     readonly adminPassword?: pulumi.Input<string>;
-    /**
-     * The Username associated with the Container Registry Admin account - if the admin account is enabled.
-     */
     readonly adminUsername?: pulumi.Input<string>;
-    /**
-     * A list of Azure locations where the container registry should be geo-replicated.
-     */
     readonly georeplicationLocations?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The URL that can be used to log into the container registry.
-     */
     readonly loginServer?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Container Registry. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Container Registry. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The SKU name of the the container registry. Possible values are `Classic` (which was previously `Basic`), `Basic`, `Standard` and `Premium`.
-     */
     readonly sku?: pulumi.Input<string>;
     readonly storageAccount?: pulumi.Input<{ accessKey: pulumi.Input<string>, name: pulumi.Input<string> }>;
-    /**
-     * The ID of a Storage Account which must be located in the same Azure Region as the Container Registry.
-     */
     readonly storageAccountId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -228,37 +101,13 @@ export interface RegistryState {
  * The set of arguments for constructing a Registry resource.
  */
 export interface RegistryArgs {
-    /**
-     * Specifies whether the admin user is enabled. Defaults to `false`.
-     */
     readonly adminEnabled?: pulumi.Input<boolean>;
-    /**
-     * A list of Azure locations where the container registry should be geo-replicated.
-     */
     readonly georeplicationLocations?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Container Registry. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Container Registry. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The SKU name of the the container registry. Possible values are `Classic` (which was previously `Basic`), `Basic`, `Standard` and `Premium`.
-     */
     readonly sku?: pulumi.Input<string>;
     readonly storageAccount?: pulumi.Input<{ accessKey: pulumi.Input<string>, name: pulumi.Input<string> }>;
-    /**
-     * The ID of a Storage Account which must be located in the same Azure Region as the Container Registry.
-     */
     readonly storageAccountId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

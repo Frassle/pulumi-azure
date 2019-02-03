@@ -4,31 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an EventHub Namespace.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "resourceGroup1",
- * });
- * const azurerm_eventhub_namespace_test = new azure.eventhub.EventHubNamespace("test", {
- *     capacity: 2,
- *     location: azurerm_resource_group_test.location,
- *     name: "acceptanceTestEventHubNamespace",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: "Standard",
- *     tags: {
- *         environment: "Production",
- *     },
- * });
- * ```
- */
 export class EventHubNamespace extends pulumi.CustomResource {
     /**
      * Get an existing EventHubNamespace resource's state with the given name, ID, and optional extra
@@ -42,59 +17,18 @@ export class EventHubNamespace extends pulumi.CustomResource {
         return new EventHubNamespace(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Is Auto Inflate enabled for the EventHub Namespace?
-     */
     public readonly autoInflateEnabled: pulumi.Output<boolean | undefined>;
-    /**
-     * Specifies the Capacity / Throughput Units for a `Standard` SKU namespace. Valid values range from 1 - 20.
-     */
     public readonly capacity: pulumi.Output<number | undefined>;
-    /**
-     * The primary connection string for the authorization
-     * rule `RootManageSharedAccessKey`.
-     */
     public /*out*/ readonly defaultPrimaryConnectionString: pulumi.Output<string>;
-    /**
-     * The primary access key for the authorization rule `RootManageSharedAccessKey`.
-     */
     public /*out*/ readonly defaultPrimaryKey: pulumi.Output<string>;
-    /**
-     * The secondary connection string for the
-     * authorization rule `RootManageSharedAccessKey`.
-     */
     public /*out*/ readonly defaultSecondaryConnectionString: pulumi.Output<string>;
-    /**
-     * The secondary access key for the authorization rule `RootManageSharedAccessKey`.
-     */
     public /*out*/ readonly defaultSecondaryKey: pulumi.Output<string>;
-    /**
-     * Is Kafka enabled for the EventHub Namespace? Defaults to `false`.
-     */
     public readonly kafkaEnabled: pulumi.Output<boolean | undefined>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the maximum number of throughput units when Auto Inflate is Enabled. Valid values range from 1 - 20.
-     */
     public readonly maximumThroughputUnits: pulumi.Output<number>;
-    /**
-     * Specifies the name of the EventHub Namespace resource. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the namespace. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Defines which tier to use. Valid options are `Basic` and `Standard`.
-     */
     public readonly sku: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -155,59 +89,18 @@ export class EventHubNamespace extends pulumi.CustomResource {
  * Input properties used for looking up and filtering EventHubNamespace resources.
  */
 export interface EventHubNamespaceState {
-    /**
-     * Is Auto Inflate enabled for the EventHub Namespace?
-     */
     readonly autoInflateEnabled?: pulumi.Input<boolean>;
-    /**
-     * Specifies the Capacity / Throughput Units for a `Standard` SKU namespace. Valid values range from 1 - 20.
-     */
     readonly capacity?: pulumi.Input<number>;
-    /**
-     * The primary connection string for the authorization
-     * rule `RootManageSharedAccessKey`.
-     */
     readonly defaultPrimaryConnectionString?: pulumi.Input<string>;
-    /**
-     * The primary access key for the authorization rule `RootManageSharedAccessKey`.
-     */
     readonly defaultPrimaryKey?: pulumi.Input<string>;
-    /**
-     * The secondary connection string for the
-     * authorization rule `RootManageSharedAccessKey`.
-     */
     readonly defaultSecondaryConnectionString?: pulumi.Input<string>;
-    /**
-     * The secondary access key for the authorization rule `RootManageSharedAccessKey`.
-     */
     readonly defaultSecondaryKey?: pulumi.Input<string>;
-    /**
-     * Is Kafka enabled for the EventHub Namespace? Defaults to `false`.
-     */
     readonly kafkaEnabled?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the maximum number of throughput units when Auto Inflate is Enabled. Valid values range from 1 - 20.
-     */
     readonly maximumThroughputUnits?: pulumi.Input<number>;
-    /**
-     * Specifies the name of the EventHub Namespace resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the namespace. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Defines which tier to use. Valid options are `Basic` and `Standard`.
-     */
     readonly sku?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -215,40 +108,13 @@ export interface EventHubNamespaceState {
  * The set of arguments for constructing a EventHubNamespace resource.
  */
 export interface EventHubNamespaceArgs {
-    /**
-     * Is Auto Inflate enabled for the EventHub Namespace?
-     */
     readonly autoInflateEnabled?: pulumi.Input<boolean>;
-    /**
-     * Specifies the Capacity / Throughput Units for a `Standard` SKU namespace. Valid values range from 1 - 20.
-     */
     readonly capacity?: pulumi.Input<number>;
-    /**
-     * Is Kafka enabled for the EventHub Namespace? Defaults to `false`.
-     */
     readonly kafkaEnabled?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the maximum number of throughput units when Auto Inflate is Enabled. Valid values range from 1 - 20.
-     */
     readonly maximumThroughputUnits?: pulumi.Input<number>;
-    /**
-     * Specifies the name of the EventHub Namespace resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the namespace. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Defines which tier to use. Valid options are `Basic` and `Standard`.
-     */
     readonly sku: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

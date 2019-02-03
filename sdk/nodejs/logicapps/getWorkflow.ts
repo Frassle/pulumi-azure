@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Logic App Workflow.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_logic_app_workflow_test = pulumi.output(azure.logicapps.getWorkflow({
- *     name: "workflow1",
- *     resourceGroupName: "my-resource-group",
- * }));
- * 
- * export const accessEndpoint = azurerm_logic_app_workflow_test.apply(__arg0 => __arg0.accessEndpoint);
- * ```
- */
 export function getWorkflow(args: GetWorkflowArgs, opts?: pulumi.InvokeOptions): Promise<GetWorkflowResult> {
     return pulumi.runtime.invoke("azure:logicapps/getWorkflow:getWorkflow", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getWorkflow(args: GetWorkflowArgs, opts?: pulumi.InvokeOptions):
  * A collection of arguments for invoking getWorkflow.
  */
 export interface GetWorkflowArgs {
-    /**
-     * The name of the Logic App Workflow.
-     */
     readonly name: string;
-    /**
-     * The name of the Resource Group in which the Logic App Workflow exists.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,29 +23,11 @@ export interface GetWorkflowArgs {
  * A collection of values returned by getWorkflow.
  */
 export interface GetWorkflowResult {
-    /**
-     * The Access Endpoint for the Logic App Workflow
-     */
     readonly accessEndpoint: string;
-    /**
-     * The Azure location where the Logic App Workflow exists.
-     */
     readonly location: string;
-    /**
-     * A map of Key-Value pairs.
-     */
     readonly parameters: {[key: string]: any};
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags: {[key: string]: any};
-    /**
-     * The Schema used for this Logic App Workflow.
-     */
     readonly workflowSchema: string;
-    /**
-     * The version of the Schema used for this Logic App Workflow. Defaults to `1.0.0.0`.
-     */
     readonly workflowVersion: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Container Registry.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_container_registry_test = pulumi.output(azure.containerservice.getRegistry({
- *     name: "testacr",
- *     resourceGroupName: "test",
- * }));
- * 
- * export const loginServer = azurerm_container_registry_test.apply(__arg0 => __arg0.loginServer);
- * ```
- */
 export function getRegistry(args: GetRegistryArgs, opts?: pulumi.InvokeOptions): Promise<GetRegistryResult> {
     return pulumi.runtime.invoke("azure:containerservice/getRegistry:getRegistry", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getRegistry(args: GetRegistryArgs, opts?: pulumi.InvokeOptions):
  * A collection of arguments for invoking getRegistry.
  */
 export interface GetRegistryArgs {
-    /**
-     * The name of the Container Registry.
-     */
     readonly name: string;
-    /**
-     * The Name of the Resource Group where this Container Registry exists.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,37 +23,13 @@ export interface GetRegistryArgs {
  * A collection of values returned by getRegistry.
  */
 export interface GetRegistryResult {
-    /**
-     * Is the Administrator account enabled for this Container Registry.
-     */
     readonly adminEnabled: boolean;
-    /**
-     * The Password associated with the Container Registry Admin account - if the admin account is enabled.
-     */
     readonly adminPassword: string;
-    /**
-     * The Username associated with the Container Registry Admin account - if the admin account is enabled.
-     */
     readonly adminUsername: string;
-    /**
-     * The Azure Region in which this Container Registry exists.
-     */
     readonly location: string;
-    /**
-     * The URL that can be used to log into the container registry.
-     */
     readonly loginServer: string;
-    /**
-     * The SKU of this Container Registry, such as `Basic`.
-     */
     readonly sku: string;
-    /**
-     * The ID of the Storage Account used for this Container Registry. This is only returned for `Classic` SKU's.
-     */
     readonly storageAccountId: string;
-    /**
-     * A map of tags assigned to the Container Registry.
-     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

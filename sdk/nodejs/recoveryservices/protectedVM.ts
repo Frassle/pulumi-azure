@@ -4,9 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Recovery Protected VM.
- */
 export class ProtectedVM extends pulumi.CustomResource {
     /**
      * Get an existing ProtectedVM resource's state with the given name, ID, and optional extra
@@ -20,25 +17,10 @@ export class ProtectedVM extends pulumi.CustomResource {
         return new ProtectedVM(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the id of the backup policy to use. Changing this forces a new resource to be created.
-     */
     public readonly backupPolicyId: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Recovery Services Vault to use. Changing this forces a new resource to be created.
-     */
     public readonly recoveryVaultName: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Recovery Services Protected VM. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the ID of the VM to backup. Changing this forces a new resource to be created.
-     */
     public readonly sourceVmId: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -86,25 +68,10 @@ export class ProtectedVM extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ProtectedVM resources.
  */
 export interface ProtectedVMState {
-    /**
-     * Specifies the id of the backup policy to use. Changing this forces a new resource to be created.
-     */
     readonly backupPolicyId?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Recovery Services Vault to use. Changing this forces a new resource to be created.
-     */
     readonly recoveryVaultName?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Recovery Services Protected VM. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the ID of the VM to backup. Changing this forces a new resource to be created.
-     */
     readonly sourceVmId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -112,24 +79,9 @@ export interface ProtectedVMState {
  * The set of arguments for constructing a ProtectedVM resource.
  */
 export interface ProtectedVMArgs {
-    /**
-     * Specifies the id of the backup policy to use. Changing this forces a new resource to be created.
-     */
     readonly backupPolicyId: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Recovery Services Vault to use. Changing this forces a new resource to be created.
-     */
     readonly recoveryVaultName: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Recovery Services Protected VM. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies the ID of the VM to backup. Changing this forces a new resource to be created.
-     */
     readonly sourceVmId: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

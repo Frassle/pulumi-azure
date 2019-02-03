@@ -4,31 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an EventGrid Topic
- * 
- * > **Note:** at this time EventGrid Topic's are only available in a limited number of regions.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US 2",
- *     name: "resourceGroup1",
- * });
- * const azurerm_eventgrid_topic_test = new azure.eventhub.EventGridTopic("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "my-eventgrid-topic",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         environment: "Production",
- *     },
- * });
- * ```
- */
 export class EventGridTopic extends pulumi.CustomResource {
     /**
      * Get an existing EventGridTopic resource's state with the given name, ID, and optional extra
@@ -42,33 +17,12 @@ export class EventGridTopic extends pulumi.CustomResource {
         return new EventGridTopic(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The Endpoint associated with the EventGrid Topic.
-     */
     public /*out*/ readonly endpoint: pulumi.Output<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the EventGrid Topic resource. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The Primary Shared Access Key associated with the EventGrid Topic.
-     */
     public /*out*/ readonly primaryAccessKey: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which the EventGrid Topic exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The Secondary Shared Access Key associated with the EventGrid Topic.
-     */
     public /*out*/ readonly secondaryAccessKey: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -114,33 +68,12 @@ export class EventGridTopic extends pulumi.CustomResource {
  * Input properties used for looking up and filtering EventGridTopic resources.
  */
 export interface EventGridTopicState {
-    /**
-     * The Endpoint associated with the EventGrid Topic.
-     */
     readonly endpoint?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the EventGrid Topic resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The Primary Shared Access Key associated with the EventGrid Topic.
-     */
     readonly primaryAccessKey?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the EventGrid Topic exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The Secondary Shared Access Key associated with the EventGrid Topic.
-     */
     readonly secondaryAccessKey?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -148,20 +81,8 @@ export interface EventGridTopicState {
  * The set of arguments for constructing a EventGridTopic resource.
  */
 export interface EventGridTopicArgs {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the EventGrid Topic resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the EventGrid Topic exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

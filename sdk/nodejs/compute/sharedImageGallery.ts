@@ -4,33 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Shared Image Gallery.
- * 
- * -> **NOTE** Shared Image Galleries are currently in Public Preview. You can find more information, including [how to register for the Public Preview here](https://azure.microsoft.com/en-gb/blog/announcing-the-public-preview-of-shared-image-gallery/).
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "example-resources",
- * });
- * const azurerm_shared_image_gallery_test = new azure.compute.SharedImageGallery("test", {
- *     description: "Shared images and things.",
- *     location: azurerm_resource_group_test.location,
- *     name: "example_image_gallery",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         Hello: "There",
- *         World: "Example",
- *     },
- * });
- * ```
- */
 export class SharedImageGallery extends pulumi.CustomResource {
     /**
      * Get an existing SharedImageGallery resource's state with the given name, ID, and optional extra
@@ -44,25 +17,10 @@ export class SharedImageGallery extends pulumi.CustomResource {
         return new SharedImageGallery(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * A description for this Shared Image Gallery.
-     */
     public readonly description: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Shared Image Gallery. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Shared Image Gallery. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the Shared Image Gallery.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
     public /*out*/ readonly uniqueName: pulumi.Output<string>;
 
@@ -107,25 +65,10 @@ export class SharedImageGallery extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SharedImageGallery resources.
  */
 export interface SharedImageGalleryState {
-    /**
-     * A description for this Shared Image Gallery.
-     */
     readonly description?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Shared Image Gallery. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Shared Image Gallery. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the Shared Image Gallery.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
     readonly uniqueName?: pulumi.Input<string>;
 }
@@ -134,24 +77,9 @@ export interface SharedImageGalleryState {
  * The set of arguments for constructing a SharedImageGallery resource.
  */
 export interface SharedImageGalleryArgs {
-    /**
-     * A description for this Shared Image Gallery.
-     */
     readonly description?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Shared Image Gallery. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Shared Image Gallery. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the Shared Image Gallery.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

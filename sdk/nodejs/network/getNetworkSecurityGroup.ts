@@ -4,9 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Network Security Group.
- */
 export function getNetworkSecurityGroup(args: GetNetworkSecurityGroupArgs, opts?: pulumi.InvokeOptions): Promise<GetNetworkSecurityGroupResult> {
     return pulumi.runtime.invoke("azure:network/getNetworkSecurityGroup:getNetworkSecurityGroup", {
         "name": args.name,
@@ -18,13 +15,7 @@ export function getNetworkSecurityGroup(args: GetNetworkSecurityGroupArgs, opts?
  * A collection of arguments for invoking getNetworkSecurityGroup.
  */
 export interface GetNetworkSecurityGroupArgs {
-    /**
-     * Specifies the Name of the Network Security Group.
-     */
     readonly name: string;
-    /**
-     * Specifies the Name of the Resource Group within which the Network Security Group exists
-     */
     readonly resourceGroupName: string;
 }
 
@@ -32,17 +23,8 @@ export interface GetNetworkSecurityGroupArgs {
  * A collection of values returned by getNetworkSecurityGroup.
  */
 export interface GetNetworkSecurityGroupResult {
-    /**
-     * The supported Azure location where the resource exists.
-     */
     readonly location: string;
-    /**
-     * One or more `security_rule` blocks as defined below.
-     */
     readonly securityRules: { access: string, description: string, destinationAddressPrefix: string, destinationAddressPrefixes: string[], destinationApplicationSecurityGroupIds?: string[], destinationPortRange: string, destinationPortRanges: string[], direction: string, name: string, priority: number, protocol: string, sourceAddressPrefix: string, sourceAddressPrefixes: string[], sourceApplicationSecurityGroupIds?: string[], sourcePortRange: string, sourcePortRanges: string[] }[];
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

@@ -4,31 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a HTTP Request Trigger within a Logic App Workflow
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "East US",
- *     name: "workflow-resources",
- * });
- * const azurerm_logic_app_workflow_test = new azure.logicapps.Workflow("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "workflow1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_logic_app_trigger_http_request_test = new azure.logicapps.TriggerHttpRequest("test", {
- *     logicAppId: azurerm_logic_app_workflow_test.id,
- *     name: "some-http-trigger",
- *     schema: "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"hello\": {\n            \"type\": \"string\"\n        }\n    }\n}\n",
- * });
- * ```
- */
 export class TriggerHttpRequest extends pulumi.CustomResource {
     /**
      * Get an existing TriggerHttpRequest resource's state with the given name, ID, and optional extra
@@ -42,25 +17,10 @@ export class TriggerHttpRequest extends pulumi.CustomResource {
         return new TriggerHttpRequest(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly logicAppId: pulumi.Output<string>;
-    /**
-     * Specifies the HTTP Method which the request be using. Possible values include `DELETE`, `GET`, `PATCH`, `POST` or `PUT`.
-     */
     public readonly method: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the name of the HTTP Request Trigger to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies the Relative Path used for this Request.
-     */
     public readonly relativePath: pulumi.Output<string | undefined>;
-    /**
-     * A JSON Blob defining the Schema of the incoming request. This needs to be valid JSON.
-     */
     public readonly schema: pulumi.Output<string>;
 
     /**
@@ -102,25 +62,10 @@ export class TriggerHttpRequest extends pulumi.CustomResource {
  * Input properties used for looking up and filtering TriggerHttpRequest resources.
  */
 export interface TriggerHttpRequestState {
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly logicAppId?: pulumi.Input<string>;
-    /**
-     * Specifies the HTTP Method which the request be using. Possible values include `DELETE`, `GET`, `PATCH`, `POST` or `PUT`.
-     */
     readonly method?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the HTTP Request Trigger to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the Relative Path used for this Request.
-     */
     readonly relativePath?: pulumi.Input<string>;
-    /**
-     * A JSON Blob defining the Schema of the incoming request. This needs to be valid JSON.
-     */
     readonly schema?: pulumi.Input<string>;
 }
 
@@ -128,24 +73,9 @@ export interface TriggerHttpRequestState {
  * The set of arguments for constructing a TriggerHttpRequest resource.
  */
 export interface TriggerHttpRequestArgs {
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly logicAppId: pulumi.Input<string>;
-    /**
-     * Specifies the HTTP Method which the request be using. Possible values include `DELETE`, `GET`, `PATCH`, `POST` or `PUT`.
-     */
     readonly method?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the HTTP Request Trigger to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the Relative Path used for this Request.
-     */
     readonly relativePath?: pulumi.Input<string>;
-    /**
-     * A JSON Blob defining the Schema of the incoming request. This needs to be valid JSON.
-     */
     readonly schema: pulumi.Input<string>;
 }

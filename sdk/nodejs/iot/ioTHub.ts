@@ -4,64 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an IotHub
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "resourceGroup1",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "teststa",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_iothub_test = new azure.iot.IoTHub("test", {
- *     endpoints: [{
- *         batchFrequencyInSeconds: 60,
- *         connectionString: azurerm_storage_account_test.primaryBlobConnectionString,
- *         containerName: "test",
- *         encoding: "Avro",
- *         fileNameFormat: "{iothub}/{partition}_{YYYY}_{MM}_{DD}_{HH}_{mm}",
- *         maxChunkSizeInBytes: 10485760,
- *         name: "export",
- *         type: "AzureIotHub.StorageContainer",
- *     }],
- *     location: azurerm_resource_group_test.location,
- *     name: "test",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     routes: [{
- *         condition: "true",
- *         enabled: true,
- *         endpointNames: ["export"],
- *         name: "export",
- *         source: "DeviceMessages",
- *     }],
- *     sku: {
- *         capacity: Number.parseFloat("1"),
- *         name: "S1",
- *         tier: "Standard",
- *     },
- *     tags: {
- *         purpose: "testing",
- *     },
- * });
- * const azurerm_storage_container_test = new azure.storage.Container("test", {
- *     containerAccessType: "private",
- *     name: "test",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountName: azurerm_storage_account_test.name,
- * });
- * ```
- */
 export class IoTHub extends pulumi.CustomResource {
     /**
      * Get an existing IoTHub resource's state with the given name, ID, and optional extra
@@ -75,57 +17,18 @@ export class IoTHub extends pulumi.CustomResource {
         return new IoTHub(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * An `endpoint` block as defined below.
-     */
     public readonly endpoints: pulumi.Output<{ batchFrequencyInSeconds?: number, connectionString: string, containerName?: string, encoding?: string, fileNameFormat?: string, maxChunkSizeInBytes?: number, name: string, type: string }[] | undefined>;
-    /**
-     * The EventHub compatible endpoint for events data
-     */
     public /*out*/ readonly eventHubEventsEndpoint: pulumi.Output<string>;
-    /**
-     * The EventHub compatible path for events data
-     */
     public /*out*/ readonly eventHubEventsPath: pulumi.Output<string>;
-    /**
-     * The EventHub compatible endpoint for operational data
-     */
     public /*out*/ readonly eventHubOperationsEndpoint: pulumi.Output<string>;
-    /**
-     * The EventHub compatible path for operational data
-     */
     public /*out*/ readonly eventHubOperationsPath: pulumi.Output<string>;
-    /**
-     * The hostname of the IotHub Resource.
-     */
     public /*out*/ readonly hostname: pulumi.Output<string>;
-    /**
-     * Specifies the supported Azure location where the resource has to be createc. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the IotHub resource. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group under which the IotHub resource has to be created. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A `route` block as defined below.
-     */
     public readonly routes: pulumi.Output<{ condition?: string, enabled: boolean, endpointNames: string[], name: string, source: string }[] | undefined>;
-    /**
-     * One or more `shared_access_policy` blocks as defined below.
-     */
     public /*out*/ readonly sharedAccessPolicies: pulumi.Output<{ keyName: string, permissions: string, primaryKey: string, secondaryKey: string }[]>;
-    /**
-     * A `sku` block as defined below.
-     */
     public readonly sku: pulumi.Output<{ capacity: number, name: string, tier: string }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
     public /*out*/ readonly type: pulumi.Output<string>;
 
@@ -189,57 +92,18 @@ export class IoTHub extends pulumi.CustomResource {
  * Input properties used for looking up and filtering IoTHub resources.
  */
 export interface IoTHubState {
-    /**
-     * An `endpoint` block as defined below.
-     */
     readonly endpoints?: pulumi.Input<pulumi.Input<{ batchFrequencyInSeconds?: pulumi.Input<number>, connectionString: pulumi.Input<string>, containerName?: pulumi.Input<string>, encoding?: pulumi.Input<string>, fileNameFormat?: pulumi.Input<string>, maxChunkSizeInBytes?: pulumi.Input<number>, name: pulumi.Input<string>, type: pulumi.Input<string> }>[]>;
-    /**
-     * The EventHub compatible endpoint for events data
-     */
     readonly eventHubEventsEndpoint?: pulumi.Input<string>;
-    /**
-     * The EventHub compatible path for events data
-     */
     readonly eventHubEventsPath?: pulumi.Input<string>;
-    /**
-     * The EventHub compatible endpoint for operational data
-     */
     readonly eventHubOperationsEndpoint?: pulumi.Input<string>;
-    /**
-     * The EventHub compatible path for operational data
-     */
     readonly eventHubOperationsPath?: pulumi.Input<string>;
-    /**
-     * The hostname of the IotHub Resource.
-     */
     readonly hostname?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource has to be createc. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the IotHub resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group under which the IotHub resource has to be created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A `route` block as defined below.
-     */
     readonly routes?: pulumi.Input<pulumi.Input<{ condition?: pulumi.Input<string>, enabled: pulumi.Input<boolean>, endpointNames: pulumi.Input<pulumi.Input<string>[]>, name: pulumi.Input<string>, source: pulumi.Input<string> }>[]>;
-    /**
-     * One or more `shared_access_policy` blocks as defined below.
-     */
     readonly sharedAccessPolicies?: pulumi.Input<pulumi.Input<{ keyName?: pulumi.Input<string>, permissions?: pulumi.Input<string>, primaryKey?: pulumi.Input<string>, secondaryKey?: pulumi.Input<string> }>[]>;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku?: pulumi.Input<{ capacity: pulumi.Input<number>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
     readonly type?: pulumi.Input<string>;
 }
@@ -248,32 +112,11 @@ export interface IoTHubState {
  * The set of arguments for constructing a IoTHub resource.
  */
 export interface IoTHubArgs {
-    /**
-     * An `endpoint` block as defined below.
-     */
     readonly endpoints?: pulumi.Input<pulumi.Input<{ batchFrequencyInSeconds?: pulumi.Input<number>, connectionString: pulumi.Input<string>, containerName?: pulumi.Input<string>, encoding?: pulumi.Input<string>, fileNameFormat?: pulumi.Input<string>, maxChunkSizeInBytes?: pulumi.Input<number>, name: pulumi.Input<string>, type: pulumi.Input<string> }>[]>;
-    /**
-     * Specifies the supported Azure location where the resource has to be createc. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the IotHub resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group under which the IotHub resource has to be created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A `route` block as defined below.
-     */
     readonly routes?: pulumi.Input<pulumi.Input<{ condition?: pulumi.Input<string>, enabled: pulumi.Input<boolean>, endpointNames: pulumi.Input<pulumi.Input<string>[]>, name: pulumi.Input<string>, source: pulumi.Input<string> }>[]>;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku: pulumi.Input<{ capacity: pulumi.Input<number>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

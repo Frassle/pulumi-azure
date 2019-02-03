@@ -4,9 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages the association between a Network Interface and a Application Gateway's Backend Address Pool.
- */
 export class NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation extends pulumi.CustomResource {
     /**
      * Get an existing NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation resource's state with the given name, ID, and optional extra
@@ -20,17 +17,8 @@ export class NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation ext
         return new NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The ID of the Application Gateway's Backend Address Pool which this Network Interface which should be connected to. Changing this forces a new resource to be created.
-     */
     public readonly backendAddressPoolId: pulumi.Output<string>;
-    /**
-     * The Name of the IP Configuration within the Network Interface which should be connected to the Backend Address Pool. Changing this forces a new resource to be created.
-     */
     public readonly ipConfigurationName: pulumi.Output<string>;
-    /**
-     * The ID of the Network Interface. Changing this forces a new resource to be created.
-     */
     public readonly networkInterfaceId: pulumi.Output<string>;
 
     /**
@@ -71,17 +59,8 @@ export class NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation ext
  * Input properties used for looking up and filtering NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation resources.
  */
 export interface NetworkInterfaceApplicationGatewayBackendAddressPoolAssociationState {
-    /**
-     * The ID of the Application Gateway's Backend Address Pool which this Network Interface which should be connected to. Changing this forces a new resource to be created.
-     */
     readonly backendAddressPoolId?: pulumi.Input<string>;
-    /**
-     * The Name of the IP Configuration within the Network Interface which should be connected to the Backend Address Pool. Changing this forces a new resource to be created.
-     */
     readonly ipConfigurationName?: pulumi.Input<string>;
-    /**
-     * The ID of the Network Interface. Changing this forces a new resource to be created.
-     */
     readonly networkInterfaceId?: pulumi.Input<string>;
 }
 
@@ -89,16 +68,7 @@ export interface NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation
  * The set of arguments for constructing a NetworkInterfaceApplicationGatewayBackendAddressPoolAssociation resource.
  */
 export interface NetworkInterfaceApplicationGatewayBackendAddressPoolAssociationArgs {
-    /**
-     * The ID of the Application Gateway's Backend Address Pool which this Network Interface which should be connected to. Changing this forces a new resource to be created.
-     */
     readonly backendAddressPoolId: pulumi.Input<string>;
-    /**
-     * The Name of the IP Configuration within the Network Interface which should be connected to the Backend Address Pool. Changing this forces a new resource to be created.
-     */
     readonly ipConfigurationName: pulumi.Input<string>;
-    /**
-     * The ID of the Network Interface. Changing this forces a new resource to be created.
-     */
     readonly networkInterfaceId: pulumi.Input<string>;
 }

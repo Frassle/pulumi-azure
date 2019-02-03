@@ -4,34 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an Azure Storage File Share.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "westus",
- *     name: "azuretest",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: "westus",
- *     name: "azureteststorage",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_storage_share_testshare = new azure.storage.Share("testshare", {
- *     name: "sharename",
- *     quota: 50,
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountName: azurerm_storage_account_test.name,
- * });
- * ```
- */
 export class Share extends pulumi.CustomResource {
     /**
      * Get an existing Share resource's state with the given name, ID, and optional extra
@@ -45,27 +17,10 @@ export class Share extends pulumi.CustomResource {
         return new Share(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The name of the share. Must be unique within the storage account where the share is located.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5 TB (5120 GB). Default is 5120.
-     */
     public readonly quota: pulumi.Output<number | undefined>;
-    /**
-     * The name of the resource group in which to
-     * create the share. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the storage account in which to create the share.
-     * Changing this forces a new resource to be created.
-     */
     public readonly storageAccountName: pulumi.Output<string>;
-    /**
-     * The URL of the share
-     */
     public /*out*/ readonly url: pulumi.Output<string>;
 
     /**
@@ -107,27 +62,10 @@ export class Share extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Share resources.
  */
 export interface ShareState {
-    /**
-     * The name of the share. Must be unique within the storage account where the share is located.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5 TB (5120 GB). Default is 5120.
-     */
     readonly quota?: pulumi.Input<number>;
-    /**
-     * The name of the resource group in which to
-     * create the share. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the storage account in which to create the share.
-     * Changing this forces a new resource to be created.
-     */
     readonly storageAccountName?: pulumi.Input<string>;
-    /**
-     * The URL of the share
-     */
     readonly url?: pulumi.Input<string>;
 }
 
@@ -135,22 +73,8 @@ export interface ShareState {
  * The set of arguments for constructing a Share resource.
  */
 export interface ShareArgs {
-    /**
-     * The name of the share. Must be unique within the storage account where the share is located.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5 TB (5120 GB). Default is 5120.
-     */
     readonly quota?: pulumi.Input<number>;
-    /**
-     * The name of the resource group in which to
-     * create the share. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies the storage account in which to create the share.
-     * Changing this forces a new resource to be created.
-     */
     readonly storageAccountName: pulumi.Input<string>;
 }

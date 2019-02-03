@@ -4,30 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Databricks Workspace
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "example-resources",
- * });
- * const azurerm_databricks_workspace_test = new azure.databricks.Workspace("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "databricks-test",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: "Standard",
- *     tags: {
- *         Environment: "Production",
- *     },
- * });
- * ```
- */
 export class Workspace extends pulumi.CustomResource {
     /**
      * Get an existing Workspace resource's state with the given name, ID, and optional extra
@@ -41,33 +17,12 @@ export class Workspace extends pulumi.CustomResource {
         return new Workspace(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the supported Azure location where the resource has to be created. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The ID of the Managed Resource Group created by the Databricks Workspace.
-     */
     public /*out*/ readonly managedResourceGroupId: pulumi.Output<string>;
-    /**
-     * The name of the resource group where Azure should place the managed Databricks resources. Changing this forces a new resource to be created.
-     */
     public readonly managedResourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Databricks Workspace resource. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the Resource Group in which the Databricks Workspace should exist. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The `sku` to use for the Databricks Workspace. Possible values are `Standard` or `Premium`. Changing this forces a new resource to be created.
-     */
     public readonly sku: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -116,33 +71,12 @@ export class Workspace extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Workspace resources.
  */
 export interface WorkspaceState {
-    /**
-     * Specifies the supported Azure location where the resource has to be created. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The ID of the Managed Resource Group created by the Databricks Workspace.
-     */
     readonly managedResourceGroupId?: pulumi.Input<string>;
-    /**
-     * The name of the resource group where Azure should place the managed Databricks resources. Changing this forces a new resource to be created.
-     */
     readonly managedResourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Databricks Workspace resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the Databricks Workspace should exist. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The `sku` to use for the Databricks Workspace. Possible values are `Standard` or `Premium`. Changing this forces a new resource to be created.
-     */
     readonly sku?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -150,28 +84,10 @@ export interface WorkspaceState {
  * The set of arguments for constructing a Workspace resource.
  */
 export interface WorkspaceArgs {
-    /**
-     * Specifies the supported Azure location where the resource has to be created. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the resource group where Azure should place the managed Databricks resources. Changing this forces a new resource to be created.
-     */
     readonly managedResourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Databricks Workspace resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the Databricks Workspace should exist. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The `sku` to use for the Databricks Workspace. Possible values are `Standard` or `Premium`. Changing this forces a new resource to be created.
-     */
     readonly sku: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

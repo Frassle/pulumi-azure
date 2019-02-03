@@ -4,41 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage a PostgreSQL Server.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "api-rg-pro",
- * });
- * const azurerm_postgresql_server_test = new azure.postgresql.Server("test", {
- *     administratorLogin: "psqladminun",
- *     administratorLoginPassword: "H@Sh1CoR3!",
- *     location: azurerm_resource_group_test.location,
- *     name: "postgresql-server-1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         capacity: 2,
- *         family: "Gen4",
- *         name: "B_Gen4_2",
- *         tier: "Basic",
- *     },
- *     sslEnforcement: "Enabled",
- *     storageProfile: {
- *         backupRetentionDays: 7,
- *         geoRedundantBackup: "Disabled",
- *         storageMb: 5120,
- *     },
- *     version: "9.5",
- * });
- * ```
- */
 export class Server extends pulumi.CustomResource {
     /**
      * Get an existing Server resource's state with the given name, ID, and optional extra
@@ -52,49 +17,16 @@ export class Server extends pulumi.CustomResource {
         return new Server(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The Administrator Login for the PostgreSQL Server. Changing this forces a new resource to be created.
-     */
     public readonly administratorLogin: pulumi.Output<string>;
-    /**
-     * The Password associated with the `administrator_login` for the PostgreSQL Server.
-     */
     public readonly administratorLoginPassword: pulumi.Output<string>;
-    /**
-     * The FQDN of the PostgreSQL Server.
-     */
     public /*out*/ readonly fqdn: pulumi.Output<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the `tier` + `family` + `cores` pattern (e.g. B_Gen4_1, GP_Gen5_8). For more information see the [product documentation](https://docs.microsoft.com/en-us/rest/api/postgresql/servers/create#sku).
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A `sku` block as defined below.
-     */
     public readonly sku: pulumi.Output<{ capacity: number, family: string, name: string, tier: string }>;
-    /**
-     * Specifies if SSL should be enforced on connections. Possible values are `Enabled` and `Disabled`.
-     */
     public readonly sslEnforcement: pulumi.Output<string>;
-    /**
-     * A `storage_profile` block as defined below.
-     */
     public readonly storageProfile: pulumi.Output<{ backupRetentionDays?: number, geoRedundantBackup?: string, storageMb: number }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Specifies the version of PostgreSQL to use. Valid values are `9.5`, `9.6`, and `10.0`. Changing this forces a new resource to be created.
-     */
     public readonly version: pulumi.Output<string>;
 
     /**
@@ -166,49 +98,16 @@ export class Server extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Server resources.
  */
 export interface ServerState {
-    /**
-     * The Administrator Login for the PostgreSQL Server. Changing this forces a new resource to be created.
-     */
     readonly administratorLogin?: pulumi.Input<string>;
-    /**
-     * The Password associated with the `administrator_login` for the PostgreSQL Server.
-     */
     readonly administratorLoginPassword?: pulumi.Input<string>;
-    /**
-     * The FQDN of the PostgreSQL Server.
-     */
     readonly fqdn?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the `tier` + `family` + `cores` pattern (e.g. B_Gen4_1, GP_Gen5_8). For more information see the [product documentation](https://docs.microsoft.com/en-us/rest/api/postgresql/servers/create#sku).
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku?: pulumi.Input<{ capacity: pulumi.Input<number>, family: pulumi.Input<string>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * Specifies if SSL should be enforced on connections. Possible values are `Enabled` and `Disabled`.
-     */
     readonly sslEnforcement?: pulumi.Input<string>;
-    /**
-     * A `storage_profile` block as defined below.
-     */
     readonly storageProfile?: pulumi.Input<{ backupRetentionDays?: pulumi.Input<number>, geoRedundantBackup?: pulumi.Input<string>, storageMb: pulumi.Input<number> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the version of PostgreSQL to use. Valid values are `9.5`, `9.6`, and `10.0`. Changing this forces a new resource to be created.
-     */
     readonly version?: pulumi.Input<string>;
 }
 
@@ -216,44 +115,14 @@ export interface ServerState {
  * The set of arguments for constructing a Server resource.
  */
 export interface ServerArgs {
-    /**
-     * The Administrator Login for the PostgreSQL Server. Changing this forces a new resource to be created.
-     */
     readonly administratorLogin: pulumi.Input<string>;
-    /**
-     * The Password associated with the `administrator_login` for the PostgreSQL Server.
-     */
     readonly administratorLoginPassword: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the `tier` + `family` + `cores` pattern (e.g. B_Gen4_1, GP_Gen5_8). For more information see the [product documentation](https://docs.microsoft.com/en-us/rest/api/postgresql/servers/create#sku).
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku: pulumi.Input<{ capacity: pulumi.Input<number>, family: pulumi.Input<string>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * Specifies if SSL should be enforced on connections. Possible values are `Enabled` and `Disabled`.
-     */
     readonly sslEnforcement: pulumi.Input<string>;
-    /**
-     * A `storage_profile` block as defined below.
-     */
     readonly storageProfile: pulumi.Input<{ backupRetentionDays?: pulumi.Input<number>, geoRedundantBackup?: pulumi.Input<string>, storageMb: pulumi.Input<number> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the version of PostgreSQL to use. Valid values are `9.5`, `9.6`, and `10.0`. Changing this forces a new resource to be created.
-     */
     readonly version: pulumi.Input<string>;
 }

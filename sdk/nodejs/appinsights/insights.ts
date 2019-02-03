@@ -4,30 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an Application Insights component.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "tf-test",
- * });
- * const azurerm_application_insights_test = new azure.appinsights.Insights("test", {
- *     applicationType: "Web",
- *     location: "West Europe",
- *     name: "tf-test-appinsights",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * 
- * export const appId = azurerm_application_insights_test.appId;
- * export const instrumentationKey = azurerm_application_insights_test.instrumentationKey;
- * ```
- */
 export class Insights extends pulumi.CustomResource {
     /**
      * Get an existing Insights resource's state with the given name, ID, and optional extra
@@ -41,35 +17,12 @@ export class Insights extends pulumi.CustomResource {
         return new Insights(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The App ID associated with this Application Insights component.
-     */
     public /*out*/ readonly appId: pulumi.Output<string>;
-    /**
-     * Specifies the type of Application Insights to create. Valid values are `Java`, `iOS`, `MobileCenter`, `Other`, `Phone`, `Store`, `Web` and `Node.JS`.
-     */
     public readonly applicationType: pulumi.Output<string>;
-    /**
-     * The Instrumentation Key for this Application Insights component.
-     */
     public /*out*/ readonly instrumentationKey: pulumi.Output<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Application Insights component. Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to
-     * create the Application Insights component.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -118,35 +71,12 @@ export class Insights extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Insights resources.
  */
 export interface InsightsState {
-    /**
-     * The App ID associated with this Application Insights component.
-     */
     readonly appId?: pulumi.Input<string>;
-    /**
-     * Specifies the type of Application Insights to create. Valid values are `Java`, `iOS`, `MobileCenter`, `Other`, `Phone`, `Store`, `Web` and `Node.JS`.
-     */
     readonly applicationType?: pulumi.Input<string>;
-    /**
-     * The Instrumentation Key for this Application Insights component.
-     */
     readonly instrumentationKey?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Application Insights component. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the Application Insights component.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -154,26 +84,9 @@ export interface InsightsState {
  * The set of arguments for constructing a Insights resource.
  */
 export interface InsightsArgs {
-    /**
-     * Specifies the type of Application Insights to create. Valid values are `Java`, `iOS`, `MobileCenter`, `Other`, `Phone`, `Store`, `Web` and `Node.JS`.
-     */
     readonly applicationType: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Application Insights component. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the Application Insights component.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

@@ -4,29 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an Application Security Group.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "tf-test",
- * });
- * const azurerm_application_security_group_test = new azure.network.ApplicationSecurityGroup("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "tf-appsecuritygroup",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         Hello: "World",
- *     },
- * });
- * ```
- */
 export class ApplicationSecurityGroup extends pulumi.CustomResource {
     /**
      * Get an existing ApplicationSecurityGroup resource's state with the given name, ID, and optional extra
@@ -40,21 +17,9 @@ export class ApplicationSecurityGroup extends pulumi.CustomResource {
         return new ApplicationSecurityGroup(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Application Security Group. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Application Security Group.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -94,21 +59,9 @@ export class ApplicationSecurityGroup extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ApplicationSecurityGroup resources.
  */
 export interface ApplicationSecurityGroupState {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Application Security Group. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Application Security Group.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -116,20 +69,8 @@ export interface ApplicationSecurityGroupState {
  * The set of arguments for constructing a ApplicationSecurityGroup resource.
  */
 export interface ApplicationSecurityGroupArgs {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Application Security Group. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Application Security Group.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

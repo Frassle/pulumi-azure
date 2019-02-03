@@ -4,32 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an API Management Service.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "example-resources",
- * });
- * const azurerm_api_management_test = new azure.apimanagement.API("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "example-apim",
- *     publisherEmail: "company@terraform.io",
- *     publisherName: "My Company",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         capacity: 1,
- *         name: "Developer",
- *     },
- * });
- * ```
- */
 export class API extends pulumi.CustomResource {
     /**
      * Get an existing API resource's state with the given name, ID, and optional extra
@@ -43,81 +17,24 @@ export class API extends pulumi.CustomResource {
         return new API(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * One or more `additional_location` blocks as defined below.
-     */
     public readonly additionalLocation: pulumi.Output<{ gatewayRegionalUrl: string, location: string, publicIpAddresses: string[] } | undefined>;
-    /**
-     * One or more (up to 10) `certificate` blocks as defined below.
-     */
     public readonly certificates: pulumi.Output<{ certificatePassword: string, encodedCertificate: string, storeName: string }[] | undefined>;
-    /**
-     * The URL of the Regional Gateway for the API Management Service in the specified region.
-     */
     public /*out*/ readonly gatewayRegionalUrl: pulumi.Output<string>;
-    /**
-     * The URL of the Gateway for the API Management Service.
-     */
     public /*out*/ readonly gatewayUrl: pulumi.Output<string>;
-    /**
-     * A `hostname_configuration` block as defined below.
-     */
     public readonly hostnameConfiguration: pulumi.Output<{ managements?: { certificate?: string, certificatePassword?: string, hostName: string, keyVaultId?: string, negotiateClientCertificate?: boolean }[], portals?: { certificate?: string, certificatePassword?: string, hostName: string, keyVaultId?: string, negotiateClientCertificate?: boolean }[], proxies?: { certificate?: string, certificatePassword?: string, defaultSslBinding: boolean, hostName: string, keyVaultId?: string, negotiateClientCertificate?: boolean }[], scms?: { certificate?: string, certificatePassword?: string, hostName: string, keyVaultId?: string, negotiateClientCertificate?: boolean }[] }>;
-    /**
-     * An `identity` block is documented below.
-     */
     public readonly identity: pulumi.Output<{ principalId: string, tenantId: string, type: string } | undefined>;
-    /**
-     * The Azure location where the API Management Service exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The URL for the Management API associated with this API Management service.
-     */
     public /*out*/ readonly managementApiUrl: pulumi.Output<string>;
-    /**
-     * The name of the API Management Service. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Email address from which the notification will be sent.
-     */
     public readonly notificationSenderEmail: pulumi.Output<string>;
-    /**
-     * The URL for the Publisher Portal associated with this API Management service.
-     */
     public /*out*/ readonly portalUrl: pulumi.Output<string>;
-    /**
-     * Public Static Load Balanced IP addresses of the API Management service in the additional location. Available only for Basic, Standard and Premium SKU.
-     */
     public /*out*/ readonly publicIpAddresses: pulumi.Output<string[]>;
-    /**
-     * The email of publisher/company.
-     */
     public readonly publisherEmail: pulumi.Output<string>;
-    /**
-     * The name of publisher/company.
-     */
     public readonly publisherName: pulumi.Output<string>;
-    /**
-     * The name of the Resource Group in which the API Management Service should be exist. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The URL for the SCM (Source Code Management) Endpoint associated with this API Management service.
-     */
     public /*out*/ readonly scmUrl: pulumi.Output<string>;
-    /**
-     * A `security` block as defined below.
-     */
     public readonly security: pulumi.Output<{ disableBackendSsl30?: boolean, disableBackendTls10?: boolean, disableBackendTls11?: boolean, disableFrontendSsl30?: boolean, disableFrontendTls10?: boolean, disableFrontendTls11?: boolean, disableTripleDesChipers?: boolean }>;
-    /**
-     * A `sku` block as documented below.
-     */
     public readonly sku: pulumi.Output<{ capacity: number, name: string }>;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -196,81 +113,24 @@ export class API extends pulumi.CustomResource {
  * Input properties used for looking up and filtering API resources.
  */
 export interface APIState {
-    /**
-     * One or more `additional_location` blocks as defined below.
-     */
     readonly additionalLocation?: pulumi.Input<{ gatewayRegionalUrl?: pulumi.Input<string>, location: pulumi.Input<string>, publicIpAddresses?: pulumi.Input<pulumi.Input<string>[]> }>;
-    /**
-     * One or more (up to 10) `certificate` blocks as defined below.
-     */
     readonly certificates?: pulumi.Input<pulumi.Input<{ certificatePassword: pulumi.Input<string>, encodedCertificate: pulumi.Input<string>, storeName: pulumi.Input<string> }>[]>;
-    /**
-     * The URL of the Regional Gateway for the API Management Service in the specified region.
-     */
     readonly gatewayRegionalUrl?: pulumi.Input<string>;
-    /**
-     * The URL of the Gateway for the API Management Service.
-     */
     readonly gatewayUrl?: pulumi.Input<string>;
-    /**
-     * A `hostname_configuration` block as defined below.
-     */
     readonly hostnameConfiguration?: pulumi.Input<{ managements?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]>, portals?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]>, proxies?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, defaultSslBinding?: pulumi.Input<boolean>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]>, scms?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]> }>;
-    /**
-     * An `identity` block is documented below.
-     */
     readonly identity?: pulumi.Input<{ principalId?: pulumi.Input<string>, tenantId?: pulumi.Input<string>, type: pulumi.Input<string> }>;
-    /**
-     * The Azure location where the API Management Service exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The URL for the Management API associated with this API Management service.
-     */
     readonly managementApiUrl?: pulumi.Input<string>;
-    /**
-     * The name of the API Management Service. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Email address from which the notification will be sent.
-     */
     readonly notificationSenderEmail?: pulumi.Input<string>;
-    /**
-     * The URL for the Publisher Portal associated with this API Management service.
-     */
     readonly portalUrl?: pulumi.Input<string>;
-    /**
-     * Public Static Load Balanced IP addresses of the API Management service in the additional location. Available only for Basic, Standard and Premium SKU.
-     */
     readonly publicIpAddresses?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The email of publisher/company.
-     */
     readonly publisherEmail?: pulumi.Input<string>;
-    /**
-     * The name of publisher/company.
-     */
     readonly publisherName?: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the API Management Service should be exist. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The URL for the SCM (Source Code Management) Endpoint associated with this API Management service.
-     */
     readonly scmUrl?: pulumi.Input<string>;
-    /**
-     * A `security` block as defined below.
-     */
     readonly security?: pulumi.Input<{ disableBackendSsl30?: pulumi.Input<boolean>, disableBackendTls10?: pulumi.Input<boolean>, disableBackendTls11?: pulumi.Input<boolean>, disableFrontendSsl30?: pulumi.Input<boolean>, disableFrontendTls10?: pulumi.Input<boolean>, disableFrontendTls11?: pulumi.Input<boolean>, disableTripleDesChipers?: pulumi.Input<boolean> }>;
-    /**
-     * A `sku` block as documented below.
-     */
     readonly sku?: pulumi.Input<{ capacity: pulumi.Input<number>, name: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -278,56 +138,17 @@ export interface APIState {
  * The set of arguments for constructing a API resource.
  */
 export interface APIArgs {
-    /**
-     * One or more `additional_location` blocks as defined below.
-     */
     readonly additionalLocation?: pulumi.Input<{ gatewayRegionalUrl?: pulumi.Input<string>, location: pulumi.Input<string>, publicIpAddresses?: pulumi.Input<pulumi.Input<string>[]> }>;
-    /**
-     * One or more (up to 10) `certificate` blocks as defined below.
-     */
     readonly certificates?: pulumi.Input<pulumi.Input<{ certificatePassword: pulumi.Input<string>, encodedCertificate: pulumi.Input<string>, storeName: pulumi.Input<string> }>[]>;
-    /**
-     * A `hostname_configuration` block as defined below.
-     */
     readonly hostnameConfiguration?: pulumi.Input<{ managements?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]>, portals?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]>, proxies?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, defaultSslBinding?: pulumi.Input<boolean>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]>, scms?: pulumi.Input<pulumi.Input<{ certificate?: pulumi.Input<string>, certificatePassword?: pulumi.Input<string>, hostName: pulumi.Input<string>, keyVaultId?: pulumi.Input<string>, negotiateClientCertificate?: pulumi.Input<boolean> }>[]> }>;
-    /**
-     * An `identity` block is documented below.
-     */
     readonly identity?: pulumi.Input<{ principalId?: pulumi.Input<string>, tenantId?: pulumi.Input<string>, type: pulumi.Input<string> }>;
-    /**
-     * The Azure location where the API Management Service exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the API Management Service. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Email address from which the notification will be sent.
-     */
     readonly notificationSenderEmail?: pulumi.Input<string>;
-    /**
-     * The email of publisher/company.
-     */
     readonly publisherEmail: pulumi.Input<string>;
-    /**
-     * The name of publisher/company.
-     */
     readonly publisherName: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the API Management Service should be exist. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A `security` block as defined below.
-     */
     readonly security?: pulumi.Input<{ disableBackendSsl30?: pulumi.Input<boolean>, disableBackendTls10?: pulumi.Input<boolean>, disableBackendTls11?: pulumi.Input<boolean>, disableFrontendSsl30?: pulumi.Input<boolean>, disableFrontendTls10?: pulumi.Input<boolean>, disableFrontendTls11?: pulumi.Input<boolean>, disableTripleDesChipers?: pulumi.Input<boolean> }>;
-    /**
-     * A `sku` block as documented below.
-     */
     readonly sku: pulumi.Input<{ capacity: pulumi.Input<number>, name: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

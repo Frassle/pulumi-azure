@@ -1,0 +1,9 @@
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Azure.csprojAssemblyReference.cache
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Azure.csproj.CoreCompileInputs.cache
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Azure.AssemblyInfoInputs.cache
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Azure.AssemblyInfo.cs
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.Azure.deps.json
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.Azure.dll
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/bin/Debug/netstandard2.0/Pulumi.Azure.pdb
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Azure.dll
+/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/obj/Debug/netstandard2.0/Pulumi.Azure.pdb

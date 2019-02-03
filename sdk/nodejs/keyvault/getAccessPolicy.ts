@@ -4,9 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about the permissions from the Management Key Vault Templates.
- */
 export function getAccessPolicy(args: GetAccessPolicyArgs, opts?: pulumi.InvokeOptions): Promise<GetAccessPolicyResult> {
     return pulumi.runtime.invoke("azure:keyvault/getAccessPolicy:getAccessPolicy", {
         "name": args.name,
@@ -17,11 +14,6 @@ export function getAccessPolicy(args: GetAccessPolicyArgs, opts?: pulumi.InvokeO
  * A collection of arguments for invoking getAccessPolicy.
  */
 export interface GetAccessPolicyArgs {
-    /**
-     * Specifies the name of the Management Template. Possible values are: `Key Management`,
-     * `Secret Management`, `Certificate Management`, `Key & Secret Management`, `Key & Certificate Management`,
-     * `Secret & Certificate Management`,  `Key, Secret, & Certificate Management`
-     */
     readonly name: string;
 }
 
@@ -29,17 +21,8 @@ export interface GetAccessPolicyArgs {
  * A collection of values returned by getAccessPolicy.
  */
 export interface GetAccessPolicyResult {
-    /**
-     * the certificate permissions for the access policy
-     */
     readonly certificatePermissions: string[];
-    /**
-     * the key permissions for the access policy
-     */
     readonly keyPermissions: string[];
-    /**
-     * the secret permissions for the access policy
-     */
     readonly secretPermissions: string[];
     /**
      * id is the provider-assigned unique ID for this managed resource.

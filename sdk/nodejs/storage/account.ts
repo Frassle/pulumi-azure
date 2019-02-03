@@ -4,73 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an Azure Storage Account.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_testrg = new azure.core.ResourceGroup("testrg", {
- *     location: "westus",
- *     name: "resourceGroupName",
- * });
- * const azurerm_storage_account_testsa = new azure.storage.Account("testsa", {
- *     accountReplicationType: "GRS",
- *     accountTier: "Standard",
- *     location: "westus",
- *     name: "storageaccountname",
- *     resourceGroupName: azurerm_resource_group_testrg.name,
- *     tags: {
- *         environment: "staging",
- *     },
- * });
- * ```
- * 
- * ## Example Usage with Network Rules
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_testrg = new azure.core.ResourceGroup("testrg", {
- *     location: "westus",
- *     name: "resourceGroupName",
- * });
- * const azurerm_virtual_network_test = new azure.network.VirtualNetwork("test", {
- *     addressSpaces: ["10.0.0.0/16"],
- *     location: azurerm_resource_group_testrg.location,
- *     name: "virtnetname",
- *     resourceGroupName: azurerm_resource_group_testrg.name,
- * });
- * const azurerm_subnet_test = new azure.network.Subnet("test", {
- *     addressPrefix: "10.0.2.0/24",
- *     name: "subnetname",
- *     resourceGroupName: azurerm_resource_group_testrg.name,
- *     serviceEndpoints: [
- *         "Microsoft.Sql",
- *         "Microsoft.Storage",
- *     ],
- *     virtualNetworkName: azurerm_virtual_network_test.name,
- * });
- * const azurerm_storage_account_testsa = new azure.storage.Account("testsa", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_testrg.location,
- *     name: "storageaccountname",
- *     networkRules: {
- *         ipRules: ["127.0.0.1"],
- *         virtualNetworkSubnetIds: [azurerm_subnet_test.id],
- *     },
- *     resourceGroupName: azurerm_resource_group_testrg.name,
- *     tags: {
- *         environment: "staging",
- *     },
- * });
- * ```
- */
 export class Account extends pulumi.CustomResource {
     /**
      * Get an existing Account resource's state with the given name, ID, and optional extra
@@ -84,131 +17,36 @@ export class Account extends pulumi.CustomResource {
         return new Account(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Defines the access tier for `BlobStorage` and `StorageV2` accounts. Valid options are `Hot` and `Cool`, defaults to `Hot`.
-     */
     public readonly accessTier: pulumi.Output<string>;
-    /**
-     * The Encryption Source for this Storage Account. Possible values are `Microsoft.Keyvault` and `Microsoft.Storage`. Defaults to `Microsoft.Storage`.
-     */
     public readonly accountEncryptionSource: pulumi.Output<string | undefined>;
-    /**
-     * Defines the Kind of account. Valid options are `Storage`,
-     * `StorageV2` and `BlobStorage`. Changing this forces a new resource to be created.
-     * Defaults to `Storage`.
-     */
     public readonly accountKind: pulumi.Output<string | undefined>;
-    /**
-     * Defines the type of replication to use for this storage account. Valid options are `LRS`, `GRS`, `RAGRS` and `ZRS`.
-     */
     public readonly accountReplicationType: pulumi.Output<string>;
-    /**
-     * Defines the Tier to use for this storage account. Valid options are `Standard` and `Premium`. Changing this forces a new resource to be created
-     */
     public readonly accountTier: pulumi.Output<string>;
     public readonly accountType: pulumi.Output<string>;
-    /**
-     * A `custom_domain` block as documented below.
-     */
     public readonly customDomain: pulumi.Output<{ name: string, useSubdomain?: boolean } | undefined>;
-    /**
-     * Boolean flag which controls if Encryption Services are enabled for Blob storage, see [here](https://azure.microsoft.com/en-us/documentation/articles/storage-service-encryption/) for more information. Defaults to `true`.
-     */
     public readonly enableBlobEncryption: pulumi.Output<boolean | undefined>;
-    /**
-     * Boolean flag which controls if Encryption Services are enabled for File storage, see [here](https://azure.microsoft.com/en-us/documentation/articles/storage-service-encryption/) for more information. Defaults to `true`.
-     */
     public readonly enableFileEncryption: pulumi.Output<boolean | undefined>;
-    /**
-     * Boolean flag which forces HTTPS if enabled, see [here](https://docs.microsoft.com/en-us/azure/storage/storage-require-secure-transfer/)
-     * for more information.
-     */
     public readonly enableHttpsTrafficOnly: pulumi.Output<boolean | undefined>;
-    /**
-     * A Managed Service Identity block as defined below.
-     */
     public readonly identity: pulumi.Output<{ principalId: string, tenantId: string, type: string }>;
-    /**
-     * Specifies the supported Azure location where the
-     * resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The Custom Domain Name to use for the Storage Account, which will be validated by Azure.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A `network_rules` block as documented below.
-     */
     public readonly networkRules: pulumi.Output<{ bypasses: string[], ipRules?: string[], virtualNetworkSubnetIds?: string[] } | undefined>;
-    /**
-     * The primary access key for the storage account
-     */
     public /*out*/ readonly primaryAccessKey: pulumi.Output<string>;
-    /**
-     * The connection string associated with the primary blob location
-     */
     public /*out*/ readonly primaryBlobConnectionString: pulumi.Output<string>;
-    /**
-     * The endpoint URL for blob storage in the primary location.
-     */
     public /*out*/ readonly primaryBlobEndpoint: pulumi.Output<string>;
-    /**
-     * The connection string associated with the primary location
-     */
     public /*out*/ readonly primaryConnectionString: pulumi.Output<string>;
-    /**
-     * The endpoint URL for file storage in the primary location.
-     */
     public /*out*/ readonly primaryFileEndpoint: pulumi.Output<string>;
-    /**
-     * The primary location of the storage account.
-     */
     public /*out*/ readonly primaryLocation: pulumi.Output<string>;
-    /**
-     * The endpoint URL for queue storage in the primary location.
-     */
     public /*out*/ readonly primaryQueueEndpoint: pulumi.Output<string>;
-    /**
-     * The endpoint URL for table storage in the primary location.
-     */
     public /*out*/ readonly primaryTableEndpoint: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to
-     * create the storage account. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The secondary access key for the storage account
-     */
     public /*out*/ readonly secondaryAccessKey: pulumi.Output<string>;
-    /**
-     * The connection string associated with the secondary blob location
-     */
     public /*out*/ readonly secondaryBlobConnectionString: pulumi.Output<string>;
-    /**
-     * The endpoint URL for blob storage in the secondary location.
-     */
     public /*out*/ readonly secondaryBlobEndpoint: pulumi.Output<string>;
-    /**
-     * The connection string associated with the secondary location
-     */
     public /*out*/ readonly secondaryConnectionString: pulumi.Output<string>;
-    /**
-     * The secondary location of the storage account.
-     */
     public /*out*/ readonly secondaryLocation: pulumi.Output<string>;
-    /**
-     * The endpoint URL for queue storage in the secondary location.
-     */
     public /*out*/ readonly secondaryQueueEndpoint: pulumi.Output<string>;
-    /**
-     * The endpoint URL for table storage in the secondary location.
-     */
     public /*out*/ readonly secondaryTableEndpoint: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -308,131 +146,36 @@ export class Account extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Account resources.
  */
 export interface AccountState {
-    /**
-     * Defines the access tier for `BlobStorage` and `StorageV2` accounts. Valid options are `Hot` and `Cool`, defaults to `Hot`.
-     */
     readonly accessTier?: pulumi.Input<string>;
-    /**
-     * The Encryption Source for this Storage Account. Possible values are `Microsoft.Keyvault` and `Microsoft.Storage`. Defaults to `Microsoft.Storage`.
-     */
     readonly accountEncryptionSource?: pulumi.Input<string>;
-    /**
-     * Defines the Kind of account. Valid options are `Storage`,
-     * `StorageV2` and `BlobStorage`. Changing this forces a new resource to be created.
-     * Defaults to `Storage`.
-     */
     readonly accountKind?: pulumi.Input<string>;
-    /**
-     * Defines the type of replication to use for this storage account. Valid options are `LRS`, `GRS`, `RAGRS` and `ZRS`.
-     */
     readonly accountReplicationType?: pulumi.Input<string>;
-    /**
-     * Defines the Tier to use for this storage account. Valid options are `Standard` and `Premium`. Changing this forces a new resource to be created
-     */
     readonly accountTier?: pulumi.Input<string>;
     readonly accountType?: pulumi.Input<string>;
-    /**
-     * A `custom_domain` block as documented below.
-     */
     readonly customDomain?: pulumi.Input<{ name: pulumi.Input<string>, useSubdomain?: pulumi.Input<boolean> }>;
-    /**
-     * Boolean flag which controls if Encryption Services are enabled for Blob storage, see [here](https://azure.microsoft.com/en-us/documentation/articles/storage-service-encryption/) for more information. Defaults to `true`.
-     */
     readonly enableBlobEncryption?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which controls if Encryption Services are enabled for File storage, see [here](https://azure.microsoft.com/en-us/documentation/articles/storage-service-encryption/) for more information. Defaults to `true`.
-     */
     readonly enableFileEncryption?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which forces HTTPS if enabled, see [here](https://docs.microsoft.com/en-us/azure/storage/storage-require-secure-transfer/)
-     * for more information.
-     */
     readonly enableHttpsTrafficOnly?: pulumi.Input<boolean>;
-    /**
-     * A Managed Service Identity block as defined below.
-     */
     readonly identity?: pulumi.Input<{ principalId?: pulumi.Input<string>, tenantId?: pulumi.Input<string>, type: pulumi.Input<string> }>;
-    /**
-     * Specifies the supported Azure location where the
-     * resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The Custom Domain Name to use for the Storage Account, which will be validated by Azure.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A `network_rules` block as documented below.
-     */
     readonly networkRules?: pulumi.Input<{ bypasses?: pulumi.Input<pulumi.Input<string>[]>, ipRules?: pulumi.Input<pulumi.Input<string>[]>, virtualNetworkSubnetIds?: pulumi.Input<pulumi.Input<string>[]> }>;
-    /**
-     * The primary access key for the storage account
-     */
     readonly primaryAccessKey?: pulumi.Input<string>;
-    /**
-     * The connection string associated with the primary blob location
-     */
     readonly primaryBlobConnectionString?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for blob storage in the primary location.
-     */
     readonly primaryBlobEndpoint?: pulumi.Input<string>;
-    /**
-     * The connection string associated with the primary location
-     */
     readonly primaryConnectionString?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for file storage in the primary location.
-     */
     readonly primaryFileEndpoint?: pulumi.Input<string>;
-    /**
-     * The primary location of the storage account.
-     */
     readonly primaryLocation?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for queue storage in the primary location.
-     */
     readonly primaryQueueEndpoint?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for table storage in the primary location.
-     */
     readonly primaryTableEndpoint?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the storage account. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The secondary access key for the storage account
-     */
     readonly secondaryAccessKey?: pulumi.Input<string>;
-    /**
-     * The connection string associated with the secondary blob location
-     */
     readonly secondaryBlobConnectionString?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for blob storage in the secondary location.
-     */
     readonly secondaryBlobEndpoint?: pulumi.Input<string>;
-    /**
-     * The connection string associated with the secondary location
-     */
     readonly secondaryConnectionString?: pulumi.Input<string>;
-    /**
-     * The secondary location of the storage account.
-     */
     readonly secondaryLocation?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for queue storage in the secondary location.
-     */
     readonly secondaryQueueEndpoint?: pulumi.Input<string>;
-    /**
-     * The endpoint URL for table storage in the secondary location.
-     */
     readonly secondaryTableEndpoint?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -440,70 +183,20 @@ export interface AccountState {
  * The set of arguments for constructing a Account resource.
  */
 export interface AccountArgs {
-    /**
-     * Defines the access tier for `BlobStorage` and `StorageV2` accounts. Valid options are `Hot` and `Cool`, defaults to `Hot`.
-     */
     readonly accessTier?: pulumi.Input<string>;
-    /**
-     * The Encryption Source for this Storage Account. Possible values are `Microsoft.Keyvault` and `Microsoft.Storage`. Defaults to `Microsoft.Storage`.
-     */
     readonly accountEncryptionSource?: pulumi.Input<string>;
-    /**
-     * Defines the Kind of account. Valid options are `Storage`,
-     * `StorageV2` and `BlobStorage`. Changing this forces a new resource to be created.
-     * Defaults to `Storage`.
-     */
     readonly accountKind?: pulumi.Input<string>;
-    /**
-     * Defines the type of replication to use for this storage account. Valid options are `LRS`, `GRS`, `RAGRS` and `ZRS`.
-     */
     readonly accountReplicationType: pulumi.Input<string>;
-    /**
-     * Defines the Tier to use for this storage account. Valid options are `Standard` and `Premium`. Changing this forces a new resource to be created
-     */
     readonly accountTier: pulumi.Input<string>;
     readonly accountType?: pulumi.Input<string>;
-    /**
-     * A `custom_domain` block as documented below.
-     */
     readonly customDomain?: pulumi.Input<{ name: pulumi.Input<string>, useSubdomain?: pulumi.Input<boolean> }>;
-    /**
-     * Boolean flag which controls if Encryption Services are enabled for Blob storage, see [here](https://azure.microsoft.com/en-us/documentation/articles/storage-service-encryption/) for more information. Defaults to `true`.
-     */
     readonly enableBlobEncryption?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which controls if Encryption Services are enabled for File storage, see [here](https://azure.microsoft.com/en-us/documentation/articles/storage-service-encryption/) for more information. Defaults to `true`.
-     */
     readonly enableFileEncryption?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which forces HTTPS if enabled, see [here](https://docs.microsoft.com/en-us/azure/storage/storage-require-secure-transfer/)
-     * for more information.
-     */
     readonly enableHttpsTrafficOnly?: pulumi.Input<boolean>;
-    /**
-     * A Managed Service Identity block as defined below.
-     */
     readonly identity?: pulumi.Input<{ principalId?: pulumi.Input<string>, tenantId?: pulumi.Input<string>, type: pulumi.Input<string> }>;
-    /**
-     * Specifies the supported Azure location where the
-     * resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The Custom Domain Name to use for the Storage Account, which will be validated by Azure.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A `network_rules` block as documented below.
-     */
     readonly networkRules?: pulumi.Input<{ bypasses?: pulumi.Input<pulumi.Input<string>[]>, ipRules?: pulumi.Input<pulumi.Input<string>[]>, virtualNetworkSubnetIds?: pulumi.Input<pulumi.Input<string>[]> }>;
-    /**
-     * The name of the resource group in which to
-     * create the storage account. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

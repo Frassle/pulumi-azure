@@ -4,35 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Scheduler Job Collection.
- * 
- * > **NOTE:** Support for Scheduler Job Collections has been deprecated by Microsoft in favour of Logic Apps ([more information can be found at this link](https://docs.microsoft.com/en-us/azure/scheduler/migrate-from-scheduler-to-logic-apps)) - as such we plan to remove support for this resource as a part of version 2.0 of the AzureRM Provider.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_rg = new azure.core.ResourceGroup("rg", {
- *     location: "West US",
- *     name: "tfex-job_collection",
- * });
- * const azurerm_scheduler_job_collection_jobs = new azure.scheduler.JobCollection("jobs", {
- *     location: azurerm_resource_group_rg.location,
- *     name: "example_job_collection",
- *     quota: {
- *         maxJobCount: 5,
- *         maxRecurrenceFrequency: "hour",
- *         maxRecurrenceInterval: 24,
- *     },
- *     resourceGroupName: azurerm_resource_group_rg.name,
- *     sku: "free",
- *     state: "enabled",
- * });
- * ```
- */
 export class JobCollection extends pulumi.CustomResource {
     /**
      * Get an existing JobCollection resource's state with the given name, ID, and optional extra
@@ -46,33 +17,12 @@ export class JobCollection extends pulumi.CustomResource {
         return new JobCollection(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Scheduler Job Collection. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Configures the Job collection quotas as documented in the `quota` block below. 
-     */
     public readonly quota: pulumi.Output<{ maxJobCount?: number, maxRecurrenceFrequency: string, maxRecurrenceInterval?: number, maxRetryInterval: number } | undefined>;
-    /**
-     * The name of the resource group in which to create the Scheduler Job Collection. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Sets the Job Collection's pricing level's SKU. Possible values include: `Standard`, `Free`, `P10Premium`, `P20Premium`.
-     */
     public readonly sku: pulumi.Output<string>;
-    /**
-     * Sets Job Collection's state. Possible values include: `Enabled`, `Disabled`, `Suspended`.
-     */
     public readonly state: pulumi.Output<string | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -121,33 +71,12 @@ export class JobCollection extends pulumi.CustomResource {
  * Input properties used for looking up and filtering JobCollection resources.
  */
 export interface JobCollectionState {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Scheduler Job Collection. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Configures the Job collection quotas as documented in the `quota` block below. 
-     */
     readonly quota?: pulumi.Input<{ maxJobCount?: pulumi.Input<number>, maxRecurrenceFrequency: pulumi.Input<string>, maxRecurrenceInterval?: pulumi.Input<number>, maxRetryInterval?: pulumi.Input<number> }>;
-    /**
-     * The name of the resource group in which to create the Scheduler Job Collection. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Sets the Job Collection's pricing level's SKU. Possible values include: `Standard`, `Free`, `P10Premium`, `P20Premium`.
-     */
     readonly sku?: pulumi.Input<string>;
-    /**
-     * Sets Job Collection's state. Possible values include: `Enabled`, `Disabled`, `Suspended`.
-     */
     readonly state?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -155,32 +84,11 @@ export interface JobCollectionState {
  * The set of arguments for constructing a JobCollection resource.
  */
 export interface JobCollectionArgs {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Scheduler Job Collection. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Configures the Job collection quotas as documented in the `quota` block below. 
-     */
     readonly quota?: pulumi.Input<{ maxJobCount?: pulumi.Input<number>, maxRecurrenceFrequency: pulumi.Input<string>, maxRecurrenceInterval?: pulumi.Input<number>, maxRetryInterval?: pulumi.Input<number> }>;
-    /**
-     * The name of the resource group in which to create the Scheduler Job Collection. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Sets the Job Collection's pricing level's SKU. Possible values include: `Standard`, `Free`, `P10Premium`, `P20Premium`.
-     */
     readonly sku: pulumi.Input<string>;
-    /**
-     * Sets Job Collection's state. Possible values include: `Enabled`, `Disabled`, `Suspended`.
-     */
     readonly state?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

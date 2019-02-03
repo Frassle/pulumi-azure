@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Pulumi.Azure</id>
+    <version>0.16.8-dev.1549099864+g7e582b4.dirty</version>
+    <authors>Pulumi.Azure</authors>
+    <owners>Pulumi.Azure</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Pulumi" version="0.16.13-dev.1549148015" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/home/fraser/go/src/github.com/pulumi/pulumi-azure/sdk/dotnet/bin/Release/netstandard2.0/Pulumi.Azure.dll" target="lib/netstandard2.0/Pulumi.Azure.dll" />
+  </files>
+</package>

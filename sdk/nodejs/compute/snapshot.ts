@@ -4,36 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Disk Snapshot.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "snapshot-rg",
- * });
- * const azurerm_managed_disk_test = new azure.compute.ManagedDisk("test", {
- *     createOption: "Empty",
- *     diskSizeGb: Number.parseFloat("10"),
- *     location: azurerm_resource_group_test.location,
- *     name: "managed-disk",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountType: "Standard_LRS",
- * });
- * const azurerm_snapshot_test = new azure.compute.Snapshot("test", {
- *     createOption: "Copy",
- *     location: azurerm_resource_group_test.location,
- *     name: "snapshot",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sourceUri: azurerm_managed_disk_test.id,
- * });
- * ```
- */
 export class Snapshot extends pulumi.CustomResource {
     /**
      * Get an existing Snapshot resource's state with the given name, ID, and optional extra
@@ -47,42 +17,15 @@ export class Snapshot extends pulumi.CustomResource {
         return new Snapshot(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Indicates how the snapshot is to be created. Possible values are `Copy` or `Import`. Changing this forces a new resource to be created.
-     */
     public readonly createOption: pulumi.Output<string>;
-    /**
-     * The size of the Snapshotted Disk in GB.
-     */
     public readonly diskSizeGb: pulumi.Output<number>;
     public readonly encryptionSettings: pulumi.Output<{ diskEncryptionKey?: { secretUrl: string, sourceVaultId: string }, enabled: boolean, keyEncryptionKey?: { keyUrl: string, sourceVaultId: string } } | undefined>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Snapshot resource. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Snapshot. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies a reference to an existing snapshot, when `create_option` is `Copy`. Changing this forces a new resource to be created.
-     */
     public readonly sourceResourceId: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the URI to a Managed or Unmanaged Disk. Changing this forces a new resource to be created.
-     */
     public readonly sourceUri: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the ID of an storage account. Used with `source_uri` to allow authorization during import of unmanaged blobs from a different subscription. Changing this forces a new resource to be created.
-     */
     public readonly storageAccountId: pulumi.Output<string | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -137,42 +80,15 @@ export class Snapshot extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Snapshot resources.
  */
 export interface SnapshotState {
-    /**
-     * Indicates how the snapshot is to be created. Possible values are `Copy` or `Import`. Changing this forces a new resource to be created.
-     */
     readonly createOption?: pulumi.Input<string>;
-    /**
-     * The size of the Snapshotted Disk in GB.
-     */
     readonly diskSizeGb?: pulumi.Input<number>;
     readonly encryptionSettings?: pulumi.Input<{ diskEncryptionKey?: pulumi.Input<{ secretUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }>, enabled: pulumi.Input<boolean>, keyEncryptionKey?: pulumi.Input<{ keyUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }> }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Snapshot resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Snapshot. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies a reference to an existing snapshot, when `create_option` is `Copy`. Changing this forces a new resource to be created.
-     */
     readonly sourceResourceId?: pulumi.Input<string>;
-    /**
-     * Specifies the URI to a Managed or Unmanaged Disk. Changing this forces a new resource to be created.
-     */
     readonly sourceUri?: pulumi.Input<string>;
-    /**
-     * Specifies the ID of an storage account. Used with `source_uri` to allow authorization during import of unmanaged blobs from a different subscription. Changing this forces a new resource to be created.
-     */
     readonly storageAccountId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -180,41 +96,14 @@ export interface SnapshotState {
  * The set of arguments for constructing a Snapshot resource.
  */
 export interface SnapshotArgs {
-    /**
-     * Indicates how the snapshot is to be created. Possible values are `Copy` or `Import`. Changing this forces a new resource to be created.
-     */
     readonly createOption: pulumi.Input<string>;
-    /**
-     * The size of the Snapshotted Disk in GB.
-     */
     readonly diskSizeGb?: pulumi.Input<number>;
     readonly encryptionSettings?: pulumi.Input<{ diskEncryptionKey?: pulumi.Input<{ secretUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }>, enabled: pulumi.Input<boolean>, keyEncryptionKey?: pulumi.Input<{ keyUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }> }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Snapshot resource. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Snapshot. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies a reference to an existing snapshot, when `create_option` is `Copy`. Changing this forces a new resource to be created.
-     */
     readonly sourceResourceId?: pulumi.Input<string>;
-    /**
-     * Specifies the URI to a Managed or Unmanaged Disk. Changing this forces a new resource to be created.
-     */
     readonly sourceUri?: pulumi.Input<string>;
-    /**
-     * Specifies the ID of an storage account. Used with `source_uri` to allow authorization during import of unmanaged blobs from a different subscription. Changing this forces a new resource to be created.
-     */
     readonly storageAccountId?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

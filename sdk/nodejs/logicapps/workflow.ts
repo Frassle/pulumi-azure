@@ -4,26 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Logic App Workflow.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "East US",
- *     name: "workflow-resources",
- * });
- * const azurerm_logic_app_workflow_test = new azure.logicapps.Workflow("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "workflow1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * ```
- */
 export class Workflow extends pulumi.CustomResource {
     /**
      * Get an existing Workflow resource's state with the given name, ID, and optional extra
@@ -37,37 +17,13 @@ export class Workflow extends pulumi.CustomResource {
         return new Workflow(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The Access Endpoint for the Logic App Workflow
-     */
     public /*out*/ readonly accessEndpoint: pulumi.Output<string>;
-    /**
-     * Specifies the supported Azure location where the Logic App Workflow exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A map of Key-Value pairs.
-     */
     public readonly parameters: pulumi.Output<{[key: string]: any} | undefined>;
-    /**
-     * The name of the Resource Group in which the Logic App Workflow should be created. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Specifies the Schema to use for this Logic App Workflow. Defaults to `https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#`. Changing this forces a new resource to be created.
-     */
     public readonly workflowSchema: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the version of the Schema used for this Logic App Workflow. Defaults to `1.0.0.0`. Changing this forces a new resource to be create.d
-     */
     public readonly workflowVersion: pulumi.Output<string | undefined>;
 
     /**
@@ -115,37 +71,13 @@ export class Workflow extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Workflow resources.
  */
 export interface WorkflowState {
-    /**
-     * The Access Endpoint for the Logic App Workflow
-     */
     readonly accessEndpoint?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the Logic App Workflow exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A map of Key-Value pairs.
-     */
     readonly parameters?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The name of the Resource Group in which the Logic App Workflow should be created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the Schema to use for this Logic App Workflow. Defaults to `https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#`. Changing this forces a new resource to be created.
-     */
     readonly workflowSchema?: pulumi.Input<string>;
-    /**
-     * Specifies the version of the Schema used for this Logic App Workflow. Defaults to `1.0.0.0`. Changing this forces a new resource to be create.d
-     */
     readonly workflowVersion?: pulumi.Input<string>;
 }
 
@@ -153,32 +85,11 @@ export interface WorkflowState {
  * The set of arguments for constructing a Workflow resource.
  */
 export interface WorkflowArgs {
-    /**
-     * Specifies the supported Azure location where the Logic App Workflow exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A map of Key-Value pairs.
-     */
     readonly parameters?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The name of the Resource Group in which the Logic App Workflow should be created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the Schema to use for this Logic App Workflow. Defaults to `https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#`. Changing this forces a new resource to be created.
-     */
     readonly workflowSchema?: pulumi.Input<string>;
-    /**
-     * Specifies the version of the Schema used for this Logic App Workflow. Defaults to `1.0.0.0`. Changing this forces a new resource to be create.d
-     */
     readonly workflowVersion?: pulumi.Input<string>;
 }

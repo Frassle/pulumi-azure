@@ -4,45 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Authorization Rule for a ServiceBus Queue.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_example = new azure.core.ResourceGroup("example", {
- *     location: "West US",
- *     name: "terraform-servicebus",
- * });
- * const azurerm_servicebus_namespace_example = new azure.eventhub.Namespace("example", {
- *     location: azurerm_resource_group_example.location,
- *     name: "tfex_sevicebus_namespace",
- *     resourceGroupName: azurerm_resource_group_example.name,
- *     sku: "Standard",
- *     tags: {
- *         source: "terraform",
- *     },
- * });
- * const azurerm_servicebus_queue_example = new azure.eventhub.Queue("example", {
- *     enablePartitioning: true,
- *     name: "tfex_servicebus_queue",
- *     namespaceName: azurerm_servicebus_namespace_example.name,
- *     resourceGroupName: azurerm_resource_group_example.name,
- * });
- * const azurerm_servicebus_queue_authorization_rule_example = new azure.eventhub.QueueAuthorizationRule("example", {
- *     listen: true,
- *     manage: false,
- *     name: "examplerule",
- *     namespaceName: azurerm_servicebus_namespace_example.name,
- *     queueName: azurerm_servicebus_queue_example.name,
- *     resourceGroupName: azurerm_resource_group_example.name,
- *     send: true,
- * });
- * ```
- */
 export class QueueAuthorizationRule extends pulumi.CustomResource {
     /**
      * Get an existing QueueAuthorizationRule resource's state with the given name, ID, and optional extra
@@ -56,49 +17,16 @@ export class QueueAuthorizationRule extends pulumi.CustomResource {
         return new QueueAuthorizationRule(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Does this Authorization Rule have Listen permissions to the ServiceBus Queue? Defaults to `false`.
-     */
     public readonly listen: pulumi.Output<boolean | undefined>;
-    /**
-     * Does this Authorization Rule have Manage permissions to the ServiceBus Queue? When this property is `true` - both `listen` and `send` must be too. Defaults to `false`.
-     */
     public readonly manage: pulumi.Output<boolean | undefined>;
-    /**
-     * Specifies the name of the Authorization Rule. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies the name of the ServiceBus Namespace in which the Queue exists. Changing this forces a new resource to be created.
-     */
     public readonly namespaceName: pulumi.Output<string>;
-    /**
-     * The Primary Connection String for the Authorization Rule.
-     */
     public /*out*/ readonly primaryConnectionString: pulumi.Output<string>;
-    /**
-     * The Primary Key for the Authorization Rule.
-     */
     public /*out*/ readonly primaryKey: pulumi.Output<string>;
-    /**
-     * Specifies the name of the ServiceBus Queue. Changing this forces a new resource to be created.
-     */
     public readonly queueName: pulumi.Output<string>;
-    /**
-     * The name of the Resource Group in which the ServiceBus Namespace exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The Secondary Connection String for the Authorization Rule.
-     */
     public /*out*/ readonly secondaryConnectionString: pulumi.Output<string>;
-    /**
-     * The Secondary Key for the Authorization Rule.
-     */
     public /*out*/ readonly secondaryKey: pulumi.Output<string>;
-    /**
-     * Does this Authorization Rule have Send permissions to the ServiceBus Queue? Defaults to `false`.
-     */
     public readonly send: pulumi.Output<boolean | undefined>;
 
     /**
@@ -155,49 +83,16 @@ export class QueueAuthorizationRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering QueueAuthorizationRule resources.
  */
 export interface QueueAuthorizationRuleState {
-    /**
-     * Does this Authorization Rule have Listen permissions to the ServiceBus Queue? Defaults to `false`.
-     */
     readonly listen?: pulumi.Input<boolean>;
-    /**
-     * Does this Authorization Rule have Manage permissions to the ServiceBus Queue? When this property is `true` - both `listen` and `send` must be too. Defaults to `false`.
-     */
     readonly manage?: pulumi.Input<boolean>;
-    /**
-     * Specifies the name of the Authorization Rule. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the ServiceBus Namespace in which the Queue exists. Changing this forces a new resource to be created.
-     */
     readonly namespaceName?: pulumi.Input<string>;
-    /**
-     * The Primary Connection String for the Authorization Rule.
-     */
     readonly primaryConnectionString?: pulumi.Input<string>;
-    /**
-     * The Primary Key for the Authorization Rule.
-     */
     readonly primaryKey?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the ServiceBus Queue. Changing this forces a new resource to be created.
-     */
     readonly queueName?: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the ServiceBus Namespace exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The Secondary Connection String for the Authorization Rule.
-     */
     readonly secondaryConnectionString?: pulumi.Input<string>;
-    /**
-     * The Secondary Key for the Authorization Rule.
-     */
     readonly secondaryKey?: pulumi.Input<string>;
-    /**
-     * Does this Authorization Rule have Send permissions to the ServiceBus Queue? Defaults to `false`.
-     */
     readonly send?: pulumi.Input<boolean>;
 }
 
@@ -205,32 +100,11 @@ export interface QueueAuthorizationRuleState {
  * The set of arguments for constructing a QueueAuthorizationRule resource.
  */
 export interface QueueAuthorizationRuleArgs {
-    /**
-     * Does this Authorization Rule have Listen permissions to the ServiceBus Queue? Defaults to `false`.
-     */
     readonly listen?: pulumi.Input<boolean>;
-    /**
-     * Does this Authorization Rule have Manage permissions to the ServiceBus Queue? When this property is `true` - both `listen` and `send` must be too. Defaults to `false`.
-     */
     readonly manage?: pulumi.Input<boolean>;
-    /**
-     * Specifies the name of the Authorization Rule. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the ServiceBus Namespace in which the Queue exists. Changing this forces a new resource to be created.
-     */
     readonly namespaceName: pulumi.Input<string>;
-    /**
-     * Specifies the name of the ServiceBus Queue. Changing this forces a new resource to be created.
-     */
     readonly queueName: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the ServiceBus Namespace exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Does this Authorization Rule have Send permissions to the ServiceBus Queue? Defaults to `false`.
-     */
     readonly send?: pulumi.Input<boolean>;
 }

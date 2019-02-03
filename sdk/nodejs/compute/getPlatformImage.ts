@@ -4,25 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about a Platform Image.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_platform_image_test = pulumi.output(azure.compute.getPlatformImage({
- *     location: "West Europe",
- *     offer: "UbuntuServer",
- *     publisher: "Canonical",
- *     sku: "16.04-LTS",
- * }));
- * 
- * export const version = azurerm_platform_image_test.apply(__arg0 => __arg0.version);
- * ```
- */
 export function getPlatformImage(args: GetPlatformImageArgs, opts?: pulumi.InvokeOptions): Promise<GetPlatformImageResult> {
     return pulumi.runtime.invoke("azure:compute/getPlatformImage:getPlatformImage", {
         "location": args.location,
@@ -36,21 +17,9 @@ export function getPlatformImage(args: GetPlatformImageArgs, opts?: pulumi.Invok
  * A collection of arguments for invoking getPlatformImage.
  */
 export interface GetPlatformImageArgs {
-    /**
-     * Specifies the Location to pull information about this Platform Image from.
-     */
     readonly location: string;
-    /**
-     * Specifies the Offer associated with the Platform Image.
-     */
     readonly offer: string;
-    /**
-     * Specifies the Publisher associated with the Platform Image.
-     */
     readonly publisher: string;
-    /**
-     * Specifies the SKU of the Platform Image.
-     */
     readonly sku: string;
 }
 
@@ -58,9 +27,6 @@ export interface GetPlatformImageArgs {
  * A collection of values returned by getPlatformImage.
  */
 export interface GetPlatformImageResult {
-    /**
-     * The latest version of the Platform Image.
-     */
     readonly version: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

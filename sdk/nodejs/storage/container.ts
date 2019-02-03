@@ -4,37 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an Azure Storage Container.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "westus",
- *     name: "acctestRG",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: "westus",
- *     name: "accteststorageaccount",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         environment: "staging",
- *     },
- * });
- * const azurerm_storage_container_test = new azure.storage.Container("test", {
- *     containerAccessType: "private",
- *     name: "vhds",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountName: azurerm_storage_account_test.name,
- * });
- * ```
- */
 export class Container extends pulumi.CustomResource {
     /**
      * Get an existing Container resource's state with the given name, ID, and optional extra
@@ -48,27 +17,10 @@ export class Container extends pulumi.CustomResource {
         return new Container(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The 'interface' for access the container provides. Can be either `blob`, `container` or `private`. Defaults to `private`.
-     */
     public readonly containerAccessType: pulumi.Output<string | undefined>;
-    /**
-     * The name of the storage container. Must be unique within the storage service the container is located.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Key-value definition of additional properties associated to the storage container
-     */
     public /*out*/ readonly properties: pulumi.Output<{[key: string]: any}>;
-    /**
-     * The name of the resource group in which to
-     * create the storage container. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the storage account in which to create the storage container.
-     * Changing this forces a new resource to be created.
-     */
     public readonly storageAccountName: pulumi.Output<string>;
 
     /**
@@ -110,27 +62,10 @@ export class Container extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Container resources.
  */
 export interface ContainerState {
-    /**
-     * The 'interface' for access the container provides. Can be either `blob`, `container` or `private`. Defaults to `private`.
-     */
     readonly containerAccessType?: pulumi.Input<string>;
-    /**
-     * The name of the storage container. Must be unique within the storage service the container is located.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Key-value definition of additional properties associated to the storage container
-     */
     readonly properties?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The name of the resource group in which to
-     * create the storage container. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the storage account in which to create the storage container.
-     * Changing this forces a new resource to be created.
-     */
     readonly storageAccountName?: pulumi.Input<string>;
 }
 
@@ -138,22 +73,8 @@ export interface ContainerState {
  * The set of arguments for constructing a Container resource.
  */
 export interface ContainerArgs {
-    /**
-     * The 'interface' for access the container provides. Can be either `blob`, `container` or `private`. Defaults to `private`.
-     */
     readonly containerAccessType?: pulumi.Input<string>;
-    /**
-     * The name of the storage container. Must be unique within the storage service the container is located.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the storage container. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies the storage account in which to create the storage container.
-     * Changing this forces a new resource to be created.
-     */
     readonly storageAccountName: pulumi.Input<string>;
 }

@@ -4,46 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Links a Log Analytics (formally Operational Insights) Workspace to another resource. The (currently) only linkable service is an Azure Automation Account.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "resourcegroup-01",
- * });
- * const azurerm_automation_account_test = new azure.automation.Account("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "automation-01",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         name: "Basic",
- *     },
- *     tags: {
- *         environment: "development",
- *     },
- * });
- * const azurerm_log_analytics_workspace_test = new azure.operationalinsights.AnalyticsWorkspace("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "workspace-01",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     retentionInDays: 30,
- *     sku: "PerGB2018",
- * });
- * const azurerm_log_analytics_workspace_linked_service_test = new azure.operationalinsights.AnalyticsWorkspaceLinkedService("test", {
- *     linkedServiceProperties: {
- *         resource_id: azurerm_automation_account_test.id,
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     workspaceName: azurerm_log_analytics_workspace_test.name,
- * });
- * ```
- */
 export class AnalyticsWorkspaceLinkedService extends pulumi.CustomResource {
     /**
      * Get an existing AnalyticsWorkspaceLinkedService resource's state with the given name, ID, and optional extra
@@ -57,29 +17,11 @@ export class AnalyticsWorkspaceLinkedService extends pulumi.CustomResource {
         return new AnalyticsWorkspaceLinkedService(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Name of the type of linkedServices resource to connect to the Log Analytics Workspace specified in `workspace_name`. Currently it defaults to and only supports `automation` as a value. Changing this forces a new resource to be created.
-     */
     public readonly linkedServiceName: pulumi.Output<string | undefined>;
-    /**
-     * A `linked_service_properties` block as defined below.
-     */
     public readonly linkedServiceProperties: pulumi.Output<{ resourceId: string }>;
-    /**
-     * The automatically generated name of the Linked Service. This cannot be specified. The format is always `<workspace_name>/<linked_service_name>` e.g. `workspace1/Automation`
-     */
     public /*out*/ readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which the Log Analytics Linked Service is created. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Name of the Log Analytics Workspace that will contain the linkedServices resource. Changing this forces a new resource to be created.
-     */
     public readonly workspaceName: pulumi.Output<string>;
 
     /**
@@ -126,29 +68,11 @@ export class AnalyticsWorkspaceLinkedService extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AnalyticsWorkspaceLinkedService resources.
  */
 export interface AnalyticsWorkspaceLinkedServiceState {
-    /**
-     * Name of the type of linkedServices resource to connect to the Log Analytics Workspace specified in `workspace_name`. Currently it defaults to and only supports `automation` as a value. Changing this forces a new resource to be created.
-     */
     readonly linkedServiceName?: pulumi.Input<string>;
-    /**
-     * A `linked_service_properties` block as defined below.
-     */
     readonly linkedServiceProperties?: pulumi.Input<{ resourceId: pulumi.Input<string> }>;
-    /**
-     * The automatically generated name of the Linked Service. This cannot be specified. The format is always `<workspace_name>/<linked_service_name>` e.g. `workspace1/Automation`
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the Log Analytics Linked Service is created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Name of the Log Analytics Workspace that will contain the linkedServices resource. Changing this forces a new resource to be created.
-     */
     readonly workspaceName?: pulumi.Input<string>;
 }
 
@@ -156,24 +80,9 @@ export interface AnalyticsWorkspaceLinkedServiceState {
  * The set of arguments for constructing a AnalyticsWorkspaceLinkedService resource.
  */
 export interface AnalyticsWorkspaceLinkedServiceArgs {
-    /**
-     * Name of the type of linkedServices resource to connect to the Log Analytics Workspace specified in `workspace_name`. Currently it defaults to and only supports `automation` as a value. Changing this forces a new resource to be created.
-     */
     readonly linkedServiceName?: pulumi.Input<string>;
-    /**
-     * A `linked_service_properties` block as defined below.
-     */
     readonly linkedServiceProperties: pulumi.Input<{ resourceId: pulumi.Input<string> }>;
-    /**
-     * The name of the resource group in which the Log Analytics Linked Service is created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Name of the Log Analytics Workspace that will contain the linkedServices resource. Changing this forces a new resource to be created.
-     */
     readonly workspaceName: pulumi.Input<string>;
 }

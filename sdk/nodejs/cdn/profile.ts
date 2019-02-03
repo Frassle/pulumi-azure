@@ -4,31 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage a CDN Profile to create a collection of CDN Endpoints.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "resourceGroup1",
- * });
- * const azurerm_cdn_profile_test = new azure.cdn.Profile("test", {
- *     location: "West US",
- *     name: "exampleCdnProfile",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: "Standard_Verizon",
- *     tags: {
- *         cost_center: "MSFT",
- *         environment: "Production",
- *     },
- * });
- * ```
- */
 export class Profile extends pulumi.CustomResource {
     /**
      * Get an existing Profile resource's state with the given name, ID, and optional extra
@@ -42,27 +17,10 @@ export class Profile extends pulumi.CustomResource {
         return new Profile(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the CDN Profile. Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to
-     * create the CDN Profile.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The pricing related information of current CDN profile. Accepted values are `Standard_Akamai`, `Standard_ChinaCdn`, `Standard_Microsoft`, `Standard_Verizon` or `Premium_Verizon`.
-     */
     public readonly sku: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -107,27 +65,10 @@ export class Profile extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Profile resources.
  */
 export interface ProfileState {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the CDN Profile. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the CDN Profile.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The pricing related information of current CDN profile. Accepted values are `Standard_Akamai`, `Standard_ChinaCdn`, `Standard_Microsoft`, `Standard_Verizon` or `Premium_Verizon`.
-     */
     readonly sku?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -135,26 +76,9 @@ export interface ProfileState {
  * The set of arguments for constructing a Profile resource.
  */
 export interface ProfileArgs {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the CDN Profile. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the CDN Profile.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The pricing related information of current CDN profile. Accepted values are `Standard_Akamai`, `Standard_ChinaCdn`, `Standard_Microsoft`, `Standard_Verizon` or `Premium_Verizon`.
-     */
     readonly sku: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

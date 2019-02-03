@@ -4,33 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage an Azure Storage Table.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "westus",
- *     name: "azuretest",
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: "westus",
- *     name: "azureteststorage1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_storage_table_test = new azure.storage.Table("test", {
- *     name: "mysampletable",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountName: azurerm_storage_account_test.name,
- * });
- * ```
- */
 export class Table extends pulumi.CustomResource {
     /**
      * Get an existing Table resource's state with the given name, ID, and optional extra
@@ -44,19 +17,8 @@ export class Table extends pulumi.CustomResource {
         return new Table(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The name of the storage table. Must be unique within the storage account the table is located.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to
-     * create the storage table. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the storage account in which to create the storage table.
-     * Changing this forces a new resource to be created.
-     */
     public readonly storageAccountName: pulumi.Output<string>;
 
     /**
@@ -94,19 +56,8 @@ export class Table extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Table resources.
  */
 export interface TableState {
-    /**
-     * The name of the storage table. Must be unique within the storage account the table is located.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the storage table. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the storage account in which to create the storage table.
-     * Changing this forces a new resource to be created.
-     */
     readonly storageAccountName?: pulumi.Input<string>;
 }
 
@@ -114,18 +65,7 @@ export interface TableState {
  * The set of arguments for constructing a Table resource.
  */
 export interface TableArgs {
-    /**
-     * The name of the storage table. Must be unique within the storage account the table is located.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the storage table. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies the storage account in which to create the storage table.
-     * Changing this forces a new resource to be created.
-     */
     readonly storageAccountName: pulumi.Input<string>;
 }

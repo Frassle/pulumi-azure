@@ -4,49 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Firewall Rule for a MySQL Server
- * 
- * ## Example Usage (Single IP Address)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_mysql_server_test = new azure.mysql.Server("test", {});
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "api-rg-pro",
- * });
- * const azurerm_mysql_firewall_rule_test = new azure.mysql.FirewallRule("test", {
- *     endIpAddress: "40.112.8.12",
- *     name: "office",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serverName: azurerm_mysql_server_test.name,
- *     startIpAddress: "40.112.8.12",
- * });
- * ```
- * 
- * ## Example Usage (IP Range)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_mysql_server_test = new azure.mysql.Server("test", {});
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "api-rg-pro",
- * });
- * const azurerm_mysql_firewall_rule_test = new azure.mysql.FirewallRule("test", {
- *     endIpAddress: "40.112.255.255",
- *     name: "office",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serverName: azurerm_mysql_server_test.name,
- *     startIpAddress: "40.112.0.0",
- * });
- * ```
- */
 export class FirewallRule extends pulumi.CustomResource {
     /**
      * Get an existing FirewallRule resource's state with the given name, ID, and optional extra
@@ -60,25 +17,10 @@ export class FirewallRule extends pulumi.CustomResource {
         return new FirewallRule(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the End IP Address associated with this Firewall Rule. Changing this forces a new resource to be created.
-     */
     public readonly endIpAddress: pulumi.Output<string>;
-    /**
-     * Specifies the name of the MySQL Firewall Rule. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
-     */
     public readonly serverName: pulumi.Output<string>;
-    /**
-     * Specifies the Start IP Address associated with this Firewall Rule. Changing this forces a new resource to be created.
-     */
     public readonly startIpAddress: pulumi.Output<string>;
 
     /**
@@ -126,25 +68,10 @@ export class FirewallRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering FirewallRule resources.
  */
 export interface FirewallRuleState {
-    /**
-     * Specifies the End IP Address associated with this Firewall Rule. Changing this forces a new resource to be created.
-     */
     readonly endIpAddress?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MySQL Firewall Rule. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
-     */
     readonly serverName?: pulumi.Input<string>;
-    /**
-     * Specifies the Start IP Address associated with this Firewall Rule. Changing this forces a new resource to be created.
-     */
     readonly startIpAddress?: pulumi.Input<string>;
 }
 
@@ -152,24 +79,9 @@ export interface FirewallRuleState {
  * The set of arguments for constructing a FirewallRule resource.
  */
 export interface FirewallRuleArgs {
-    /**
-     * Specifies the End IP Address associated with this Firewall Rule. Changing this forces a new resource to be created.
-     */
     readonly endIpAddress: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MySQL Firewall Rule. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
-     */
     readonly serverName: pulumi.Input<string>;
-    /**
-     * Specifies the Start IP Address associated with this Firewall Rule. Changing this forces a new resource to be created.
-     */
     readonly startIpAddress: pulumi.Input<string>;
 }

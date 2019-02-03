@@ -4,45 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Authorization Rule associated with a Notification Hub within a Notification Hub Namespace.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "Australia East",
- *     name: "notificationhub-resources",
- * });
- * const azurerm_notification_hub_namespace_test = new azure.notificationhub.Namespace("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "myappnamespace",
- *     namespaceType: "NotificationHub",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         name: "Free",
- *     },
- * });
- * const azurerm_notification_hub_test = new azure.notificationhub.Hub("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "mynotificationhub",
- *     namespaceName: azurerm_notification_hub_namespace_test.name,
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_notification_hub_authorization_rule_test = new azure.notificationhub.AuthorizationRule("test", {
- *     listen: true,
- *     manage: true,
- *     name: "management-auth-rule",
- *     namespaceName: azurerm_notification_hub_namespace_test.name,
- *     notificationHubName: azurerm_notification_hub_test.name,
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     send: true,
- * });
- * ```
- */
 export class AuthorizationRule extends pulumi.CustomResource {
     /**
      * Get an existing AuthorizationRule resource's state with the given name, ID, and optional extra
@@ -56,41 +17,14 @@ export class AuthorizationRule extends pulumi.CustomResource {
         return new AuthorizationRule(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Does this Authorization Rule have Listen access to the Notification Hub? Defaults to `false`.
-     */
     public readonly listen: pulumi.Output<boolean | undefined>;
-    /**
-     * Does this Authorization Rule have Manage access to the Notification Hub? Defaults to `false`.
-     */
     public readonly manage: pulumi.Output<boolean | undefined>;
-    /**
-     * The name to use for this Authorization Rule. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the Notification Hub Namespace in which the Notification Hub exists. Changing this forces a new resource to be created.
-     */
     public readonly namespaceName: pulumi.Output<string>;
-    /**
-     * The name of the Notification Hub for which the Authorization Rule should be created. Changing this forces a new resource to be created.
-     */
     public readonly notificationHubName: pulumi.Output<string>;
-    /**
-     * The Primary Access Key associated with this Authorization Rule.
-     */
     public /*out*/ readonly primaryAccessKey: pulumi.Output<string>;
-    /**
-     * The name of the Resource Group in which the Notification Hub Namespace exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The Secondary Access Key associated with this Authorization Rule.
-     */
     public /*out*/ readonly secondaryAccessKey: pulumi.Output<string>;
-    /**
-     * Does this Authorization Rule have Send access to the Notification Hub? Defaults to `false`.
-     */
     public readonly send: pulumi.Output<boolean | undefined>;
 
     /**
@@ -143,41 +77,14 @@ export class AuthorizationRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AuthorizationRule resources.
  */
 export interface AuthorizationRuleState {
-    /**
-     * Does this Authorization Rule have Listen access to the Notification Hub? Defaults to `false`.
-     */
     readonly listen?: pulumi.Input<boolean>;
-    /**
-     * Does this Authorization Rule have Manage access to the Notification Hub? Defaults to `false`.
-     */
     readonly manage?: pulumi.Input<boolean>;
-    /**
-     * The name to use for this Authorization Rule. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the Notification Hub Namespace in which the Notification Hub exists. Changing this forces a new resource to be created.
-     */
     readonly namespaceName?: pulumi.Input<string>;
-    /**
-     * The name of the Notification Hub for which the Authorization Rule should be created. Changing this forces a new resource to be created.
-     */
     readonly notificationHubName?: pulumi.Input<string>;
-    /**
-     * The Primary Access Key associated with this Authorization Rule.
-     */
     readonly primaryAccessKey?: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the Notification Hub Namespace exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The Secondary Access Key associated with this Authorization Rule.
-     */
     readonly secondaryAccessKey?: pulumi.Input<string>;
-    /**
-     * Does this Authorization Rule have Send access to the Notification Hub? Defaults to `false`.
-     */
     readonly send?: pulumi.Input<boolean>;
 }
 
@@ -185,32 +92,11 @@ export interface AuthorizationRuleState {
  * The set of arguments for constructing a AuthorizationRule resource.
  */
 export interface AuthorizationRuleArgs {
-    /**
-     * Does this Authorization Rule have Listen access to the Notification Hub? Defaults to `false`.
-     */
     readonly listen?: pulumi.Input<boolean>;
-    /**
-     * Does this Authorization Rule have Manage access to the Notification Hub? Defaults to `false`.
-     */
     readonly manage?: pulumi.Input<boolean>;
-    /**
-     * The name to use for this Authorization Rule. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the Notification Hub Namespace in which the Notification Hub exists. Changing this forces a new resource to be created.
-     */
     readonly namespaceName: pulumi.Input<string>;
-    /**
-     * The name of the Notification Hub for which the Authorization Rule should be created. Changing this forces a new resource to be created.
-     */
     readonly notificationHubName: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the Notification Hub Namespace exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Does this Authorization Rule have Send access to the Notification Hub? Defaults to `false`.
-     */
     readonly send?: pulumi.Input<boolean>;
 }

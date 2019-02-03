@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Application Insights component.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_application_insights_test = pulumi.output(azure.appinsights.getInsights({
- *     name: "production",
- *     resourceGroupName: "networking",
- * }));
- * 
- * export const applicationInsightsInstrumentationKey = azurerm_application_insights_test.apply(__arg0 => __arg0.instrumentationKey);
- * ```
- */
 export function getInsights(args: GetInsightsArgs, opts?: pulumi.InvokeOptions): Promise<GetInsightsResult> {
     return pulumi.runtime.invoke("azure:appinsights/getInsights:getInsights", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getInsights(args: GetInsightsArgs, opts?: pulumi.InvokeOptions):
  * A collection of arguments for invoking getInsights.
  */
 export interface GetInsightsArgs {
-    /**
-     * Specifies the name of the Application Insights component.
-     */
     readonly name: string;
-    /**
-     * Specifies the name of the resource group the Application Insights component is located in.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,25 +23,10 @@ export interface GetInsightsArgs {
  * A collection of values returned by getInsights.
  */
 export interface GetInsightsResult {
-    /**
-     * The App ID associated with this Application Insights component.
-     */
     readonly appId: string;
-    /**
-     * The type of the component.
-     */
     readonly applicationType: string;
-    /**
-     * The instrumentation key of the Application Insights component.
-     */
     readonly instrumentationKey: string;
-    /**
-     * The Azure location where the component exists.
-     */
     readonly location: string;
-    /**
-     * Tags applied to the component.
-     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

@@ -4,37 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Allows you to set a user or group as the AD administrator for an Azure SQL server
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acceptanceTestResourceGroup1",
- * });
- * const azurerm_client_config_current = pulumi.output(azure.core.getClientConfig({}));
- * const azurerm_sql_server_test = new azure.sql.SqlServer("test", {
- *     administratorLogin: "4dm1n157r470r",
- *     administratorLoginPassword: "4-v3ry-53cr37-p455w0rd",
- *     location: azurerm_resource_group_test.location,
- *     name: "mysqlserver",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     version: "12.0",
- * });
- * const azurerm_sql_active_directory_administrator_test = new azure.sql.ActiveDirectoryAdministrator("test", {
- *     login: "sqladmin",
- *     objectId: azurerm_client_config_current.apply(__arg0 => __arg0.servicePrincipalObjectId),
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serverName: azurerm_sql_server_test.name,
- *     tenantId: azurerm_client_config_current.apply(__arg0 => __arg0.tenantId),
- * });
- * ```
- */
 export class ActiveDirectoryAdministrator extends pulumi.CustomResource {
     /**
      * Get an existing ActiveDirectoryAdministrator resource's state with the given name, ID, and optional extra
@@ -48,25 +17,10 @@ export class ActiveDirectoryAdministrator extends pulumi.CustomResource {
         return new ActiveDirectoryAdministrator(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The login name of the principal to set as the server administrator
-     */
     public readonly login: pulumi.Output<string>;
-    /**
-     * The ID of the principal to set as the server administrator
-     */
     public readonly objectId: pulumi.Output<string>;
-    /**
-     * The name of the resource group for the SQL server. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The name of the SQL Server on which to set the administrator. Changing this forces a new resource to be created.
-     */
     public readonly serverName: pulumi.Output<string>;
-    /**
-     * The Azure Tenant ID
-     */
     public readonly tenantId: pulumi.Output<string>;
 
     /**
@@ -117,25 +71,10 @@ export class ActiveDirectoryAdministrator extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ActiveDirectoryAdministrator resources.
  */
 export interface ActiveDirectoryAdministratorState {
-    /**
-     * The login name of the principal to set as the server administrator
-     */
     readonly login?: pulumi.Input<string>;
-    /**
-     * The ID of the principal to set as the server administrator
-     */
     readonly objectId?: pulumi.Input<string>;
-    /**
-     * The name of the resource group for the SQL server. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server on which to set the administrator. Changing this forces a new resource to be created.
-     */
     readonly serverName?: pulumi.Input<string>;
-    /**
-     * The Azure Tenant ID
-     */
     readonly tenantId?: pulumi.Input<string>;
 }
 
@@ -143,24 +82,9 @@ export interface ActiveDirectoryAdministratorState {
  * The set of arguments for constructing a ActiveDirectoryAdministrator resource.
  */
 export interface ActiveDirectoryAdministratorArgs {
-    /**
-     * The login name of the principal to set as the server administrator
-     */
     readonly login: pulumi.Input<string>;
-    /**
-     * The ID of the principal to set as the server administrator
-     */
     readonly objectId: pulumi.Input<string>;
-    /**
-     * The name of the resource group for the SQL server. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server on which to set the administrator. Changing this forces a new resource to be created.
-     */
     readonly serverName: pulumi.Input<string>;
-    /**
-     * The Azure Tenant ID
-     */
     readonly tenantId: pulumi.Input<string>;
 }

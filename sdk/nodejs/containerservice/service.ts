@@ -4,141 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an Azure Container Service Instance
- * 
- * > **NOTE:** All arguments including the client secret will be stored in the raw state as plain-text.
- * [Read more about sensitive data in state](https://www.terraform.io/docs/state/sensitive-data.html).
- * 
- * > **DEPRECATED:** [Azure Container Service (ACS) has been deprecated by Azure in favour of Azure (Managed) Kubernetes Service (AKS)](https://azure.microsoft.com/en-us/updates/azure-container-service-will-retire-on-january-31-2020/). Support for ACS will be removed in the next major version of the AzureRM Provider (2.0) - and we **strongly recommend** you consider using Azure Kubernetes Service (AKS) for new deployments.
- * 
- * ## Example Usage (DCOS)
- * 
- * ```hcl
- * resource "azurerm_resource_group" "test" {
- *   name     = "acctestRG1"
- *   location = "West US"
- * }
- * 
- * resource "azurerm_container_service" "test" {
- *   name                   = "acctestcontservice1"
- *   location               = "${azurerm_resource_group.test.location}"
- *   resource_group_name    = "${azurerm_resource_group.test.name}"
- *   orchestration_platform = "DCOS"
- * 
- *   master_profile {
- *     count      = 1
- *     dns_prefix = "acctestmaster1"
- *   }
- * 
- *   linux_profile {
- *     admin_username = "acctestuser1"
- * 
- *     ssh_key {
- *       key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqaZoyiz1qbdOQ8xEf6uEu1cCwYowo5FHtsBhqLoDnnp7KUTEBN+L2NxRIfQ781rxV6Iq5jSav6b2Q8z5KiseOlvKA/RF2wqU0UPYqQviQhLmW6THTpmrv/YkUCuzxDpsH7DUDhZcwySLKVVe0Qm3+5N2Ta6UYH3lsDf9R9wTP2K/+vAnflKebuypNlmocIvakFWoZda18FOmsOoIVXQ8HWFNCuw9ZCunMSN62QGamCe3dL5cXlkgHYv7ekJE15IA9aOJcM7e90oeTqo+7HTcWfdu0qQqPWY5ujyMw/llas8tsXY85LFqRnr3gJ02bAscjc477+X+j/gkpFoN1QEmt terraform@demo.tld"
- *     }
- *   }
- * 
- *   agent_pool_profile {
- *     name       = "default"
- *     count      = 1
- *     dns_prefix = "acctestagent1"
- *     vm_size    = "Standard_F2"
- *   }
- * 
- *   diagnostics_profile {
- *     enabled = false
- *   }
- * 
- *   tags {
- *     Environment = "Production"
- *   }
- * }
- * ```
- * 
- * ## Example Usage (Kubernetes)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acctestRG1",
- * });
- * const azurerm_container_service_test = new azure.containerservice.Service("test", {
- *     agentPoolProfile: {
- *         count: 1,
- *         dnsPrefix: "acctestagent1",
- *         name: "default",
- *         vmSize: "Standard_F2",
- *     },
- *     diagnosticsProfile: {
- *         enabled: false,
- *     },
- *     linuxProfile: {
- *         adminUsername: "acctestuser1",
- *         sshKey: {
- *             keyData: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqaZoyiz1qbdOQ8xEf6uEu1cCwYowo5FHtsBhqLoDnnp7KUTEBN+L2NxRIfQ781rxV6Iq5jSav6b2Q8z5KiseOlvKA/RF2wqU0UPYqQviQhLmW6THTpmrv/YkUCuzxDpsH7DUDhZcwySLKVVe0Qm3+5N2Ta6UYH3lsDf9R9wTP2K/+vAnflKebuypNlmocIvakFWoZda18FOmsOoIVXQ8HWFNCuw9ZCunMSN62QGamCe3dL5cXlkgHYv7ekJE15IA9aOJcM7e90oeTqo+7HTcWfdu0qQqPWY5ujyMw/llas8tsXY85LFqRnr3gJ02bAscjc477+X+j/gkpFoN1QEmt terraform@demo.tld",
- *         },
- *     },
- *     location: azurerm_resource_group_test.location,
- *     masterProfile: {
- *         count: 1,
- *         dnsPrefix: "acctestmaster1",
- *     },
- *     name: "acctestcontservice1",
- *     orchestrationPlatform: "Kubernetes",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     servicePrincipal: {
- *         clientId: "00000000-0000-0000-0000-000000000000",
- *         clientSecret: "00000000000000000000000000000000",
- *     },
- *     tags: {
- *         Environment: "Production",
- *     },
- * });
- * ```
- * ###  Example Usage (Swarm)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acctestRG1",
- * });
- * const azurerm_container_service_test = new azure.containerservice.Service("test", {
- *     agentPoolProfile: {
- *         count: 1,
- *         dnsPrefix: "acctestagent1",
- *         name: "default",
- *         vmSize: "Standard_F2",
- *     },
- *     diagnosticsProfile: {
- *         enabled: false,
- *     },
- *     linuxProfile: {
- *         adminUsername: "acctestuser1",
- *         sshKey: {
- *             keyData: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqaZoyiz1qbdOQ8xEf6uEu1cCwYowo5FHtsBhqLoDnnp7KUTEBN+L2NxRIfQ781rxV6Iq5jSav6b2Q8z5KiseOlvKA/RF2wqU0UPYqQviQhLmW6THTpmrv/YkUCuzxDpsH7DUDhZcwySLKVVe0Qm3+5N2Ta6UYH3lsDf9R9wTP2K/+vAnflKebuypNlmocIvakFWoZda18FOmsOoIVXQ8HWFNCuw9ZCunMSN62QGamCe3dL5cXlkgHYv7ekJE15IA9aOJcM7e90oeTqo+7HTcWfdu0qQqPWY5ujyMw/llas8tsXY85LFqRnr3gJ02bAscjc477+X+j/gkpFoN1QEmt terraform@demo.tld",
- *         },
- *     },
- *     location: azurerm_resource_group_test.location,
- *     masterProfile: {
- *         count: 1,
- *         dnsPrefix: "acctestmaster1",
- *     },
- *     name: "acctestcontservice1",
- *     orchestrationPlatform: "Swarm",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         Environment: "Production",
- *     },
- * });
- * ```
- */
 export class Service extends pulumi.CustomResource {
     /**
      * Get an existing Service resource's state with the given name, ID, and optional extra
@@ -152,45 +17,15 @@ export class Service extends pulumi.CustomResource {
         return new Service(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * A Agent Pool Profile's block as documented below.
-     */
     public readonly agentPoolProfile: pulumi.Output<{ count?: number, dnsPrefix: string, fqdn: string, name: string, vmSize: string }>;
-    /**
-     * A VM Diagnostics Profile block as documented below.
-     */
     public readonly diagnosticsProfile: pulumi.Output<{ enabled: boolean, storageUri: string }>;
-    /**
-     * A Linux Profile block as documented below.
-     */
     public readonly linuxProfile: pulumi.Output<{ adminUsername: string, sshKey: { keyData: string } }>;
-    /**
-     * The location where the Container Service instance should be created. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * A Master Profile block as documented below.
-     */
     public readonly masterProfile: pulumi.Output<{ count?: number, dnsPrefix: string, fqdn: string }>;
-    /**
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies the Container Orchestration Platform to use. Currently can be either `DCOS`, `Kubernetes` or `Swarm`. Changing this forces a new resource to be created.
-     */
     public readonly orchestrationPlatform: pulumi.Output<string>;
-    /**
-     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A Service Principal block as documented below.
-     */
     public readonly servicePrincipal: pulumi.Output<{ clientId: string, clientSecret: string } | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -257,45 +92,15 @@ export class Service extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Service resources.
  */
 export interface ServiceState {
-    /**
-     * A Agent Pool Profile's block as documented below.
-     */
     readonly agentPoolProfile?: pulumi.Input<{ count?: pulumi.Input<number>, dnsPrefix: pulumi.Input<string>, fqdn?: pulumi.Input<string>, name: pulumi.Input<string>, vmSize: pulumi.Input<string> }>;
-    /**
-     * A VM Diagnostics Profile block as documented below.
-     */
     readonly diagnosticsProfile?: pulumi.Input<{ enabled: pulumi.Input<boolean>, storageUri?: pulumi.Input<string> }>;
-    /**
-     * A Linux Profile block as documented below.
-     */
     readonly linuxProfile?: pulumi.Input<{ adminUsername: pulumi.Input<string>, sshKey: pulumi.Input<{ keyData: pulumi.Input<string> }> }>;
-    /**
-     * The location where the Container Service instance should be created. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * A Master Profile block as documented below.
-     */
     readonly masterProfile?: pulumi.Input<{ count?: pulumi.Input<number>, dnsPrefix: pulumi.Input<string>, fqdn?: pulumi.Input<string> }>;
-    /**
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the Container Orchestration Platform to use. Currently can be either `DCOS`, `Kubernetes` or `Swarm`. Changing this forces a new resource to be created.
-     */
     readonly orchestrationPlatform?: pulumi.Input<string>;
-    /**
-     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A Service Principal block as documented below.
-     */
     readonly servicePrincipal?: pulumi.Input<{ clientId: pulumi.Input<string>, clientSecret: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -303,44 +108,14 @@ export interface ServiceState {
  * The set of arguments for constructing a Service resource.
  */
 export interface ServiceArgs {
-    /**
-     * A Agent Pool Profile's block as documented below.
-     */
     readonly agentPoolProfile: pulumi.Input<{ count?: pulumi.Input<number>, dnsPrefix: pulumi.Input<string>, fqdn?: pulumi.Input<string>, name: pulumi.Input<string>, vmSize: pulumi.Input<string> }>;
-    /**
-     * A VM Diagnostics Profile block as documented below.
-     */
     readonly diagnosticsProfile: pulumi.Input<{ enabled: pulumi.Input<boolean>, storageUri?: pulumi.Input<string> }>;
-    /**
-     * A Linux Profile block as documented below.
-     */
     readonly linuxProfile: pulumi.Input<{ adminUsername: pulumi.Input<string>, sshKey: pulumi.Input<{ keyData: pulumi.Input<string> }> }>;
-    /**
-     * The location where the Container Service instance should be created. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * A Master Profile block as documented below.
-     */
     readonly masterProfile: pulumi.Input<{ count?: pulumi.Input<number>, dnsPrefix: pulumi.Input<string>, fqdn?: pulumi.Input<string> }>;
-    /**
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies the Container Orchestration Platform to use. Currently can be either `DCOS`, `Kubernetes` or `Swarm`. Changing this forces a new resource to be created.
-     */
     readonly orchestrationPlatform: pulumi.Input<string>;
-    /**
-     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A Service Principal block as documented below.
-     */
     readonly servicePrincipal?: pulumi.Input<{ clientId: pulumi.Input<string>, clientSecret: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

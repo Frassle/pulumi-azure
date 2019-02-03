@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing EventHub Namespace.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_eventhub_namespace_test = pulumi.output(azure.eventhub.getEventhubNamespace({
- *     name: "search-eventhubns",
- *     resourceGroupName: "search-service",
- * }));
- * 
- * export const eventhubNamespaceId = azurerm_eventhub_namespace_test.apply(__arg0 => __arg0.id);
- * ```
- */
 export function getEventhubNamespace(args: GetEventhubNamespaceArgs, opts?: pulumi.InvokeOptions): Promise<GetEventhubNamespaceResult> {
     return pulumi.runtime.invoke("azure:eventhub/getEventhubNamespace:getEventhubNamespace", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getEventhubNamespace(args: GetEventhubNamespaceArgs, opts?: pulu
  * A collection of arguments for invoking getEventhubNamespace.
  */
 export interface GetEventhubNamespaceArgs {
-    /**
-     * The name of the EventHub Namespace.
-     */
     readonly name: string;
-    /**
-     * The Name of the Resource Group where the EventHub Namespace exists.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,48 +23,16 @@ export interface GetEventhubNamespaceArgs {
  * A collection of values returned by getEventhubNamespace.
  */
 export interface GetEventhubNamespaceResult {
-    /**
-     * Is Auto Inflate enabled for the EventHub Namespace?
-     */
     readonly autoInflateEnabled: boolean;
-    /**
-     * The Capacity / Throughput Units for a `Standard` SKU namespace.
-     */
     readonly capacity: number;
-    /**
-     * The primary connection string for the authorization
-     * rule `RootManageSharedAccessKey`.
-     */
     readonly defaultPrimaryConnectionString: string;
-    /**
-     * The primary access key for the authorization rule `RootManageSharedAccessKey`.
-     */
     readonly defaultPrimaryKey: string;
-    /**
-     * The secondary connection string for the
-     * authorization rule `RootManageSharedAccessKey`.
-     */
     readonly defaultSecondaryConnectionString: string;
-    /**
-     * The secondary access key for the authorization rule `RootManageSharedAccessKey`.
-     */
     readonly defaultSecondaryKey: string;
     readonly kafkaEnabled: boolean;
-    /**
-     * The Azure location where the EventHub Namespace exists
-     */
     readonly location: string;
-    /**
-     * Specifies the maximum number of throughput units when Auto Inflate is Enabled.
-     */
     readonly maximumThroughputUnits: number;
-    /**
-     * Defines which tier to use.
-     */
     readonly sku: string;
-    /**
-     * A mapping of tags to assign to the EventHub Namespace.
-     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

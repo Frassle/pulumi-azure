@@ -4,80 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Function App.
- * 
- * ## Example Usage (with App Service Plan)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "westus2",
- *     name: "azure-functions-test-rg",
- * });
- * const azurerm_app_service_plan_test = new azure.appservice.Plan("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "azure-functions-test-service-plan",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         size: "S1",
- *         tier: "Standard",
- *     },
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "functionsapptestsa",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_function_app_test = new azure.appservice.FunctionApp("test", {
- *     appServicePlanId: azurerm_app_service_plan_test.id,
- *     location: azurerm_resource_group_test.location,
- *     name: "test-azure-functions",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageConnectionString: azurerm_storage_account_test.primaryConnectionString,
- * });
- * ```
- * 
- * ## Example Usage (in a Consumption Plan)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "westus2",
- *     name: "azure-functions-cptest-rg",
- * });
- * const azurerm_app_service_plan_test = new azure.appservice.Plan("test", {
- *     kind: "FunctionApp",
- *     location: azurerm_resource_group_test.location,
- *     name: "azure-functions-test-service-plan",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         size: "Y1",
- *         tier: "Dynamic",
- *     },
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "functionsapptestsa",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_function_app_test = new azure.appservice.FunctionApp("test", {
- *     appServicePlanId: azurerm_app_service_plan_test.id,
- *     location: azurerm_resource_group_test.location,
- *     name: "test-azure-functions",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageConnectionString: azurerm_storage_account_test.primaryConnectionString,
- * });
- * ```
- */
 export class FunctionApp extends pulumi.CustomResource {
     /**
      * Get an existing FunctionApp resource's state with the given name, ID, and optional extra
@@ -91,77 +17,23 @@ export class FunctionApp extends pulumi.CustomResource {
         return new FunctionApp(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The ID of the App Service Plan within which to create this Function App. Changing this forces a new resource to be created.
-     */
     public readonly appServicePlanId: pulumi.Output<string>;
-    /**
-     * A key-value pair of App Settings.
-     */
     public readonly appSettings: pulumi.Output<{[key: string]: any} | undefined>;
-    /**
-     * Should the Function App send session affinity cookies, which route client requests in the same session to the same instance?
-     */
     public readonly clientAffinityEnabled: pulumi.Output<boolean>;
-    /**
-     * An `connection_string` block as defined below.
-     */
     public readonly connectionStrings: pulumi.Output<{ name: string, type: string, value: string }[]>;
-    /**
-     * The default hostname associated with the Function App - such as `mysite.azurewebsites.net`
-     */
     public /*out*/ readonly defaultHostname: pulumi.Output<string>;
-    /**
-     * Should the built-in logging of this Function App be enabled? Defaults to `true`.
-     */
     public readonly enableBuiltinLogging: pulumi.Output<boolean | undefined>;
-    /**
-     * Is the Function App enabled?
-     */
     public readonly enabled: pulumi.Output<boolean | undefined>;
-    /**
-     * Can the Function App only be accessed via HTTPS? Defaults to `false`.
-     */
     public readonly httpsOnly: pulumi.Output<boolean | undefined>;
-    /**
-     * An `identity` block as defined below.
-     */
     public readonly identity: pulumi.Output<{ principalId: string, tenantId: string, type: string }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the Connection String.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A comma separated list of outbound IP addresses - such as `52.23.25.3,52.143.43.12`
-     */
     public /*out*/ readonly outboundIpAddresses: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the Function App.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A `site_config` object as defined below.
-     */
     public readonly siteConfig: pulumi.Output<{ alwaysOn?: boolean, use32BitWorkerProcess?: boolean, websocketsEnabled?: boolean }>;
-    /**
-     * A `site_credential` block as defined below, which contains the site-level credentials used to publish to this App Service.
-     */
     public /*out*/ readonly siteCredential: pulumi.Output<{ password: string, username: string }>;
-    /**
-     * The connection string of the backend storage account which will be used by this Function App (such as the dashboard, logs).
-     */
     public readonly storageConnectionString: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * The runtime version associated with the Function App. Defaults to `~1`.
-     */
     public readonly version: pulumi.Output<string | undefined>;
 
     /**
@@ -235,77 +107,23 @@ export class FunctionApp extends pulumi.CustomResource {
  * Input properties used for looking up and filtering FunctionApp resources.
  */
 export interface FunctionAppState {
-    /**
-     * The ID of the App Service Plan within which to create this Function App. Changing this forces a new resource to be created.
-     */
     readonly appServicePlanId?: pulumi.Input<string>;
-    /**
-     * A key-value pair of App Settings.
-     */
     readonly appSettings?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Should the Function App send session affinity cookies, which route client requests in the same session to the same instance?
-     */
     readonly clientAffinityEnabled?: pulumi.Input<boolean>;
-    /**
-     * An `connection_string` block as defined below.
-     */
     readonly connectionStrings?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, type: pulumi.Input<string>, value: pulumi.Input<string> }>[]>;
-    /**
-     * The default hostname associated with the Function App - such as `mysite.azurewebsites.net`
-     */
     readonly defaultHostname?: pulumi.Input<string>;
-    /**
-     * Should the built-in logging of this Function App be enabled? Defaults to `true`.
-     */
     readonly enableBuiltinLogging?: pulumi.Input<boolean>;
-    /**
-     * Is the Function App enabled?
-     */
     readonly enabled?: pulumi.Input<boolean>;
-    /**
-     * Can the Function App only be accessed via HTTPS? Defaults to `false`.
-     */
     readonly httpsOnly?: pulumi.Input<boolean>;
-    /**
-     * An `identity` block as defined below.
-     */
     readonly identity?: pulumi.Input<{ principalId?: pulumi.Input<string>, tenantId?: pulumi.Input<string>, type: pulumi.Input<string> }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the Connection String.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A comma separated list of outbound IP addresses - such as `52.23.25.3,52.143.43.12`
-     */
     readonly outboundIpAddresses?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Function App.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A `site_config` object as defined below.
-     */
     readonly siteConfig?: pulumi.Input<{ alwaysOn?: pulumi.Input<boolean>, use32BitWorkerProcess?: pulumi.Input<boolean>, websocketsEnabled?: pulumi.Input<boolean> }>;
-    /**
-     * A `site_credential` block as defined below, which contains the site-level credentials used to publish to this App Service.
-     */
     readonly siteCredential?: pulumi.Input<{ password?: pulumi.Input<string>, username?: pulumi.Input<string> }>;
-    /**
-     * The connection string of the backend storage account which will be used by this Function App (such as the dashboard, logs).
-     */
     readonly storageConnectionString?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The runtime version associated with the Function App. Defaults to `~1`.
-     */
     readonly version?: pulumi.Input<string>;
 }
 
@@ -313,64 +131,19 @@ export interface FunctionAppState {
  * The set of arguments for constructing a FunctionApp resource.
  */
 export interface FunctionAppArgs {
-    /**
-     * The ID of the App Service Plan within which to create this Function App. Changing this forces a new resource to be created.
-     */
     readonly appServicePlanId: pulumi.Input<string>;
-    /**
-     * A key-value pair of App Settings.
-     */
     readonly appSettings?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Should the Function App send session affinity cookies, which route client requests in the same session to the same instance?
-     */
     readonly clientAffinityEnabled?: pulumi.Input<boolean>;
-    /**
-     * An `connection_string` block as defined below.
-     */
     readonly connectionStrings?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, type: pulumi.Input<string>, value: pulumi.Input<string> }>[]>;
-    /**
-     * Should the built-in logging of this Function App be enabled? Defaults to `true`.
-     */
     readonly enableBuiltinLogging?: pulumi.Input<boolean>;
-    /**
-     * Is the Function App enabled?
-     */
     readonly enabled?: pulumi.Input<boolean>;
-    /**
-     * Can the Function App only be accessed via HTTPS? Defaults to `false`.
-     */
     readonly httpsOnly?: pulumi.Input<boolean>;
-    /**
-     * An `identity` block as defined below.
-     */
     readonly identity?: pulumi.Input<{ principalId?: pulumi.Input<string>, tenantId?: pulumi.Input<string>, type: pulumi.Input<string> }>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the Connection String.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the Function App.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A `site_config` object as defined below.
-     */
     readonly siteConfig?: pulumi.Input<{ alwaysOn?: pulumi.Input<boolean>, use32BitWorkerProcess?: pulumi.Input<boolean>, websocketsEnabled?: pulumi.Input<boolean> }>;
-    /**
-     * The connection string of the backend storage account which will be used by this Function App (such as the dashboard, logs).
-     */
     readonly storageConnectionString: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The runtime version associated with the Function App. Defaults to `~1`.
-     */
     readonly version?: pulumi.Input<string>;
 }

@@ -4,62 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a MySQL Virtual Network Rule.
- * 
- * -> **NOTE:** MySQL Virtual Network Rules [can only be used with SKU Tiers of `GeneralPurpose` or `MemoryOptimized`](https://docs.microsoft.com/en-us/azure/mysql/concepts-data-access-and-security-vnet)
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "example-resources",
- * });
- * const azurerm_mysql_server_test = new azure.mysql.Server("test", {
- *     administratorLogin: "mysqladminun",
- *     administratorLoginPassword: "H@Sh1CoR3!",
- *     location: azurerm_resource_group_test.location,
- *     name: "mysql-server-1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         capacity: 2,
- *         family: "Gen5",
- *         name: "GP_Gen5_2",
- *         tier: "GeneralPurpose",
- *     },
- *     sslEnforcement: "Enabled",
- *     storageProfile: {
- *         backupRetentionDays: 7,
- *         geoRedundantBackup: "Disabled",
- *         storageMb: 5120,
- *     },
- *     version: "5.7",
- * });
- * const azurerm_virtual_network_test = new azure.network.VirtualNetwork("test", {
- *     addressSpaces: ["10.7.29.0/29"],
- *     location: azurerm_resource_group_test.location,
- *     name: "example-vnet",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_subnet_internal = new azure.network.Subnet("internal", {
- *     addressPrefix: "10.7.29.0/29",
- *     name: "internal",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serviceEndpoints: ["Microsoft.Sql"],
- *     virtualNetworkName: azurerm_virtual_network_test.name,
- * });
- * const azurerm_mysql_virtual_network_rule_test = new azure.mysql.VirtualNetworkRule("test", {
- *     name: "mysql-vnet-rule",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serverName: azurerm_mysql_server_test.name,
- *     subnetId: azurerm_subnet_internal.id,
- * });
- * ```
- */
 export class VirtualNetworkRule extends pulumi.CustomResource {
     /**
      * Get an existing VirtualNetworkRule resource's state with the given name, ID, and optional extra
@@ -73,21 +17,9 @@ export class VirtualNetworkRule extends pulumi.CustomResource {
         return new VirtualNetworkRule(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The name of the MySQL Virtual Network Rule. Cannot be empty and must only contain alphanumeric characters and hyphens. Cannot start with a number, and cannot start or end with a hyphen. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group where the MySQL server resides. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The name of the SQL Server to which this MySQL virtual network rule will be applied to. Changing this forces a new resource to be created.
-     */
     public readonly serverName: pulumi.Output<string>;
-    /**
-     * The ID of the subnet that the MySQL server will be connected to.
-     */
     public readonly subnetId: pulumi.Output<string>;
 
     /**
@@ -130,21 +62,9 @@ export class VirtualNetworkRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering VirtualNetworkRule resources.
  */
 export interface VirtualNetworkRuleState {
-    /**
-     * The name of the MySQL Virtual Network Rule. Cannot be empty and must only contain alphanumeric characters and hyphens. Cannot start with a number, and cannot start or end with a hyphen. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group where the MySQL server resides. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server to which this MySQL virtual network rule will be applied to. Changing this forces a new resource to be created.
-     */
     readonly serverName?: pulumi.Input<string>;
-    /**
-     * The ID of the subnet that the MySQL server will be connected to.
-     */
     readonly subnetId?: pulumi.Input<string>;
 }
 
@@ -152,20 +72,8 @@ export interface VirtualNetworkRuleState {
  * The set of arguments for constructing a VirtualNetworkRule resource.
  */
 export interface VirtualNetworkRuleArgs {
-    /**
-     * The name of the MySQL Virtual Network Rule. Cannot be empty and must only contain alphanumeric characters and hyphens. Cannot start with a number, and cannot start or end with a hyphen. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group where the MySQL server resides. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server to which this MySQL virtual network rule will be applied to. Changing this forces a new resource to be created.
-     */
     readonly serverName: pulumi.Input<string>;
-    /**
-     * The ID of the subnet that the MySQL server will be connected to.
-     */
     readonly subnetId: pulumi.Input<string>;
 }

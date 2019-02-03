@@ -4,45 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Shared Image within a Shared Image Gallery.
- * 
- * -> **NOTE** Shared Image Galleries are currently in Public Preview. You can find more information, including [how to register for the Public Preview here](https://azure.microsoft.com/en-gb/blog/announcing-the-public-preview-of-shared-image-gallery/).
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "example-resources",
- * });
- * const azurerm_shared_image_gallery_test = new azure.compute.SharedImageGallery("test", {
- *     description: "Shared images and things.",
- *     location: azurerm_resource_group_test.location,
- *     name: "example_image_gallery",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         Hello: "There",
- *         World: "Example",
- *     },
- * });
- * const azurerm_shared_image_test = new azure.compute.SharedImage("test", {
- *     galleryName: azurerm_shared_image_gallery_test.name,
- *     identifier: {
- *         offer: "OfferName",
- *         publisher: "PublisherName",
- *         sku: "ExampleSku",
- *     },
- *     location: azurerm_resource_group_test.location,
- *     name: "my-image",
- *     osType: "Linux",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * ```
- */
 export class SharedImage extends pulumi.CustomResource {
     /**
      * Get an existing SharedImage resource's state with the given name, ID, and optional extra
@@ -56,46 +17,16 @@ export class SharedImage extends pulumi.CustomResource {
         return new SharedImage(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * A description of this Shared Image.
-     */
     public readonly description: pulumi.Output<string | undefined>;
-    /**
-     * The End User Licence Agreement for the Shared Image.
-     */
     public readonly eula: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the name of the Shared Image Gallery in which this Shared Image should exist. Changing this forces a new resource to be created.
-     */
     public readonly galleryName: pulumi.Output<string>;
     public readonly identifier: pulumi.Output<{ offer: string, publisher: string, sku: string }>;
-    /**
-     * Specifies the supported Azure location where the Shared Image Gallery exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Shared Image. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The type of Operating System present in this Shared Image. Possible values are `Linux` and `Windows`.
-     */
     public readonly osType: pulumi.Output<string>;
-    /**
-     * The URI containing the Privacy Statement associated with this Shared Image.
-     */
     public readonly privacyStatementUri: pulumi.Output<string | undefined>;
-    /**
-     * The URI containing the Release Notes associated with this Shared Image.
-     */
     public readonly releaseNoteUri: pulumi.Output<string | undefined>;
-    /**
-     * The name of the resource group in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the Shared Image.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -158,46 +89,16 @@ export class SharedImage extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SharedImage resources.
  */
 export interface SharedImageState {
-    /**
-     * A description of this Shared Image.
-     */
     readonly description?: pulumi.Input<string>;
-    /**
-     * The End User Licence Agreement for the Shared Image.
-     */
     readonly eula?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Shared Image Gallery in which this Shared Image should exist. Changing this forces a new resource to be created.
-     */
     readonly galleryName?: pulumi.Input<string>;
     readonly identifier?: pulumi.Input<{ offer: pulumi.Input<string>, publisher: pulumi.Input<string>, sku: pulumi.Input<string> }>;
-    /**
-     * Specifies the supported Azure location where the Shared Image Gallery exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Shared Image. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The type of Operating System present in this Shared Image. Possible values are `Linux` and `Windows`.
-     */
     readonly osType?: pulumi.Input<string>;
-    /**
-     * The URI containing the Privacy Statement associated with this Shared Image.
-     */
     readonly privacyStatementUri?: pulumi.Input<string>;
-    /**
-     * The URI containing the Release Notes associated with this Shared Image.
-     */
     readonly releaseNoteUri?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the Shared Image.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -205,45 +106,15 @@ export interface SharedImageState {
  * The set of arguments for constructing a SharedImage resource.
  */
 export interface SharedImageArgs {
-    /**
-     * A description of this Shared Image.
-     */
     readonly description?: pulumi.Input<string>;
-    /**
-     * The End User Licence Agreement for the Shared Image.
-     */
     readonly eula?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Shared Image Gallery in which this Shared Image should exist. Changing this forces a new resource to be created.
-     */
     readonly galleryName: pulumi.Input<string>;
     readonly identifier: pulumi.Input<{ offer: pulumi.Input<string>, publisher: pulumi.Input<string>, sku: pulumi.Input<string> }>;
-    /**
-     * Specifies the supported Azure location where the Shared Image Gallery exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Shared Image. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The type of Operating System present in this Shared Image. Possible values are `Linux` and `Windows`.
-     */
     readonly osType: pulumi.Input<string>;
-    /**
-     * The URI containing the Privacy Statement associated with this Shared Image.
-     */
     readonly privacyStatementUri?: pulumi.Input<string>;
-    /**
-     * The URI containing the Release Notes associated with this Shared Image.
-     */
     readonly releaseNoteUri?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the Shared Image.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

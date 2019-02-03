@@ -4,21 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Management Group.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_subscription_current = pulumi.output(azure.core.getSubscription({}));
- * const azurerm_management_group_test = new azure.managementgroups.ManagementGroup("test", {
- *     subscriptionIds: [azurerm_subscription_current.apply(__arg0 => __arg0.id)],
- * });
- * ```
- */
 export class ManagementGroup extends pulumi.CustomResource {
     /**
      * Get an existing ManagementGroup resource's state with the given name, ID, and optional extra
@@ -32,21 +17,9 @@ export class ManagementGroup extends pulumi.CustomResource {
         return new ManagementGroup(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * A friendly name for this Management Group. If not specified, this'll be the same as the `group_id`.
-     */
     public readonly displayName: pulumi.Output<string>;
-    /**
-     * The UUID for this Management Group, which needs to be unique across your tenant - which will be generated if not provided. Changing this forces a new resource to be created.
-     */
     public readonly groupId: pulumi.Output<string>;
-    /**
-     * The ID of the Parent Management Group. Changing this forces a new resource to be created.
-     */
     public readonly parentManagementGroupId: pulumi.Output<string>;
-    /**
-     * A list of Subscription ID's which should be assigned to the Management Group.
-     */
     public readonly subscriptionIds: pulumi.Output<string[] | undefined>;
 
     /**
@@ -80,21 +53,9 @@ export class ManagementGroup extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ManagementGroup resources.
  */
 export interface ManagementGroupState {
-    /**
-     * A friendly name for this Management Group. If not specified, this'll be the same as the `group_id`.
-     */
     readonly displayName?: pulumi.Input<string>;
-    /**
-     * The UUID for this Management Group, which needs to be unique across your tenant - which will be generated if not provided. Changing this forces a new resource to be created.
-     */
     readonly groupId?: pulumi.Input<string>;
-    /**
-     * The ID of the Parent Management Group. Changing this forces a new resource to be created.
-     */
     readonly parentManagementGroupId?: pulumi.Input<string>;
-    /**
-     * A list of Subscription ID's which should be assigned to the Management Group.
-     */
     readonly subscriptionIds?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
@@ -102,20 +63,8 @@ export interface ManagementGroupState {
  * The set of arguments for constructing a ManagementGroup resource.
  */
 export interface ManagementGroupArgs {
-    /**
-     * A friendly name for this Management Group. If not specified, this'll be the same as the `group_id`.
-     */
     readonly displayName?: pulumi.Input<string>;
-    /**
-     * The UUID for this Management Group, which needs to be unique across your tenant - which will be generated if not provided. Changing this forces a new resource to be created.
-     */
     readonly groupId?: pulumi.Input<string>;
-    /**
-     * The ID of the Parent Management Group. Changing this forces a new resource to be created.
-     */
     readonly parentManagementGroupId?: pulumi.Input<string>;
-    /**
-     * A list of Subscription ID's which should be assigned to the Management Group.
-     */
     readonly subscriptionIds?: pulumi.Input<pulumi.Input<string>[]>;
 }

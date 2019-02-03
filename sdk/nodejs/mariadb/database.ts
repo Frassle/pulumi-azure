@@ -4,48 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a MariaDB Database within a MariaDB Server
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_example = new azure.core.ResourceGroup("example", {
- *     location: "westeurope",
- *     name: "tfex-mariadb-database-RG",
- * });
- * const azurerm_mariadb_server_example = new azure.mariadb.Server("example", {
- *     administratorLogin: "acctestun",
- *     administratorLoginPassword: "H@Sh1CoR3!",
- *     location: azurerm_resource_group_example.location,
- *     name: "mariadb-svr",
- *     resourceGroupName: azurerm_resource_group_example.name,
- *     sku: {
- *         capacity: 2,
- *         family: "Gen5",
- *         name: "B_Gen5_2",
- *         tier: "Basic",
- *     },
- *     sslEnforcement: "Enabled",
- *     storageProfile: {
- *         backupRetentionDays: 7,
- *         geoRedundantBackup: "Disabled",
- *         storageMb: 51200,
- *     },
- *     version: "10.2",
- * });
- * const azurerm_mariadb_database_example = new azure.mariadb.Database("example", {
- *     charset: "utf8",
- *     collation: "utf8_general_ci",
- *     name: "mariadb_database",
- *     resourceGroupName: azurerm_resource_group_example.name,
- *     serverName: azurerm_mariadb_server_example.name,
- * });
- * ```
- */
 export class Database extends pulumi.CustomResource {
     /**
      * Get an existing Database resource's state with the given name, ID, and optional extra
@@ -59,26 +17,10 @@ export class Database extends pulumi.CustomResource {
         return new Database(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the Charset for the MariaDB Database, which needs [to be a valid MariaDB Charset](https://mariadb.com/kb/en/library/setting-character-sets-and-collations). Changing this forces a new resource to be created.
-     */
     public readonly charset: pulumi.Output<string>;
-    /**
-     * Specifies the Collation for the MariaDB Database, which needs [to be a valid MariaDB Collation](https://mariadb.com/kb/en/library/setting-character-sets-and-collations). Changing this forces a new resource to be created.
-     */
     public readonly collation: pulumi.Output<string>;
-    /**
-     * Specifies the name of the MariaDB Database, which needs [to be a valid MariaDB identifier](https://mariadb.com/kb/en/library/identifier-names/). Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which the MariaDB Server exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * Specifies the name of the MariaDB Server. Changing this forces a new resource to be created.
-     */
     public readonly serverName: pulumi.Output<string>;
 
     /**
@@ -126,26 +68,10 @@ export class Database extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Database resources.
  */
 export interface DatabaseState {
-    /**
-     * Specifies the Charset for the MariaDB Database, which needs [to be a valid MariaDB Charset](https://mariadb.com/kb/en/library/setting-character-sets-and-collations). Changing this forces a new resource to be created.
-     */
     readonly charset?: pulumi.Input<string>;
-    /**
-     * Specifies the Collation for the MariaDB Database, which needs [to be a valid MariaDB Collation](https://mariadb.com/kb/en/library/setting-character-sets-and-collations). Changing this forces a new resource to be created.
-     */
     readonly collation?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MariaDB Database, which needs [to be a valid MariaDB identifier](https://mariadb.com/kb/en/library/identifier-names/). Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the MariaDB Server exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MariaDB Server. Changing this forces a new resource to be created.
-     */
     readonly serverName?: pulumi.Input<string>;
 }
 
@@ -153,25 +79,9 @@ export interface DatabaseState {
  * The set of arguments for constructing a Database resource.
  */
 export interface DatabaseArgs {
-    /**
-     * Specifies the Charset for the MariaDB Database, which needs [to be a valid MariaDB Charset](https://mariadb.com/kb/en/library/setting-character-sets-and-collations). Changing this forces a new resource to be created.
-     */
     readonly charset: pulumi.Input<string>;
-    /**
-     * Specifies the Collation for the MariaDB Database, which needs [to be a valid MariaDB Collation](https://mariadb.com/kb/en/library/setting-character-sets-and-collations). Changing this forces a new resource to be created.
-     */
     readonly collation: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MariaDB Database, which needs [to be a valid MariaDB identifier](https://mariadb.com/kb/en/library/identifier-names/). Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the MariaDB Server exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * Specifies the name of the MariaDB Server. Changing this forces a new resource to be created.
-     */
     readonly serverName: pulumi.Input<string>;
 }

@@ -4,28 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Log Analytics (formally Operational Insights) Workspace.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "East US",
- *     name: "acctestRG-01",
- * });
- * const azurerm_log_analytics_workspace_test = new azure.operationalinsights.AnalyticsWorkspace("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "acctest-01",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     retentionInDays: 30,
- *     sku: "PerGB2018",
- * });
- * ```
- */
 export class AnalyticsWorkspace extends pulumi.CustomResource {
     /**
      * Get an existing AnalyticsWorkspace resource's state with the given name, ID, and optional extra
@@ -39,45 +17,15 @@ export class AnalyticsWorkspace extends pulumi.CustomResource {
         return new AnalyticsWorkspace(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Log Analytics Workspace. Workspace name should include 4-63 letters, digits or '-'. The '-' shouldn't be the first or the last symbol. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The Portal URL for the Log Analytics Workspace.
-     */
     public /*out*/ readonly portalUrl: pulumi.Output<string>;
-    /**
-     * The Primary shared key for the Log Analytics Workspace.
-     */
     public /*out*/ readonly primarySharedKey: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which the Log Analytics workspace is created. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The workspace data retention in days. Possible values range between 30 and 730.
-     */
     public readonly retentionInDays: pulumi.Output<number>;
-    /**
-     * The Secondary shared key for the Log Analytics Workspace.
-     */
     public /*out*/ readonly secondarySharedKey: pulumi.Output<string>;
-    /**
-     * Specifies the Sku of the Log Analytics Workspace. Possible values are `Free`, `PerNode`, `Premium`, `Standard`, `Standalone`, `Unlimited`, and `PerGB2018` (new Sku as of `2018-04-03`).
-     */
     public readonly sku: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * The Workspace (or Customer) ID for the Log Analytics Workspace.
-     */
     public /*out*/ readonly workspaceId: pulumi.Output<string>;
 
     /**
@@ -132,45 +80,15 @@ export class AnalyticsWorkspace extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AnalyticsWorkspace resources.
  */
 export interface AnalyticsWorkspaceState {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Log Analytics Workspace. Workspace name should include 4-63 letters, digits or '-'. The '-' shouldn't be the first or the last symbol. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The Portal URL for the Log Analytics Workspace.
-     */
     readonly portalUrl?: pulumi.Input<string>;
-    /**
-     * The Primary shared key for the Log Analytics Workspace.
-     */
     readonly primarySharedKey?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the Log Analytics workspace is created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The workspace data retention in days. Possible values range between 30 and 730.
-     */
     readonly retentionInDays?: pulumi.Input<number>;
-    /**
-     * The Secondary shared key for the Log Analytics Workspace.
-     */
     readonly secondarySharedKey?: pulumi.Input<string>;
-    /**
-     * Specifies the Sku of the Log Analytics Workspace. Possible values are `Free`, `PerNode`, `Premium`, `Standard`, `Standalone`, `Unlimited`, and `PerGB2018` (new Sku as of `2018-04-03`).
-     */
     readonly sku?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The Workspace (or Customer) ID for the Log Analytics Workspace.
-     */
     readonly workspaceId?: pulumi.Input<string>;
 }
 
@@ -178,28 +96,10 @@ export interface AnalyticsWorkspaceState {
  * The set of arguments for constructing a AnalyticsWorkspace resource.
  */
 export interface AnalyticsWorkspaceArgs {
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Log Analytics Workspace. Workspace name should include 4-63 letters, digits or '-'. The '-' shouldn't be the first or the last symbol. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which the Log Analytics workspace is created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The workspace data retention in days. Possible values range between 30 and 730.
-     */
     readonly retentionInDays?: pulumi.Input<number>;
-    /**
-     * Specifies the Sku of the Log Analytics Workspace. Possible values are `Free`, `PerNode`, `Premium`, `Standard`, `Standalone`, `Unlimited`, and `PerGB2018` (new Sku as of `2018-04-03`).
-     */
     readonly sku: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

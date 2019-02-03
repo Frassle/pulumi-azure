@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Log Analytics (formally Operational Insights) Workspace.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_log_analytics_workspace_test = pulumi.output(azure.operationalinsights.getAnalyticsWorkspace({
- *     name: "acctest-01",
- *     resourceGroupName: "acctest",
- * }));
- * 
- * export const logAnalyticsWorkspaceId = azurerm_log_analytics_workspace_test.apply(__arg0 => __arg0.workspaceId);
- * ```
- */
 export function getAnalyticsWorkspace(args: GetAnalyticsWorkspaceArgs, opts?: pulumi.InvokeOptions): Promise<GetAnalyticsWorkspaceResult> {
     return pulumi.runtime.invoke("azure:operationalinsights/getAnalyticsWorkspace:getAnalyticsWorkspace", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getAnalyticsWorkspace(args: GetAnalyticsWorkspaceArgs, opts?: pu
  * A collection of arguments for invoking getAnalyticsWorkspace.
  */
 export interface GetAnalyticsWorkspaceArgs {
-    /**
-     * Specifies the name of the Log Analytics Workspace.
-     */
     readonly name: string;
-    /**
-     * The name of the resource group in which the Log Analytics workspace is located in.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -47,33 +24,12 @@ export interface GetAnalyticsWorkspaceArgs {
  */
 export interface GetAnalyticsWorkspaceResult {
     readonly location: string;
-    /**
-     * The Portal URL for the Log Analytics Workspace.
-     */
     readonly portalUrl: string;
-    /**
-     * The Primary shared key for the Log Analytics Workspace.
-     */
     readonly primarySharedKey: string;
-    /**
-     * The workspace data retention in days.
-     */
     readonly retentionInDays: number;
-    /**
-     * The Secondary shared key for the Log Analytics Workspace.
-     */
     readonly secondarySharedKey: string;
-    /**
-     * The Sku of the Log Analytics Workspace.
-     */
     readonly sku: string;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags: {[key: string]: any};
-    /**
-     * The Workspace (or Customer) ID for the Log Analytics Workspace.
-     */
     readonly workspaceId: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

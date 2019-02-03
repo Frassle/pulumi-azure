@@ -4,46 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Key Vault.
- * 
- * > **NOTE:** It's possible to define Key Vault Access Policies both within the `azurerm_key_vault` resource via the `access_policy` block and by using the `azurerm_key_vault_access_policy` resource. However it's not possible to use both methods to manage Access Policies within a KeyVault, since there'll be conflicts.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "resourceGroup1",
- * });
- * const azurerm_key_vault_test = new azure.keyvault.KeyVault("test", {
- *     accessPolicies: [{
- *         keyPermissions: ["get"],
- *         objectId: "d746815a-0433-4a21-b95d-fc437d2d475b",
- *         secretPermissions: ["get"],
- *         tenantId: "d6e396d0-5584-41dc-9fc0-268df99bc610",
- *     }],
- *     enabledForDiskEncryption: true,
- *     location: azurerm_resource_group_test.location,
- *     name: "testvault",
- *     networkAcls: {
- *         bypass: "AzureServices",
- *         defaultAction: "Deny",
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         name: "standard",
- *     },
- *     tags: {
- *         environment: "Production",
- *     },
- *     tenantId: "d6e396d0-5584-41dc-9fc0-268df99bc610",
- * });
- * ```
- */
 export class KeyVault extends pulumi.CustomResource {
     /**
      * Get an existing KeyVault resource's state with the given name, ID, and optional extra
@@ -57,53 +17,17 @@ export class KeyVault extends pulumi.CustomResource {
         return new KeyVault(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * An access policy block as described below. A maximum of 16 may be declared.
-     */
     public readonly accessPolicies: pulumi.Output<{ applicationId?: string, certificatePermissions?: string[], keyPermissions?: string[], objectId: string, secretPermissions?: string[], tenantId: string }[]>;
-    /**
-     * Boolean flag to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault. Defaults to `false`.
-     */
     public readonly enabledForDeployment: pulumi.Output<boolean | undefined>;
-    /**
-     * Boolean flag to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys. Defaults to `false`.
-     */
     public readonly enabledForDiskEncryption: pulumi.Output<boolean | undefined>;
-    /**
-     * Boolean flag to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault. Defaults to `false`.
-     */
     public readonly enabledForTemplateDeployment: pulumi.Output<boolean | undefined>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Key Vault. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A `network_acls` block as defined below.
-     */
     public readonly networkAcls: pulumi.Output<{ bypass: string, defaultAction: string, ipRules?: string[], virtualNetworkSubnetIds?: string[] } | undefined>;
-    /**
-     * The name of the resource group in which to create the Key Vault. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * An SKU block as described below.
-     */
     public readonly sku: pulumi.Output<{ name: string }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
-     */
     public readonly tenantId: pulumi.Output<string>;
-    /**
-     * The URI of the Key Vault, used for performing operations on keys and secrets.
-     */
     public /*out*/ readonly vaultUri: pulumi.Output<string>;
 
     /**
@@ -165,53 +89,17 @@ export class KeyVault extends pulumi.CustomResource {
  * Input properties used for looking up and filtering KeyVault resources.
  */
 export interface KeyVaultState {
-    /**
-     * An access policy block as described below. A maximum of 16 may be declared.
-     */
     readonly accessPolicies?: pulumi.Input<pulumi.Input<{ applicationId?: pulumi.Input<string>, certificatePermissions?: pulumi.Input<pulumi.Input<string>[]>, keyPermissions?: pulumi.Input<pulumi.Input<string>[]>, objectId: pulumi.Input<string>, secretPermissions?: pulumi.Input<pulumi.Input<string>[]>, tenantId: pulumi.Input<string> }>[]>;
-    /**
-     * Boolean flag to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault. Defaults to `false`.
-     */
     readonly enabledForDeployment?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys. Defaults to `false`.
-     */
     readonly enabledForDiskEncryption?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault. Defaults to `false`.
-     */
     readonly enabledForTemplateDeployment?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Key Vault. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A `network_acls` block as defined below.
-     */
     readonly networkAcls?: pulumi.Input<{ bypass: pulumi.Input<string>, defaultAction: pulumi.Input<string>, ipRules?: pulumi.Input<pulumi.Input<string>[]>, virtualNetworkSubnetIds?: pulumi.Input<pulumi.Input<string>[]> }>;
-    /**
-     * The name of the resource group in which to create the Key Vault. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * An SKU block as described below.
-     */
     readonly sku?: pulumi.Input<{ name: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
-     */
     readonly tenantId?: pulumi.Input<string>;
-    /**
-     * The URI of the Key Vault, used for performing operations on keys and secrets.
-     */
     readonly vaultUri?: pulumi.Input<string>;
 }
 
@@ -219,48 +107,15 @@ export interface KeyVaultState {
  * The set of arguments for constructing a KeyVault resource.
  */
 export interface KeyVaultArgs {
-    /**
-     * An access policy block as described below. A maximum of 16 may be declared.
-     */
     readonly accessPolicies?: pulumi.Input<pulumi.Input<{ applicationId?: pulumi.Input<string>, certificatePermissions?: pulumi.Input<pulumi.Input<string>[]>, keyPermissions?: pulumi.Input<pulumi.Input<string>[]>, objectId: pulumi.Input<string>, secretPermissions?: pulumi.Input<pulumi.Input<string>[]>, tenantId: pulumi.Input<string> }>[]>;
-    /**
-     * Boolean flag to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault. Defaults to `false`.
-     */
     readonly enabledForDeployment?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys. Defaults to `false`.
-     */
     readonly enabledForDiskEncryption?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault. Defaults to `false`.
-     */
     readonly enabledForTemplateDeployment?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Key Vault. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A `network_acls` block as defined below.
-     */
     readonly networkAcls?: pulumi.Input<{ bypass: pulumi.Input<string>, defaultAction: pulumi.Input<string>, ipRules?: pulumi.Input<pulumi.Input<string>[]>, virtualNetworkSubnetIds?: pulumi.Input<pulumi.Input<string>[]> }>;
-    /**
-     * The name of the resource group in which to create the Key Vault. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * An SKU block as described below.
-     */
     readonly sku: pulumi.Input<{ name: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
-     */
     readonly tenantId: pulumi.Input<string>;
 }

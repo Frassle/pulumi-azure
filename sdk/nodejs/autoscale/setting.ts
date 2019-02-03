@@ -4,241 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an AutoScale Setting which can be applied to Virtual Machine Scale Sets, App Services and other scalable resources.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "autoscalingTest",
- * });
- * const azurerm_virtual_machine_scale_set_test = new azure.compute.ScaleSet("test", {});
- * const azurerm_autoscale_setting_test = new azure.autoscale.Setting("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "myAutoscaleSetting",
- *     notification: {
- *         email: {
- *             customEmails: ["admin@contoso.com"],
- *             sendToSubscriptionAdministrator: true,
- *             sendToSubscriptionCoAdministrator: true,
- *         },
- *     },
- *     profiles: [{
- *         capacity: {
- *             default: 1,
- *             maximum: 10,
- *             minimum: 1,
- *         },
- *         name: "defaultProfile",
- *         rules: [
- *             {
- *                 metricTrigger: {
- *                     metricName: "Percentage CPU",
- *                     metricResourceId: azurerm_virtual_machine_scale_set_test.id,
- *                     operator: "GreaterThan",
- *                     statistic: "Average",
- *                     threshold: 75,
- *                     timeAggregation: "Average",
- *                     timeGrain: "PT1M",
- *                     timeWindow: "PT5M",
- *                 },
- *                 scaleAction: {
- *                     cooldown: "PT1M",
- *                     direction: "Increase",
- *                     type: "ChangeCount",
- *                     value: Number.parseFloat("1"),
- *                 },
- *             },
- *             {
- *                 metricTrigger: {
- *                     metricName: "Percentage CPU",
- *                     metricResourceId: azurerm_virtual_machine_scale_set_test.id,
- *                     operator: "LessThan",
- *                     statistic: "Average",
- *                     threshold: 25,
- *                     timeAggregation: "Average",
- *                     timeGrain: "PT1M",
- *                     timeWindow: "PT5M",
- *                 },
- *                 scaleAction: {
- *                     cooldown: "PT1M",
- *                     direction: "Decrease",
- *                     type: "ChangeCount",
- *                     value: Number.parseFloat("1"),
- *                 },
- *             },
- *         ],
- *     }],
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     targetResourceId: azurerm_virtual_machine_scale_set_test.id,
- * });
- * ```
- * 
- * ## Example Usage (repeating on weekends)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "autoscalingTest",
- * });
- * const azurerm_virtual_machine_scale_set_test = new azure.compute.ScaleSet("test", {});
- * const azurerm_autoscale_setting_test = new azure.autoscale.Setting("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "myAutoscaleSetting",
- *     notification: {
- *         email: {
- *             customEmails: ["admin@contoso.com"],
- *             sendToSubscriptionAdministrator: true,
- *             sendToSubscriptionCoAdministrator: true,
- *         },
- *     },
- *     profiles: [{
- *         capacity: {
- *             default: 1,
- *             maximum: 10,
- *             minimum: 1,
- *         },
- *         name: "Weekends",
- *         recurrence: {
- *             days: [
- *                 "Saturday",
- *                 "Sunday",
- *             ],
- *             frequency: "Week",
- *             hours: 12,
- *             minutes: 0,
- *             timezone: "Pacific Standard Time",
- *         },
- *         rules: [
- *             {
- *                 metricTrigger: {
- *                     metricName: "Percentage CPU",
- *                     metricResourceId: azurerm_virtual_machine_scale_set_test.id,
- *                     operator: "GreaterThan",
- *                     statistic: "Average",
- *                     threshold: 90,
- *                     timeAggregation: "Average",
- *                     timeGrain: "PT1M",
- *                     timeWindow: "PT5M",
- *                 },
- *                 scaleAction: {
- *                     cooldown: "PT1M",
- *                     direction: "Increase",
- *                     type: "ChangeCount",
- *                     value: Number.parseFloat("2"),
- *                 },
- *             },
- *             {
- *                 metricTrigger: {
- *                     metricName: "Percentage CPU",
- *                     metricResourceId: azurerm_virtual_machine_scale_set_test.id,
- *                     operator: "LessThan",
- *                     statistic: "Average",
- *                     threshold: 10,
- *                     timeAggregation: "Average",
- *                     timeGrain: "PT1M",
- *                     timeWindow: "PT5M",
- *                 },
- *                 scaleAction: {
- *                     cooldown: "PT1M",
- *                     direction: "Decrease",
- *                     type: "ChangeCount",
- *                     value: Number.parseFloat("2"),
- *                 },
- *             },
- *         ],
- *     }],
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     targetResourceId: azurerm_virtual_machine_scale_set_test.id,
- * });
- * ```
- * 
- * ## Example Usage (for fixed dates)
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "autoscalingTest",
- * });
- * const azurerm_virtual_machine_scale_set_test = new azure.compute.ScaleSet("test", {});
- * const azurerm_autoscale_setting_test = new azure.autoscale.Setting("test", {
- *     enabled: true,
- *     location: azurerm_resource_group_test.location,
- *     name: "myAutoscaleSetting",
- *     notification: {
- *         email: {
- *             customEmails: ["admin@contoso.com"],
- *             sendToSubscriptionAdministrator: true,
- *             sendToSubscriptionCoAdministrator: true,
- *         },
- *     },
- *     profiles: [{
- *         capacity: {
- *             default: 1,
- *             maximum: 10,
- *             minimum: 1,
- *         },
- *         fixedDate: {
- *             end: "2020-07-31T23:59:59Z",
- *             start: "2020-07-01T00:00:00Z",
- *             timezone: "Pacific Standard Time",
- *         },
- *         name: "forJuly",
- *         rules: [
- *             {
- *                 metricTrigger: {
- *                     metricName: "Percentage CPU",
- *                     metricResourceId: azurerm_virtual_machine_scale_set_test.id,
- *                     operator: "GreaterThan",
- *                     statistic: "Average",
- *                     threshold: 90,
- *                     timeAggregation: "Average",
- *                     timeGrain: "PT1M",
- *                     timeWindow: "PT5M",
- *                 },
- *                 scaleAction: {
- *                     cooldown: "PT1M",
- *                     direction: "Increase",
- *                     type: "ChangeCount",
- *                     value: Number.parseFloat("2"),
- *                 },
- *             },
- *             {
- *                 metricTrigger: {
- *                     metricName: "Percentage CPU",
- *                     metricResourceId: azurerm_virtual_machine_scale_set_test.id,
- *                     operator: "LessThan",
- *                     statistic: "Average",
- *                     threshold: 10,
- *                     timeAggregation: "Average",
- *                     timeGrain: "PT1M",
- *                     timeWindow: "PT5M",
- *                 },
- *                 scaleAction: {
- *                     cooldown: "PT1M",
- *                     direction: "Decrease",
- *                     type: "ChangeCount",
- *                     value: Number.parseFloat("2"),
- *                 },
- *             },
- *         ],
- *     }],
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     targetResourceId: azurerm_virtual_machine_scale_set_test.id,
- * });
- * ```
- */
 export class Setting extends pulumi.CustomResource {
     /**
      * Get an existing Setting resource's state with the given name, ID, and optional extra
@@ -252,37 +17,13 @@ export class Setting extends pulumi.CustomResource {
         return new Setting(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies whether automatic scaling is enabled for the target resource. Defaults to `true`.
-     */
     public readonly enabled: pulumi.Output<boolean | undefined>;
-    /**
-     * Specifies the supported Azure location where the AutoScale Setting should exist. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the AutoScale Setting. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * Specifies a `notification` block as defined below.
-     */
     public readonly notification: pulumi.Output<{ email?: { customEmails?: string[], sendToSubscriptionAdministrator?: boolean, sendToSubscriptionCoAdministrator?: boolean }, webhooks?: { properties?: {[key: string]: any}, serviceUri: string }[] } | undefined>;
-    /**
-     * Specifies one or more (up to 20) `profile` blocks as defined below.
-     */
     public readonly profiles: pulumi.Output<{ capacity: { default: number, maximum: number, minimum: number }, fixedDate?: { end: string, start: string, timezone?: string }, name: string, recurrence?: { days: string[], hours: number, minutes: number, timezone?: string }, rules?: { metricTrigger: { metricName: string, metricResourceId: string, operator: string, statistic: string, threshold: number, timeAggregation: string, timeGrain: string, timeWindow: string }, scaleAction: { cooldown: string, direction: string, type: string, value: number } }[] }[]>;
-    /**
-     * The name of the Resource Group in the AutoScale Setting should be created. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Specifies the resource ID of the resource that the autoscale setting should be added to.
-     */
     public readonly targetResourceId: pulumi.Output<string>;
 
     /**
@@ -336,37 +77,13 @@ export class Setting extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Setting resources.
  */
 export interface SettingState {
-    /**
-     * Specifies whether automatic scaling is enabled for the target resource. Defaults to `true`.
-     */
     readonly enabled?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the AutoScale Setting should exist. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the AutoScale Setting. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies a `notification` block as defined below.
-     */
     readonly notification?: pulumi.Input<{ email?: pulumi.Input<{ customEmails?: pulumi.Input<pulumi.Input<string>[]>, sendToSubscriptionAdministrator?: pulumi.Input<boolean>, sendToSubscriptionCoAdministrator?: pulumi.Input<boolean> }>, webhooks?: pulumi.Input<pulumi.Input<{ properties?: pulumi.Input<{[key: string]: any}>, serviceUri: pulumi.Input<string> }>[]> }>;
-    /**
-     * Specifies one or more (up to 20) `profile` blocks as defined below.
-     */
     readonly profiles?: pulumi.Input<pulumi.Input<{ capacity: pulumi.Input<{ default: pulumi.Input<number>, maximum: pulumi.Input<number>, minimum: pulumi.Input<number> }>, fixedDate?: pulumi.Input<{ end: pulumi.Input<string>, start: pulumi.Input<string>, timezone?: pulumi.Input<string> }>, name: pulumi.Input<string>, recurrence?: pulumi.Input<{ days: pulumi.Input<pulumi.Input<string>[]>, hours: pulumi.Input<number>, minutes: pulumi.Input<number>, timezone?: pulumi.Input<string> }>, rules?: pulumi.Input<pulumi.Input<{ metricTrigger: pulumi.Input<{ metricName: pulumi.Input<string>, metricResourceId: pulumi.Input<string>, operator: pulumi.Input<string>, statistic: pulumi.Input<string>, threshold: pulumi.Input<number>, timeAggregation: pulumi.Input<string>, timeGrain: pulumi.Input<string>, timeWindow: pulumi.Input<string> }>, scaleAction: pulumi.Input<{ cooldown: pulumi.Input<string>, direction: pulumi.Input<string>, type: pulumi.Input<string>, value: pulumi.Input<number> }> }>[]> }>[]>;
-    /**
-     * The name of the Resource Group in the AutoScale Setting should be created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the resource ID of the resource that the autoscale setting should be added to.
-     */
     readonly targetResourceId?: pulumi.Input<string>;
 }
 
@@ -374,36 +91,12 @@ export interface SettingState {
  * The set of arguments for constructing a Setting resource.
  */
 export interface SettingArgs {
-    /**
-     * Specifies whether automatic scaling is enabled for the target resource. Defaults to `true`.
-     */
     readonly enabled?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the AutoScale Setting should exist. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the AutoScale Setting. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * Specifies a `notification` block as defined below.
-     */
     readonly notification?: pulumi.Input<{ email?: pulumi.Input<{ customEmails?: pulumi.Input<pulumi.Input<string>[]>, sendToSubscriptionAdministrator?: pulumi.Input<boolean>, sendToSubscriptionCoAdministrator?: pulumi.Input<boolean> }>, webhooks?: pulumi.Input<pulumi.Input<{ properties?: pulumi.Input<{[key: string]: any}>, serviceUri: pulumi.Input<string> }>[]> }>;
-    /**
-     * Specifies one or more (up to 20) `profile` blocks as defined below.
-     */
     readonly profiles: pulumi.Input<pulumi.Input<{ capacity: pulumi.Input<{ default: pulumi.Input<number>, maximum: pulumi.Input<number>, minimum: pulumi.Input<number> }>, fixedDate?: pulumi.Input<{ end: pulumi.Input<string>, start: pulumi.Input<string>, timezone?: pulumi.Input<string> }>, name: pulumi.Input<string>, recurrence?: pulumi.Input<{ days: pulumi.Input<pulumi.Input<string>[]>, hours: pulumi.Input<number>, minutes: pulumi.Input<number>, timezone?: pulumi.Input<string> }>, rules?: pulumi.Input<pulumi.Input<{ metricTrigger: pulumi.Input<{ metricName: pulumi.Input<string>, metricResourceId: pulumi.Input<string>, operator: pulumi.Input<string>, statistic: pulumi.Input<string>, threshold: pulumi.Input<number>, timeAggregation: pulumi.Input<string>, timeGrain: pulumi.Input<string>, timeWindow: pulumi.Input<string> }>, scaleAction: pulumi.Input<{ cooldown: pulumi.Input<string>, direction: pulumi.Input<string>, type: pulumi.Input<string>, value: pulumi.Input<number> }> }>[]> }>[]>;
-    /**
-     * The name of the Resource Group in the AutoScale Setting should be created. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the resource ID of the resource that the autoscale setting should be added to.
-     */
     readonly targetResourceId: pulumi.Input<string>;
 }

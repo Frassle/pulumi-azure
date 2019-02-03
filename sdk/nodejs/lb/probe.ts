@@ -4,44 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a LoadBalancer Probe Resource.
- * 
- * > **NOTE** When using this resource, the Load Balancer needs to have a FrontEnd IP Configuration Attached
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "LoadBalancerRG",
- * });
- * const azurerm_public_ip_test = new azure.network.PublicIp("test", {
- *     allocationMethod: "Static",
- *     location: "West US",
- *     name: "PublicIPForLB",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_lb_test = new azure.lb.LoadBalancer("test", {
- *     frontendIpConfigurations: [{
- *         name: "PublicIPAddress",
- *         publicIpAddressId: azurerm_public_ip_test.id,
- *     }],
- *     location: "West US",
- *     name: "TestLoadBalancer",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_lb_probe_test = new azure.lb.Probe("test", {
- *     loadbalancerId: azurerm_lb_test.id,
- *     name: "ssh-running-probe",
- *     port: 22,
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * ```
- */
 export class Probe extends pulumi.CustomResource {
     /**
      * Get an existing Probe resource's state with the given name, ID, and optional extra
@@ -55,39 +17,15 @@ export class Probe extends pulumi.CustomResource {
         return new Probe(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The interval, in seconds between probes to the backend endpoint for health status. The default value is 15, the minimum value is 5.
-     */
     public readonly intervalInSeconds: pulumi.Output<number | undefined>;
     public /*out*/ readonly loadBalancerRules: pulumi.Output<string[]>;
-    /**
-     * The ID of the LoadBalancer in which to create the NAT Rule.
-     */
     public readonly loadbalancerId: pulumi.Output<string>;
     public readonly location: pulumi.Output<string | undefined>;
-    /**
-     * Specifies the name of the Probe.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The number of failed probe attempts after which the backend endpoint is removed from rotation. The default value is 2. NumberOfProbes multiplied by intervalInSeconds value must be greater or equal to 10.Endpoints are returned to rotation when at least one probe is successful.
-     */
     public readonly numberOfProbes: pulumi.Output<number | undefined>;
-    /**
-     * Port on which the Probe queries the backend endpoint. Possible values range from 1 to 65535, inclusive.
-     */
     public readonly port: pulumi.Output<number>;
-    /**
-     * Specifies the protocol of the end point. Possible values are `Http`, `Https` or `Tcp`. If Tcp is specified, a received ACK is required for the probe to be successful. If Http is specified, a 200 OK response from the specified URI is required for the probe to be successful.
-     */
     public readonly protocol: pulumi.Output<string>;
-    /**
-     * The URI used for requesting health status from the backend endpoint. Required if protocol is set to Http. Otherwise, it is not allowed.
-     */
     public readonly requestPath: pulumi.Output<string | undefined>;
-    /**
-     * The name of the resource group in which to create the resource.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -142,39 +80,15 @@ export class Probe extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Probe resources.
  */
 export interface ProbeState {
-    /**
-     * The interval, in seconds between probes to the backend endpoint for health status. The default value is 15, the minimum value is 5.
-     */
     readonly intervalInSeconds?: pulumi.Input<number>;
     readonly loadBalancerRules?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * The ID of the LoadBalancer in which to create the NAT Rule.
-     */
     readonly loadbalancerId?: pulumi.Input<string>;
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Probe.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The number of failed probe attempts after which the backend endpoint is removed from rotation. The default value is 2. NumberOfProbes multiplied by intervalInSeconds value must be greater or equal to 10.Endpoints are returned to rotation when at least one probe is successful.
-     */
     readonly numberOfProbes?: pulumi.Input<number>;
-    /**
-     * Port on which the Probe queries the backend endpoint. Possible values range from 1 to 65535, inclusive.
-     */
     readonly port?: pulumi.Input<number>;
-    /**
-     * Specifies the protocol of the end point. Possible values are `Http`, `Https` or `Tcp`. If Tcp is specified, a received ACK is required for the probe to be successful. If Http is specified, a 200 OK response from the specified URI is required for the probe to be successful.
-     */
     readonly protocol?: pulumi.Input<string>;
-    /**
-     * The URI used for requesting health status from the backend endpoint. Required if protocol is set to Http. Otherwise, it is not allowed.
-     */
     readonly requestPath?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the resource.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -182,37 +96,13 @@ export interface ProbeState {
  * The set of arguments for constructing a Probe resource.
  */
 export interface ProbeArgs {
-    /**
-     * The interval, in seconds between probes to the backend endpoint for health status. The default value is 15, the minimum value is 5.
-     */
     readonly intervalInSeconds?: pulumi.Input<number>;
-    /**
-     * The ID of the LoadBalancer in which to create the NAT Rule.
-     */
     readonly loadbalancerId: pulumi.Input<string>;
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Probe.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The number of failed probe attempts after which the backend endpoint is removed from rotation. The default value is 2. NumberOfProbes multiplied by intervalInSeconds value must be greater or equal to 10.Endpoints are returned to rotation when at least one probe is successful.
-     */
     readonly numberOfProbes?: pulumi.Input<number>;
-    /**
-     * Port on which the Probe queries the backend endpoint. Possible values range from 1 to 65535, inclusive.
-     */
     readonly port: pulumi.Input<number>;
-    /**
-     * Specifies the protocol of the end point. Possible values are `Http`, `Https` or `Tcp`. If Tcp is specified, a received ACK is required for the probe to be successful. If Http is specified, a 200 OK response from the specified URI is required for the probe to be successful.
-     */
     readonly protocol?: pulumi.Input<string>;
-    /**
-     * The URI used for requesting health status from the backend endpoint. Required if protocol is set to Http. Otherwise, it is not allowed.
-     */
     readonly requestPath?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the resource.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

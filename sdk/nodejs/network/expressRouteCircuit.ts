@@ -4,36 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages an ExpressRoute circuit.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "exprtTest",
- * });
- * const azurerm_express_route_circuit_test = new azure.network.ExpressRouteCircuit("test", {
- *     bandwidthInMbps: 50,
- *     location: azurerm_resource_group_test.location,
- *     name: "expressRoute1",
- *     peeringLocation: "Silicon Valley",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serviceProviderName: "Equinix",
- *     sku: {
- *         family: "MeteredData",
- *         tier: "Standard",
- *     },
- *     tags: {
- *         environment: "Production",
- *     },
- * });
- * ```
- */
 export class ExpressRouteCircuit extends pulumi.CustomResource {
     /**
      * Get an existing ExpressRouteCircuit resource's state with the given name, ID, and optional extra
@@ -47,49 +17,16 @@ export class ExpressRouteCircuit extends pulumi.CustomResource {
         return new ExpressRouteCircuit(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Allow the circuit to interact with classic (RDFE) resources. The default value is `false`.
-     */
     public readonly allowClassicOperations: pulumi.Output<boolean | undefined>;
-    /**
-     * The bandwidth in Mbps of the circuit being created.
-     */
     public readonly bandwidthInMbps: pulumi.Output<number>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the ExpressRoute circuit. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the peering location and **not** the Azure resource location.
-     */
     public readonly peeringLocation: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to create the ExpressRoute circuit. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The string needed by the service provider to provision the ExpressRoute circuit.
-     */
     public /*out*/ readonly serviceKey: pulumi.Output<string>;
-    /**
-     * The name of the ExpressRoute Service Provider.
-     */
     public readonly serviceProviderName: pulumi.Output<string>;
-    /**
-     * The ExpressRoute circuit provisioning state from your chosen service provider. Possible values are "NotProvisioned", "Provisioning", "Provisioned", and "Deprovisioning".
-     */
     public /*out*/ readonly serviceProviderProvisioningState: pulumi.Output<string>;
-    /**
-     * A `sku` block for the ExpressRoute circuit as documented below.
-     */
     public readonly sku: pulumi.Output<{ family: string, tier: string }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -155,49 +92,16 @@ export class ExpressRouteCircuit extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ExpressRouteCircuit resources.
  */
 export interface ExpressRouteCircuitState {
-    /**
-     * Allow the circuit to interact with classic (RDFE) resources. The default value is `false`.
-     */
     readonly allowClassicOperations?: pulumi.Input<boolean>;
-    /**
-     * The bandwidth in Mbps of the circuit being created.
-     */
     readonly bandwidthInMbps?: pulumi.Input<number>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the ExpressRoute circuit. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the peering location and **not** the Azure resource location.
-     */
     readonly peeringLocation?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the ExpressRoute circuit. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The string needed by the service provider to provision the ExpressRoute circuit.
-     */
     readonly serviceKey?: pulumi.Input<string>;
-    /**
-     * The name of the ExpressRoute Service Provider.
-     */
     readonly serviceProviderName?: pulumi.Input<string>;
-    /**
-     * The ExpressRoute circuit provisioning state from your chosen service provider. Possible values are "NotProvisioned", "Provisioning", "Provisioned", and "Deprovisioning".
-     */
     readonly serviceProviderProvisioningState?: pulumi.Input<string>;
-    /**
-     * A `sku` block for the ExpressRoute circuit as documented below.
-     */
     readonly sku?: pulumi.Input<{ family: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -205,40 +109,13 @@ export interface ExpressRouteCircuitState {
  * The set of arguments for constructing a ExpressRouteCircuit resource.
  */
 export interface ExpressRouteCircuitArgs {
-    /**
-     * Allow the circuit to interact with classic (RDFE) resources. The default value is `false`.
-     */
     readonly allowClassicOperations?: pulumi.Input<boolean>;
-    /**
-     * The bandwidth in Mbps of the circuit being created.
-     */
     readonly bandwidthInMbps: pulumi.Input<number>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the ExpressRoute circuit. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the peering location and **not** the Azure resource location.
-     */
     readonly peeringLocation: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to create the ExpressRoute circuit. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The name of the ExpressRoute Service Provider.
-     */
     readonly serviceProviderName: pulumi.Input<string>;
-    /**
-     * A `sku` block for the ExpressRoute circuit as documented below.
-     */
     readonly sku: pulumi.Input<{ family: pulumi.Input<string>, tier: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

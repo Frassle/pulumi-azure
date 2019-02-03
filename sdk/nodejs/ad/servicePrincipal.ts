@@ -4,32 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Service Principal associated with an Application within Azure Active Directory.
- * 
- * > **NOTE:** The Azure Active Directory resources have been split out into [a new AzureAD Provider](http://terraform.io/docs/providers/azuread/index.html) - as such the AzureAD resources within the AzureRM Provider are deprecated and will be removed in the next major version (2.0). Information on how to migrate from the existing resources to the new AzureAD Provider can be found here.
- * 
- * -> **NOTE:** If you're authenticating using a Service Principal then it must have permissions to both `Read and write all applications` and `Sign in and read user profile` within the `Windows Azure Active Directory` API.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_azuread_application_test = new azure.ad.Application("test", {
- *     availableToOtherTenants: false,
- *     homepage: "http://homepage",
- *     identifierUris: ["http://uri"],
- *     name: "example",
- *     oauth2AllowImplicitFlow: true,
- *     replyUrls: ["http://replyurl"],
- * });
- * const azurerm_azuread_service_principal_test = new azure.ad.ServicePrincipal("test", {
- *     applicationId: azurerm_azuread_application_test.applicationId,
- * });
- * ```
- */
 export class ServicePrincipal extends pulumi.CustomResource {
     /**
      * Get an existing ServicePrincipal resource's state with the given name, ID, and optional extra
@@ -43,13 +17,7 @@ export class ServicePrincipal extends pulumi.CustomResource {
         return new ServicePrincipal(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The ID of the Azure AD Application for which to create a Service Principal.
-     */
     public readonly applicationId: pulumi.Output<string>;
-    /**
-     * The Display Name of the Azure Active Directory Application associated with this Service Principal.
-     */
     public /*out*/ readonly displayName: pulumi.Output<string>;
 
     /**
@@ -82,13 +50,7 @@ export class ServicePrincipal extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ServicePrincipal resources.
  */
 export interface ServicePrincipalState {
-    /**
-     * The ID of the Azure AD Application for which to create a Service Principal.
-     */
     readonly applicationId?: pulumi.Input<string>;
-    /**
-     * The Display Name of the Azure Active Directory Application associated with this Service Principal.
-     */
     readonly displayName?: pulumi.Input<string>;
 }
 
@@ -96,8 +58,5 @@ export interface ServicePrincipalState {
  * The set of arguments for constructing a ServicePrincipal resource.
  */
 export interface ServicePrincipalArgs {
-    /**
-     * The ID of the Azure AD Application for which to create a Service Principal.
-     */
     readonly applicationId: pulumi.Input<string>;
 }

@@ -4,42 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Enables you to manage DNS TXT Records within Azure DNS.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acceptanceTestResourceGroup1",
- * });
- * const azurerm_dns_zone_test = new azure.dns.Zone("test", {
- *     name: "mydomain.com",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_dns_txt_record_test = new azure.dns.TxtRecord("test", {
- *     name: "test",
- *     records: [
- *         {
- *             value: "google-site-authenticator",
- *         },
- *         {
- *             value: "more site information here",
- *         },
- *     ],
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         Environment: "Production",
- *     },
- *     ttl: 300,
- *     zoneName: azurerm_dns_zone_test.name,
- * });
- * ```
- */
 export class TxtRecord extends pulumi.CustomResource {
     /**
      * Get an existing TxtRecord resource's state with the given name, ID, and optional extra
@@ -53,29 +17,11 @@ export class TxtRecord extends pulumi.CustomResource {
         return new TxtRecord(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The name of the DNS TXT Record.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A list of values that make up the txt record. Each `record` block supports fields documented below.
-     */
     public readonly records: pulumi.Output<{ value: string }[]>;
-    /**
-     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * The Time To Live (TTL) of the DNS record in seconds.
-     */
     public readonly ttl: pulumi.Output<number>;
-    /**
-     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly zoneName: pulumi.Output<string>;
 
     /**
@@ -125,29 +71,11 @@ export class TxtRecord extends pulumi.CustomResource {
  * Input properties used for looking up and filtering TxtRecord resources.
  */
 export interface TxtRecordState {
-    /**
-     * The name of the DNS TXT Record.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A list of values that make up the txt record. Each `record` block supports fields documented below.
-     */
     readonly records?: pulumi.Input<pulumi.Input<{ value: pulumi.Input<string> }>[]>;
-    /**
-     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The Time To Live (TTL) of the DNS record in seconds.
-     */
     readonly ttl?: pulumi.Input<number>;
-    /**
-     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly zoneName?: pulumi.Input<string>;
 }
 
@@ -155,28 +83,10 @@ export interface TxtRecordState {
  * The set of arguments for constructing a TxtRecord resource.
  */
 export interface TxtRecordArgs {
-    /**
-     * The name of the DNS TXT Record.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A list of values that make up the txt record. Each `record` block supports fields documented below.
-     */
     readonly records: pulumi.Input<pulumi.Input<{ value: pulumi.Input<string> }>[]>;
-    /**
-     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The Time To Live (TTL) of the DNS record in seconds.
-     */
     readonly ttl: pulumi.Input<number>;
-    /**
-     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly zoneName: pulumi.Input<string>;
 }

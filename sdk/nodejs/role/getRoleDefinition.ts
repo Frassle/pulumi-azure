@@ -4,24 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Custom Role Definition. To access information about a built-in Role Definition, please see the `azurerm_builtin_role_definition` data source instead.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_subscription_primary = pulumi.output(azure.core.getSubscription({}));
- * const azurerm_role_definition_custom = pulumi.output(azure.role.getRoleDefinition({
- *     roleDefinitionId: "00000000-0000-0000-0000-000000000000",
- *     scope: azurerm_subscription_primary.apply(__arg0 => __arg0.id),
- * }));
- * 
- * export const customRoleDefinitionId = azurerm_role_definition_custom.apply(__arg0 => __arg0.id);
- * ```
- */
 export function getRoleDefinition(args: GetRoleDefinitionArgs, opts?: pulumi.InvokeOptions): Promise<GetRoleDefinitionResult> {
     return pulumi.runtime.invoke("azure:role/getRoleDefinition:getRoleDefinition", {
         "roleDefinitionId": args.roleDefinitionId,
@@ -33,13 +15,7 @@ export function getRoleDefinition(args: GetRoleDefinitionArgs, opts?: pulumi.Inv
  * A collection of arguments for invoking getRoleDefinition.
  */
 export interface GetRoleDefinitionArgs {
-    /**
-     * Specifies the ID of the Role Definition as a UUID/GUID.
-     */
     readonly roleDefinitionId: string;
-    /**
-     * Specifies the Scope at which the Custom Role Definition exists.
-     */
     readonly scope: string;
 }
 
@@ -47,22 +23,10 @@ export interface GetRoleDefinitionArgs {
  * A collection of values returned by getRoleDefinition.
  */
 export interface GetRoleDefinitionResult {
-    /**
-     * One or more assignable scopes for this Role Definition, such as `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333`, `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup`, or `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup/providers/Microsoft.Compute/virtualMachines/myVM`.
-     */
     readonly assignableScopes: string[];
-    /**
-     * the Description of the built-in Role.
-     */
     readonly description: string;
     readonly name: string;
-    /**
-     * a `permissions` block as documented below.
-     */
     readonly permissions: { actions: string[], dataActions?: string[], notActions: string[], notDataActions?: string[] }[];
-    /**
-     * the Type of the Role.
-     */
     readonly type: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

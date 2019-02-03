@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing CDN Profile.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_cdn_profile_test = pulumi.output(azure.cdn.getProfile({
- *     name: "myfirstcdnprofile",
- *     resourceGroupName: "example-resources",
- * }));
- * 
- * export const cdnProfileId = azurerm_cdn_profile_test.apply(__arg0 => __arg0.id);
- * ```
- */
 export function getProfile(args: GetProfileArgs, opts?: pulumi.InvokeOptions): Promise<GetProfileResult> {
     return pulumi.runtime.invoke("azure:cdn/getProfile:getProfile", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getProfile(args: GetProfileArgs, opts?: pulumi.InvokeOptions): P
  * A collection of arguments for invoking getProfile.
  */
 export interface GetProfileArgs {
-    /**
-     * The name of the CDN Profile.
-     */
     readonly name: string;
-    /**
-     * The name of the resource group in which the CDN Profile exists.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,17 +23,8 @@ export interface GetProfileArgs {
  * A collection of values returned by getProfile.
  */
 export interface GetProfileResult {
-    /**
-     * The Azure Region where the resource exists.
-     */
     readonly location: string;
-    /**
-     * The pricing related information of current CDN profile.
-     */
     readonly sku: string;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

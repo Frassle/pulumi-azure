@@ -4,31 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Custom Action within a Logic App Workflow
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "East US",
- *     name: "workflow-resources",
- * });
- * const azurerm_logic_app_workflow_test = new azure.logicapps.Workflow("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "workflow1",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_logic_app_action_custom_test = new azure.logicapps.ActionCustom("test", {
- *     body: "{\n    \"description\": \"A variable to configure the auto expiration age in days. Configured in negative number. Default is -30 (30 days old).\",\n    \"inputs\": {\n        \"variables\": [\n            {\n                \"name\": \"ExpirationAgeInDays\",\n                \"type\": \"Integer\",\n                \"value\": -30\n            }\n        ]\n    },\n    \"runAfter\": {},\n    \"type\": \"InitializeVariable\"\n}\n",
- *     logicAppId: azurerm_logic_app_workflow_test.id,
- *     name: "example-action",
- * });
- * ```
- */
 export class ActionCustom extends pulumi.CustomResource {
     /**
      * Get an existing ActionCustom resource's state with the given name, ID, and optional extra
@@ -42,17 +17,8 @@ export class ActionCustom extends pulumi.CustomResource {
         return new ActionCustom(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the JSON Blob defining the Body of this Custom Action.
-     */
     public readonly body: pulumi.Output<string>;
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly logicAppId: pulumi.Output<string>;
-    /**
-     * Specifies the name of the HTTP Action to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
 
     /**
@@ -90,17 +56,8 @@ export class ActionCustom extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ActionCustom resources.
  */
 export interface ActionCustomState {
-    /**
-     * Specifies the JSON Blob defining the Body of this Custom Action.
-     */
     readonly body?: pulumi.Input<string>;
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly logicAppId?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the HTTP Action to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
 }
 
@@ -108,16 +65,7 @@ export interface ActionCustomState {
  * The set of arguments for constructing a ActionCustom resource.
  */
 export interface ActionCustomArgs {
-    /**
-     * Specifies the JSON Blob defining the Body of this Custom Action.
-     */
     readonly body: pulumi.Input<string>;
-    /**
-     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly logicAppId: pulumi.Input<string>;
-    /**
-     * Specifies the name of the HTTP Action to be created within the Logic App Workflow. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
 }

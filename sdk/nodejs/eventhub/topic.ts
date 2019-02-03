@@ -4,38 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage a ServiceBus Topic.
- * 
- * **Note** Topics can only be created in Namespaces with an SKU of `standard` or higher.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_example = new azure.core.ResourceGroup("example", {
- *     location: "West Europe",
- *     name: "tfex-servicebus-topic",
- * });
- * const azurerm_servicebus_namespace_example = new azure.eventhub.Namespace("example", {
- *     location: azurerm_resource_group_example.location,
- *     name: "tfex_sevicebus_namespace",
- *     resourceGroupName: azurerm_resource_group_example.name,
- *     sku: "Standard",
- *     tags: {
- *         source: "terraform",
- *     },
- * });
- * const azurerm_servicebus_topic_example = new azure.eventhub.Topic("example", {
- *     enablePartitioning: true,
- *     name: "tfex_sevicebus_topic",
- *     namespaceName: azurerm_servicebus_namespace_example.name,
- *     resourceGroupName: azurerm_resource_group_example.name,
- * });
- * ```
- */
 export class Topic extends pulumi.CustomResource {
     /**
      * Get an existing Topic resource's state with the given name, ID, and optional extra
@@ -49,79 +17,20 @@ export class Topic extends pulumi.CustomResource {
         return new Topic(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The ISO 8601 timespan duration of the idle interval after which the
-     * Topic is automatically deleted, minimum of 5 minutes.
-     */
     public readonly autoDeleteOnIdle: pulumi.Output<string>;
-    /**
-     * The ISO 8601 timespan duration of TTL of messages sent to this topic if no
-     * TTL value is set on the message itself.
-     */
     public readonly defaultMessageTtl: pulumi.Output<string>;
-    /**
-     * The ISO 8601 timespan duration during which
-     * duplicates can be detected. Defaults to 10 minutes. (`PT10M`)
-     */
     public readonly duplicateDetectionHistoryTimeWindow: pulumi.Output<string>;
-    /**
-     * Boolean flag which controls if server-side
-     * batched operations are enabled. Defaults to false.
-     */
     public readonly enableBatchedOperations: pulumi.Output<boolean | undefined>;
-    /**
-     * Boolean flag which controls whether Express Entities
-     * are enabled. An express topic holds a message in memory temporarily before writing
-     * it to persistent storage. Defaults to false.
-     */
     public readonly enableExpress: pulumi.Output<boolean | undefined>;
     public readonly enableFilteringMessagesBeforePublishing: pulumi.Output<boolean | undefined>;
-    /**
-     * Boolean flag which controls whether to enable
-     * the topic to be partitioned across multiple message brokers. Defaults to false.
-     * Changing this forces a new resource to be created.
-     */
     public readonly enablePartitioning: pulumi.Output<boolean | undefined>;
-    /**
-     * Specifies the supported Azure location where the resource exists.
-     * Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string | undefined>;
-    /**
-     * Integer value which controls the size of
-     * memory allocated for the topic. For supported values see the "Queue/topic size"
-     * section of [this document](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas).
-     */
     public readonly maxSizeInMegabytes: pulumi.Output<number>;
-    /**
-     * Specifies the name of the ServiceBus Topic resource. Changing this forces a
-     * new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The name of the ServiceBus Namespace to create
-     * this topic in. Changing this forces a new resource to be created.
-     */
     public readonly namespaceName: pulumi.Output<string>;
-    /**
-     * Boolean flag which controls whether
-     * the Topic requires duplicate detection. Defaults to false. Changing this forces
-     * a new resource to be created.
-     */
     public readonly requiresDuplicateDetection: pulumi.Output<boolean | undefined>;
-    /**
-     * The name of the resource group in which to
-     * create the namespace. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The Status of the Service Bus Topic. Acceptable values are `Active` or `Disabled`. Defaults to `Active`.
-     */
     public readonly status: pulumi.Output<string | undefined>;
-    /**
-     * Boolean flag which controls whether the Topic
-     * supports ordering. Defaults to false.
-     */
     public readonly supportOrdering: pulumi.Output<boolean | undefined>;
 
     /**
@@ -183,79 +92,20 @@ export class Topic extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Topic resources.
  */
 export interface TopicState {
-    /**
-     * The ISO 8601 timespan duration of the idle interval after which the
-     * Topic is automatically deleted, minimum of 5 minutes.
-     */
     readonly autoDeleteOnIdle?: pulumi.Input<string>;
-    /**
-     * The ISO 8601 timespan duration of TTL of messages sent to this topic if no
-     * TTL value is set on the message itself.
-     */
     readonly defaultMessageTtl?: pulumi.Input<string>;
-    /**
-     * The ISO 8601 timespan duration during which
-     * duplicates can be detected. Defaults to 10 minutes. (`PT10M`)
-     */
     readonly duplicateDetectionHistoryTimeWindow?: pulumi.Input<string>;
-    /**
-     * Boolean flag which controls if server-side
-     * batched operations are enabled. Defaults to false.
-     */
     readonly enableBatchedOperations?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which controls whether Express Entities
-     * are enabled. An express topic holds a message in memory temporarily before writing
-     * it to persistent storage. Defaults to false.
-     */
     readonly enableExpress?: pulumi.Input<boolean>;
     readonly enableFilteringMessagesBeforePublishing?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which controls whether to enable
-     * the topic to be partitioned across multiple message brokers. Defaults to false.
-     * Changing this forces a new resource to be created.
-     */
     readonly enablePartitioning?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the resource exists.
-     * Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Integer value which controls the size of
-     * memory allocated for the topic. For supported values see the "Queue/topic size"
-     * section of [this document](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas).
-     */
     readonly maxSizeInMegabytes?: pulumi.Input<number>;
-    /**
-     * Specifies the name of the ServiceBus Topic resource. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the ServiceBus Namespace to create
-     * this topic in. Changing this forces a new resource to be created.
-     */
     readonly namespaceName?: pulumi.Input<string>;
-    /**
-     * Boolean flag which controls whether
-     * the Topic requires duplicate detection. Defaults to false. Changing this forces
-     * a new resource to be created.
-     */
     readonly requiresDuplicateDetection?: pulumi.Input<boolean>;
-    /**
-     * The name of the resource group in which to
-     * create the namespace. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The Status of the Service Bus Topic. Acceptable values are `Active` or `Disabled`. Defaults to `Active`.
-     */
     readonly status?: pulumi.Input<string>;
-    /**
-     * Boolean flag which controls whether the Topic
-     * supports ordering. Defaults to false.
-     */
     readonly supportOrdering?: pulumi.Input<boolean>;
 }
 
@@ -263,78 +113,19 @@ export interface TopicState {
  * The set of arguments for constructing a Topic resource.
  */
 export interface TopicArgs {
-    /**
-     * The ISO 8601 timespan duration of the idle interval after which the
-     * Topic is automatically deleted, minimum of 5 minutes.
-     */
     readonly autoDeleteOnIdle?: pulumi.Input<string>;
-    /**
-     * The ISO 8601 timespan duration of TTL of messages sent to this topic if no
-     * TTL value is set on the message itself.
-     */
     readonly defaultMessageTtl?: pulumi.Input<string>;
-    /**
-     * The ISO 8601 timespan duration during which
-     * duplicates can be detected. Defaults to 10 minutes. (`PT10M`)
-     */
     readonly duplicateDetectionHistoryTimeWindow?: pulumi.Input<string>;
-    /**
-     * Boolean flag which controls if server-side
-     * batched operations are enabled. Defaults to false.
-     */
     readonly enableBatchedOperations?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which controls whether Express Entities
-     * are enabled. An express topic holds a message in memory temporarily before writing
-     * it to persistent storage. Defaults to false.
-     */
     readonly enableExpress?: pulumi.Input<boolean>;
     readonly enableFilteringMessagesBeforePublishing?: pulumi.Input<boolean>;
-    /**
-     * Boolean flag which controls whether to enable
-     * the topic to be partitioned across multiple message brokers. Defaults to false.
-     * Changing this forces a new resource to be created.
-     */
     readonly enablePartitioning?: pulumi.Input<boolean>;
-    /**
-     * Specifies the supported Azure location where the resource exists.
-     * Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Integer value which controls the size of
-     * memory allocated for the topic. For supported values see the "Queue/topic size"
-     * section of [this document](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas).
-     */
     readonly maxSizeInMegabytes?: pulumi.Input<number>;
-    /**
-     * Specifies the name of the ServiceBus Topic resource. Changing this forces a
-     * new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The name of the ServiceBus Namespace to create
-     * this topic in. Changing this forces a new resource to be created.
-     */
     readonly namespaceName: pulumi.Input<string>;
-    /**
-     * Boolean flag which controls whether
-     * the Topic requires duplicate detection. Defaults to false. Changing this forces
-     * a new resource to be created.
-     */
     readonly requiresDuplicateDetection?: pulumi.Input<boolean>;
-    /**
-     * The name of the resource group in which to
-     * create the namespace. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The Status of the Service Bus Topic. Acceptable values are `Active` or `Disabled`. Defaults to `Active`.
-     */
     readonly status?: pulumi.Input<string>;
-    /**
-     * Boolean flag which controls whether the Topic
-     * supports ordering. Defaults to false.
-     */
     readonly supportOrdering?: pulumi.Input<boolean>;
 }

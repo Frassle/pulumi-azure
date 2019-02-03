@@ -4,34 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage a Azure Data Lake Store File.
- * 
- * > **Note:** If you want to change the data in the remote file without changing the `local_file_path`, then 
- * taint the resource so the `azurerm_data_lake_store_file` gets recreated with the new data.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_example = new azure.core.ResourceGroup("example", {
- *     location: "northeurope",
- *     name: "example",
- * });
- * const azurerm_data_lake_store_example = new azure.datalake.Store("example", {
- *     location: azurerm_resource_group_example.location,
- *     name: "consumptiondatalake",
- *     resourceGroupName: azurerm_resource_group_example.name,
- * });
- * const azurerm_data_lake_store_file_example = new azure.datalake.StoreFile("example", {
- *     localFilePath: "/path/to/local/file",
- *     remoteFilePath: "/path/created/for/remote/file",
- *     resourceGroupName: azurerm_resource_group_example.name,
- * });
- * ```
- */
 export class StoreFile extends pulumi.CustomResource {
     /**
      * Get an existing StoreFile resource's state with the given name, ID, and optional extra
@@ -45,17 +17,8 @@ export class StoreFile extends pulumi.CustomResource {
         return new StoreFile(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the name of the Data Lake Store for which the File should created.
-     */
     public readonly accountName: pulumi.Output<string>;
-    /**
-     * The path to the local file to be added to the Data Lake Store.
-     */
     public readonly localFilePath: pulumi.Output<string>;
-    /**
-     * The path created for the file on the Data Lake Store.
-     */
     public readonly remoteFilePath: pulumi.Output<string>;
 
     /**
@@ -96,17 +59,8 @@ export class StoreFile extends pulumi.CustomResource {
  * Input properties used for looking up and filtering StoreFile resources.
  */
 export interface StoreFileState {
-    /**
-     * Specifies the name of the Data Lake Store for which the File should created.
-     */
     readonly accountName?: pulumi.Input<string>;
-    /**
-     * The path to the local file to be added to the Data Lake Store.
-     */
     readonly localFilePath?: pulumi.Input<string>;
-    /**
-     * The path created for the file on the Data Lake Store.
-     */
     readonly remoteFilePath?: pulumi.Input<string>;
 }
 
@@ -114,16 +68,7 @@ export interface StoreFileState {
  * The set of arguments for constructing a StoreFile resource.
  */
 export interface StoreFileArgs {
-    /**
-     * Specifies the name of the Data Lake Store for which the File should created.
-     */
     readonly accountName: pulumi.Input<string>;
-    /**
-     * The path to the local file to be added to the Data Lake Store.
-     */
     readonly localFilePath: pulumi.Input<string>;
-    /**
-     * The path created for the file on the Data Lake Store.
-     */
     readonly remoteFilePath: pulumi.Input<string>;
 }

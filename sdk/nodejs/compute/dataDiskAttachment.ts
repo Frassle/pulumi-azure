@@ -4,13 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages attaching a Disk to a Virtual Machine.
- * 
- * > **NOTE:** Data Disks can be attached either directly on the `azurerm_virtual_machine` resource, or using the `azurerm_virtual_machine_data_disk_attachment` resource - but the two cannot be used together. If both are used against the same Virtual Machine, spurious changes will occur.
- * 
- * -> **Please Note:** only Managed Disks are supported via this separate resource, Unmanaged Disks can be attached using the `storage_data_disk` block in the `azurerm_virtual_machine` resource.
- */
 export class DataDiskAttachment extends pulumi.CustomResource {
     /**
      * Get an existing DataDiskAttachment resource's state with the given name, ID, and optional extra
@@ -24,29 +17,11 @@ export class DataDiskAttachment extends pulumi.CustomResource {
         return new DataDiskAttachment(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies the caching requirements for this Data Disk. Possible values include `None`, `ReadOnly` and `ReadWrite`.
-     */
     public readonly caching: pulumi.Output<string>;
-    /**
-     * The Create Option of the Data Disk, such as `Empty` or `Attach`. Defaults to `Attach`. Changing this forces a new resource to be created.
-     */
     public readonly createOption: pulumi.Output<string | undefined>;
-    /**
-     * The Logical Unit Number of the Data Disk, which needs to be unique within the Virtual Machine. Changing this forces a new resource to be created.
-     */
     public readonly lun: pulumi.Output<number>;
-    /**
-     * The ID of an existing Managed Disk which should be attached. Changing this forces a new resource to be created.
-     */
     public readonly managedDiskId: pulumi.Output<string>;
-    /**
-     * The ID of the Virtual Machine to which the Data Disk should be attached. Changing this forces a new resource to be created.
-     */
     public readonly virtualMachineId: pulumi.Output<string>;
-    /**
-     * Specifies if Write Accelerator is enabled on the disk. This can only be enabled on `Premium_LRS` managed disks with no caching and [M-Series VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/how-to-enable-write-accelerator). Defaults to `false`.
-     */
     public readonly writeAcceleratorEnabled: pulumi.Output<boolean | undefined>;
 
     /**
@@ -96,29 +71,11 @@ export class DataDiskAttachment extends pulumi.CustomResource {
  * Input properties used for looking up and filtering DataDiskAttachment resources.
  */
 export interface DataDiskAttachmentState {
-    /**
-     * Specifies the caching requirements for this Data Disk. Possible values include `None`, `ReadOnly` and `ReadWrite`.
-     */
     readonly caching?: pulumi.Input<string>;
-    /**
-     * The Create Option of the Data Disk, such as `Empty` or `Attach`. Defaults to `Attach`. Changing this forces a new resource to be created.
-     */
     readonly createOption?: pulumi.Input<string>;
-    /**
-     * The Logical Unit Number of the Data Disk, which needs to be unique within the Virtual Machine. Changing this forces a new resource to be created.
-     */
     readonly lun?: pulumi.Input<number>;
-    /**
-     * The ID of an existing Managed Disk which should be attached. Changing this forces a new resource to be created.
-     */
     readonly managedDiskId?: pulumi.Input<string>;
-    /**
-     * The ID of the Virtual Machine to which the Data Disk should be attached. Changing this forces a new resource to be created.
-     */
     readonly virtualMachineId?: pulumi.Input<string>;
-    /**
-     * Specifies if Write Accelerator is enabled on the disk. This can only be enabled on `Premium_LRS` managed disks with no caching and [M-Series VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/how-to-enable-write-accelerator). Defaults to `false`.
-     */
     readonly writeAcceleratorEnabled?: pulumi.Input<boolean>;
 }
 
@@ -126,28 +83,10 @@ export interface DataDiskAttachmentState {
  * The set of arguments for constructing a DataDiskAttachment resource.
  */
 export interface DataDiskAttachmentArgs {
-    /**
-     * Specifies the caching requirements for this Data Disk. Possible values include `None`, `ReadOnly` and `ReadWrite`.
-     */
     readonly caching: pulumi.Input<string>;
-    /**
-     * The Create Option of the Data Disk, such as `Empty` or `Attach`. Defaults to `Attach`. Changing this forces a new resource to be created.
-     */
     readonly createOption?: pulumi.Input<string>;
-    /**
-     * The Logical Unit Number of the Data Disk, which needs to be unique within the Virtual Machine. Changing this forces a new resource to be created.
-     */
     readonly lun: pulumi.Input<number>;
-    /**
-     * The ID of an existing Managed Disk which should be attached. Changing this forces a new resource to be created.
-     */
     readonly managedDiskId: pulumi.Input<string>;
-    /**
-     * The ID of the Virtual Machine to which the Data Disk should be attached. Changing this forces a new resource to be created.
-     */
     readonly virtualMachineId: pulumi.Input<string>;
-    /**
-     * Specifies if Write Accelerator is enabled on the disk. This can only be enabled on `Premium_LRS` managed disks with no caching and [M-Series VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/how-to-enable-write-accelerator). Defaults to `false`.
-     */
     readonly writeAcceleratorEnabled?: pulumi.Input<boolean>;
 }

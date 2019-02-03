@@ -4,38 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manage a Service Fabric Cluster.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West Europe",
- *     name: "example-resources",
- * });
- * const azurerm_service_fabric_cluster_test = new azure.servicefabric.Cluster("test", {
- *     clusterCodeVersion: "6.3.176.9494",
- *     location: azurerm_resource_group_test.location,
- *     managementEndpoint: "https://example:80",
- *     name: "example-servicefabric",
- *     nodeTypes: [{
- *         clientEndpointPort: 2020,
- *         httpEndpointPort: 80,
- *         instanceCount: 3,
- *         isPrimary: true,
- *         name: "first",
- *     }],
- *     reliabilityLevel: "Bronze",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     upgradeMode: "Manual",
- *     vmImage: "Windows",
- * });
- * ```
- */
 export class Cluster extends pulumi.CustomResource {
     /**
      * Get an existing Cluster resource's state with the given name, ID, and optional extra
@@ -49,77 +17,23 @@ export class Cluster extends pulumi.CustomResource {
         return new Cluster(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * A List of one or more features which should be enabled, such as `DnsService`.
-     */
     public readonly addOnFeatures: pulumi.Output<string[] | undefined>;
-    /**
-     * An `azure_active_directory` block as defined below. Changing this forces a new resource to be created.
-     */
     public readonly azureActiveDirectory: pulumi.Output<{ clientApplicationId: string, clusterApplicationId: string, tenantId: string } | undefined>;
-    /**
-     * A `certificate` block as defined below.
-     */
     public readonly certificate: pulumi.Output<{ thumbprint: string, thumbprintSecondary?: string, x509StoreName: string } | undefined>;
-    /**
-     * One or two `client_certificate_thumbprint` blocks as defined below.
-     */
     public readonly clientCertificateThumbprints: pulumi.Output<{ isAdmin: boolean, thumbprint: string }[] | undefined>;
-    /**
-     * Required if Upgrade Mode set to `Manual`, Specifies the Version of the Cluster Code of the cluster.
-     */
     public readonly clusterCodeVersion: pulumi.Output<string>;
-    /**
-     * The Cluster Endpoint for this Service Fabric Cluster.
-     */
     public /*out*/ readonly clusterEndpoint: pulumi.Output<string>;
-    /**
-     * A `diagnostics_config` block as defined below. Changing this forces a new resource to be created.
-     */
     public readonly diagnosticsConfig: pulumi.Output<{ blobEndpoint: string, protectedAccountKeyName: string, queueEndpoint: string, storageAccountName: string, tableEndpoint: string } | undefined>;
-    /**
-     * One or more `fabric_settings` blocks as defined below.
-     */
     public readonly fabricSettings: pulumi.Output<{ name: string, parameters?: {[key: string]: any} }[] | undefined>;
-    /**
-     * Specifies the Azure Region where the Service Fabric Cluster should exist. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * Specifies the Management Endpoint of the cluster such as `http://example.com`. Changing this forces a new resource to be created.
-     */
     public readonly managementEndpoint: pulumi.Output<string>;
-    /**
-     * The name of the Service Fabric Cluster. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * One or more `node_type` blocks as defined below.
-     */
     public readonly nodeTypes: pulumi.Output<{ applicationPorts: { endPort: number, startPort: number }, clientEndpointPort: number, durabilityLevel?: string, ephemeralPorts: { endPort: number, startPort: number }, httpEndpointPort: number, instanceCount: number, isPrimary: boolean, name: string, reverseProxyEndpointPort?: number }[]>;
-    /**
-     * Specifies the Reliability Level of the Cluster. Possible values include `None`, `Bronze`, `Silver`, `Gold` and `Platinum`.
-     */
     public readonly reliabilityLevel: pulumi.Output<string>;
-    /**
-     * The name of the Resource Group in which the Service Fabric Cluster exists. Changing this forces a new resource to be created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * A `reverse_proxy_certificate` block as defined below.
-     */
     public readonly reverseProxyCertificate: pulumi.Output<{ thumbprint: string, thumbprintSecondary?: string, x509StoreName: string } | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Specifies the Upgrade Mode of the cluster. Possible values are `Automatic` or `Manual`.
-     */
     public readonly upgradeMode: pulumi.Output<string>;
-    /**
-     * Specifies the Image expected for the Service Fabric Cluster, such as `Windows`. Changing this forces a new resource to be created.
-     */
     public readonly vmImage: pulumi.Output<string>;
 
     /**
@@ -202,77 +116,23 @@ export class Cluster extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Cluster resources.
  */
 export interface ClusterState {
-    /**
-     * A List of one or more features which should be enabled, such as `DnsService`.
-     */
     readonly addOnFeatures?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * An `azure_active_directory` block as defined below. Changing this forces a new resource to be created.
-     */
     readonly azureActiveDirectory?: pulumi.Input<{ clientApplicationId: pulumi.Input<string>, clusterApplicationId: pulumi.Input<string>, tenantId: pulumi.Input<string> }>;
-    /**
-     * A `certificate` block as defined below.
-     */
     readonly certificate?: pulumi.Input<{ thumbprint: pulumi.Input<string>, thumbprintSecondary?: pulumi.Input<string>, x509StoreName: pulumi.Input<string> }>;
-    /**
-     * One or two `client_certificate_thumbprint` blocks as defined below.
-     */
     readonly clientCertificateThumbprints?: pulumi.Input<pulumi.Input<{ isAdmin: pulumi.Input<boolean>, thumbprint: pulumi.Input<string> }>[]>;
-    /**
-     * Required if Upgrade Mode set to `Manual`, Specifies the Version of the Cluster Code of the cluster.
-     */
     readonly clusterCodeVersion?: pulumi.Input<string>;
-    /**
-     * The Cluster Endpoint for this Service Fabric Cluster.
-     */
     readonly clusterEndpoint?: pulumi.Input<string>;
-    /**
-     * A `diagnostics_config` block as defined below. Changing this forces a new resource to be created.
-     */
     readonly diagnosticsConfig?: pulumi.Input<{ blobEndpoint: pulumi.Input<string>, protectedAccountKeyName: pulumi.Input<string>, queueEndpoint: pulumi.Input<string>, storageAccountName: pulumi.Input<string>, tableEndpoint: pulumi.Input<string> }>;
-    /**
-     * One or more `fabric_settings` blocks as defined below.
-     */
     readonly fabricSettings?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, parameters?: pulumi.Input<{[key: string]: any}> }>[]>;
-    /**
-     * Specifies the Azure Region where the Service Fabric Cluster should exist. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * Specifies the Management Endpoint of the cluster such as `http://example.com`. Changing this forces a new resource to be created.
-     */
     readonly managementEndpoint?: pulumi.Input<string>;
-    /**
-     * The name of the Service Fabric Cluster. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * One or more `node_type` blocks as defined below.
-     */
     readonly nodeTypes?: pulumi.Input<pulumi.Input<{ applicationPorts?: pulumi.Input<{ endPort: pulumi.Input<number>, startPort: pulumi.Input<number> }>, clientEndpointPort: pulumi.Input<number>, durabilityLevel?: pulumi.Input<string>, ephemeralPorts?: pulumi.Input<{ endPort: pulumi.Input<number>, startPort: pulumi.Input<number> }>, httpEndpointPort: pulumi.Input<number>, instanceCount: pulumi.Input<number>, isPrimary: pulumi.Input<boolean>, name: pulumi.Input<string>, reverseProxyEndpointPort?: pulumi.Input<number> }>[]>;
-    /**
-     * Specifies the Reliability Level of the Cluster. Possible values include `None`, `Bronze`, `Silver`, `Gold` and `Platinum`.
-     */
     readonly reliabilityLevel?: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the Service Fabric Cluster exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * A `reverse_proxy_certificate` block as defined below.
-     */
     readonly reverseProxyCertificate?: pulumi.Input<{ thumbprint: pulumi.Input<string>, thumbprintSecondary?: pulumi.Input<string>, x509StoreName: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the Upgrade Mode of the cluster. Possible values are `Automatic` or `Manual`.
-     */
     readonly upgradeMode?: pulumi.Input<string>;
-    /**
-     * Specifies the Image expected for the Service Fabric Cluster, such as `Windows`. Changing this forces a new resource to be created.
-     */
     readonly vmImage?: pulumi.Input<string>;
 }
 
@@ -280,72 +140,21 @@ export interface ClusterState {
  * The set of arguments for constructing a Cluster resource.
  */
 export interface ClusterArgs {
-    /**
-     * A List of one or more features which should be enabled, such as `DnsService`.
-     */
     readonly addOnFeatures?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * An `azure_active_directory` block as defined below. Changing this forces a new resource to be created.
-     */
     readonly azureActiveDirectory?: pulumi.Input<{ clientApplicationId: pulumi.Input<string>, clusterApplicationId: pulumi.Input<string>, tenantId: pulumi.Input<string> }>;
-    /**
-     * A `certificate` block as defined below.
-     */
     readonly certificate?: pulumi.Input<{ thumbprint: pulumi.Input<string>, thumbprintSecondary?: pulumi.Input<string>, x509StoreName: pulumi.Input<string> }>;
-    /**
-     * One or two `client_certificate_thumbprint` blocks as defined below.
-     */
     readonly clientCertificateThumbprints?: pulumi.Input<pulumi.Input<{ isAdmin: pulumi.Input<boolean>, thumbprint: pulumi.Input<string> }>[]>;
-    /**
-     * Required if Upgrade Mode set to `Manual`, Specifies the Version of the Cluster Code of the cluster.
-     */
     readonly clusterCodeVersion?: pulumi.Input<string>;
-    /**
-     * A `diagnostics_config` block as defined below. Changing this forces a new resource to be created.
-     */
     readonly diagnosticsConfig?: pulumi.Input<{ blobEndpoint: pulumi.Input<string>, protectedAccountKeyName: pulumi.Input<string>, queueEndpoint: pulumi.Input<string>, storageAccountName: pulumi.Input<string>, tableEndpoint: pulumi.Input<string> }>;
-    /**
-     * One or more `fabric_settings` blocks as defined below.
-     */
     readonly fabricSettings?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, parameters?: pulumi.Input<{[key: string]: any}> }>[]>;
-    /**
-     * Specifies the Azure Region where the Service Fabric Cluster should exist. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * Specifies the Management Endpoint of the cluster such as `http://example.com`. Changing this forces a new resource to be created.
-     */
     readonly managementEndpoint: pulumi.Input<string>;
-    /**
-     * The name of the Service Fabric Cluster. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * One or more `node_type` blocks as defined below.
-     */
     readonly nodeTypes: pulumi.Input<pulumi.Input<{ applicationPorts?: pulumi.Input<{ endPort: pulumi.Input<number>, startPort: pulumi.Input<number> }>, clientEndpointPort: pulumi.Input<number>, durabilityLevel?: pulumi.Input<string>, ephemeralPorts?: pulumi.Input<{ endPort: pulumi.Input<number>, startPort: pulumi.Input<number> }>, httpEndpointPort: pulumi.Input<number>, instanceCount: pulumi.Input<number>, isPrimary: pulumi.Input<boolean>, name: pulumi.Input<string>, reverseProxyEndpointPort?: pulumi.Input<number> }>[]>;
-    /**
-     * Specifies the Reliability Level of the Cluster. Possible values include `None`, `Bronze`, `Silver`, `Gold` and `Platinum`.
-     */
     readonly reliabilityLevel: pulumi.Input<string>;
-    /**
-     * The name of the Resource Group in which the Service Fabric Cluster exists. Changing this forces a new resource to be created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * A `reverse_proxy_certificate` block as defined below.
-     */
     readonly reverseProxyCertificate?: pulumi.Input<{ thumbprint: pulumi.Input<string>, thumbprintSecondary?: pulumi.Input<string>, x509StoreName: pulumi.Input<string> }>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the Upgrade Mode of the cluster. Possible values are `Automatic` or `Manual`.
-     */
     readonly upgradeMode: pulumi.Input<string>;
-    /**
-     * Specifies the Image expected for the Service Fabric Cluster, such as `Windows`. Changing this forces a new resource to be created.
-     */
     readonly vmImage: pulumi.Input<string>;
 }

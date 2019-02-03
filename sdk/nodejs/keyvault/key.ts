@@ -4,65 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Key Vault Key.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * import * as random from "@pulumi/random";
- * import sprintf = require("sprintf-js");
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "my-resource-group",
- * });
- * const azurerm_client_config_current = pulumi.output(azure.core.getClientConfig({}));
- * const random_id_server = new random.RandomId("server", {
- *     byteLength: 8,
- *     keepers: {
- *         ami_id: 1,
- *     },
- * });
- * const azurerm_key_vault_test = new azure.keyvault.KeyVault("test", {
- *     accessPolicies: [{
- *         keyPermissions: [
- *             "create",
- *             "get",
- *         ],
- *         objectId: azurerm_client_config_current.apply(__arg0 => __arg0.servicePrincipalObjectId),
- *         secretPermissions: ["set"],
- *         tenantId: azurerm_client_config_current.apply(__arg0 => __arg0.tenantId),
- *     }],
- *     location: azurerm_resource_group_test.location,
- *     name: random_id_server.hex.apply(__arg0 => sprintf.sprintf("%s%s", "kv", __arg0)),
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     sku: {
- *         name: "premium",
- *     },
- *     tags: {
- *         environment: "Production",
- *     },
- *     tenantId: azurerm_client_config_current.apply(__arg0 => __arg0.tenantId),
- * });
- * const azurerm_key_vault_key_generated = new azure.keyvault.Key("generated", {
- *     keyOpts: [
- *         "decrypt",
- *         "encrypt",
- *         "sign",
- *         "unwrapKey",
- *         "verify",
- *         "wrapKey",
- *     ],
- *     keySize: 2048,
- *     keyType: "RSA",
- *     name: "generated-certificate",
- *     vaultUri: azurerm_key_vault_test.vaultUri,
- * });
- * ```
- */
 export class Key extends pulumi.CustomResource {
     /**
      * Get an existing Key resource's state with the given name, ID, and optional extra
@@ -76,41 +17,14 @@ export class Key extends pulumi.CustomResource {
         return new Key(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The RSA public exponent of this Key Vault Key.
-     */
     public /*out*/ readonly e: pulumi.Output<string>;
-    /**
-     * A list of JSON web key operations. Possible values include: `decrypt`, `encrypt`, `sign`, `unwrapKey`, `verify` and `wrapKey`. Please note these values are case sensitive.
-     */
     public readonly keyOpts: pulumi.Output<string[]>;
-    /**
-     * Specifies the Size of the Key to create in bytes. For example, 1024 or 2048. Changing this forces a new resource to be created.
-     */
     public readonly keySize: pulumi.Output<number>;
-    /**
-     * Specifies the Key Type to use for this Key Vault Key. Possible values are `EC` (Elliptic Curve), `Oct` (Octet), `RSA` and `RSA-HSM`. Changing this forces a new resource to be created.
-     */
     public readonly keyType: pulumi.Output<string>;
-    /**
-     * The RSA modulus of this Key Vault Key.
-     */
     public /*out*/ readonly n: pulumi.Output<string>;
-    /**
-     * Specifies the name of the Key Vault Key. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * Specifies the URI used to access the Key Vault instance, available on the `azurerm_key_vault` resource.
-     */
     public readonly vaultUri: pulumi.Output<string>;
-    /**
-     * The current version of the Key Vault Key.
-     */
     public /*out*/ readonly version: pulumi.Output<string>;
 
     /**
@@ -166,41 +80,14 @@ export class Key extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Key resources.
  */
 export interface KeyState {
-    /**
-     * The RSA public exponent of this Key Vault Key.
-     */
     readonly e?: pulumi.Input<string>;
-    /**
-     * A list of JSON web key operations. Possible values include: `decrypt`, `encrypt`, `sign`, `unwrapKey`, `verify` and `wrapKey`. Please note these values are case sensitive.
-     */
     readonly keyOpts?: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Specifies the Size of the Key to create in bytes. For example, 1024 or 2048. Changing this forces a new resource to be created.
-     */
     readonly keySize?: pulumi.Input<number>;
-    /**
-     * Specifies the Key Type to use for this Key Vault Key. Possible values are `EC` (Elliptic Curve), `Oct` (Octet), `RSA` and `RSA-HSM`. Changing this forces a new resource to be created.
-     */
     readonly keyType?: pulumi.Input<string>;
-    /**
-     * The RSA modulus of this Key Vault Key.
-     */
     readonly n?: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Key Vault Key. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the URI used to access the Key Vault instance, available on the `azurerm_key_vault` resource.
-     */
     readonly vaultUri?: pulumi.Input<string>;
-    /**
-     * The current version of the Key Vault Key.
-     */
     readonly version?: pulumi.Input<string>;
 }
 
@@ -208,28 +95,10 @@ export interface KeyState {
  * The set of arguments for constructing a Key resource.
  */
 export interface KeyArgs {
-    /**
-     * A list of JSON web key operations. Possible values include: `decrypt`, `encrypt`, `sign`, `unwrapKey`, `verify` and `wrapKey`. Please note these values are case sensitive.
-     */
     readonly keyOpts: pulumi.Input<pulumi.Input<string>[]>;
-    /**
-     * Specifies the Size of the Key to create in bytes. For example, 1024 or 2048. Changing this forces a new resource to be created.
-     */
     readonly keySize: pulumi.Input<number>;
-    /**
-     * Specifies the Key Type to use for this Key Vault Key. Possible values are `EC` (Elliptic Curve), `Oct` (Octet), `RSA` and `RSA-HSM`. Changing this forces a new resource to be created.
-     */
     readonly keyType: pulumi.Input<string>;
-    /**
-     * Specifies the name of the Key Vault Key. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * Specifies the URI used to access the Key Vault instance, available on the `azurerm_key_vault` resource.
-     */
     readonly vaultUri: pulumi.Input<string>;
 }

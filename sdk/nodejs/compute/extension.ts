@@ -4,107 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Manages a Virtual Machine Extension to provide post deployment configuration
- * and run automated tasks.
- * 
- * > **NOTE:** Custom Script Extensions for Linux & Windows require that the `commandToExecute` returns a `0` exit code to be classified as successfully deployed. You can achieve this by appending `exit 0` to the end of your `commandToExecute`.
- * 
- * -> **NOTE:** Custom Script Extensions require that the Azure Virtual Machine Guest Agent is running on the Virtual Machine.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "acctestRG",
- * });
- * const azurerm_virtual_network_test = new azure.network.VirtualNetwork("test", {
- *     addressSpaces: ["10.0.0.0/16"],
- *     location: azurerm_resource_group_test.location,
- *     name: "acctvn",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_subnet_test = new azure.network.Subnet("test", {
- *     addressPrefix: "10.0.2.0/24",
- *     name: "acctsub",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     virtualNetworkName: azurerm_virtual_network_test.name,
- * });
- * const azurerm_network_interface_test = new azure.network.NetworkInterface("test", {
- *     ipConfigurations: [{
- *         name: "testconfiguration1",
- *         privateIpAddressAllocation: "Dynamic",
- *         subnetId: azurerm_subnet_test.id,
- *     }],
- *     location: azurerm_resource_group_test.location,
- *     name: "acctni",
- *     resourceGroupName: azurerm_resource_group_test.name,
- * });
- * const azurerm_storage_account_test = new azure.storage.Account("test", {
- *     accountReplicationType: "LRS",
- *     accountTier: "Standard",
- *     location: azurerm_resource_group_test.location,
- *     name: "accsa",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     tags: {
- *         environment: "staging",
- *     },
- * });
- * const azurerm_storage_container_test = new azure.storage.Container("test", {
- *     containerAccessType: "private",
- *     name: "vhds",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageAccountName: azurerm_storage_account_test.name,
- * });
- * const azurerm_virtual_machine_test = new azure.compute.VirtualMachine("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "acctvm",
- *     networkInterfaceIds: [azurerm_network_interface_test.id],
- *     osProfile: {
- *         adminPassword: "Password1234!",
- *         adminUsername: "testadmin",
- *         computerName: "hostname",
- *     },
- *     osProfileLinuxConfig: {
- *         disablePasswordAuthentication: false,
- *     },
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     storageImageReference: {
- *         offer: "UbuntuServer",
- *         publisher: "Canonical",
- *         sku: "16.04-LTS",
- *         version: "latest",
- *     },
- *     storageOsDisk: {
- *         caching: "ReadWrite",
- *         createOption: "FromImage",
- *         name: "myosdisk1",
- *         vhdUri: pulumi.all([azurerm_storage_account_test.primaryBlobEndpoint, azurerm_storage_container_test.name]).apply(([__arg0, __arg1]) => `${__arg0}${__arg1}/myosdisk1.vhd`),
- *     },
- *     tags: {
- *         environment: "staging",
- *     },
- *     vmSize: "Standard_F2",
- * });
- * const azurerm_virtual_machine_extension_test = new azure.compute.Extension("test", {
- *     location: azurerm_resource_group_test.location,
- *     name: "hostname",
- *     publisher: "Microsoft.Azure.Extensions",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     settings: "\t{\n\t\t\"commandToExecute\": \"hostname && uptime\"\n\t}\n",
- *     tags: {
- *         environment: "Production",
- *     },
- *     type: "CustomScript",
- *     typeHandlerVersion: "2.0",
- *     virtualMachineName: azurerm_virtual_machine_test.name,
- * });
- * ```
- */
 export class Extension extends pulumi.CustomResource {
     /**
      * Get an existing Extension resource's state with the given name, ID, and optional extra
@@ -118,60 +17,16 @@ export class Extension extends pulumi.CustomResource {
         return new Extension(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * Specifies if the platform deploys
-     * the latest minor version update to the `type_handler_version` specified.
-     */
     public readonly autoUpgradeMinorVersion: pulumi.Output<boolean | undefined>;
-    /**
-     * The location where the extension is created. Changing
-     * this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the virtual machine extension peering. Changing
-     * this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The protected_settings passed to the
-     * extension, like settings, these are specified as a JSON object in a string.
-     */
     public readonly protectedSettings: pulumi.Output<string | undefined>;
-    /**
-     * The publisher of the extension, available publishers
-     * can be found by using the Azure CLI.
-     */
     public readonly publisher: pulumi.Output<string>;
-    /**
-     * The name of the resource group in which to
-     * create the virtual network. Changing this forces a new resource to be
-     * created.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The settings passed to the extension, these are
-     * specified as a JSON object in a string.
-     */
     public readonly settings: pulumi.Output<string | undefined>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
-    /**
-     * The type of extension, available types for a publisher can
-     * be found using the Azure CLI.
-     */
     public readonly type: pulumi.Output<string>;
-    /**
-     * Specifies the version of the extension to
-     * use, available versions can be found using the Azure CLI.
-     */
     public readonly typeHandlerVersion: pulumi.Output<string>;
-    /**
-     * The name of the virtual machine. Changing
-     * this forces a new resource to be created.
-     */
     public readonly virtualMachineName: pulumi.Output<string>;
 
     /**
@@ -237,60 +92,16 @@ export class Extension extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Extension resources.
  */
 export interface ExtensionState {
-    /**
-     * Specifies if the platform deploys
-     * the latest minor version update to the `type_handler_version` specified.
-     */
     readonly autoUpgradeMinorVersion?: pulumi.Input<boolean>;
-    /**
-     * The location where the extension is created. Changing
-     * this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the virtual machine extension peering. Changing
-     * this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The protected_settings passed to the
-     * extension, like settings, these are specified as a JSON object in a string.
-     */
     readonly protectedSettings?: pulumi.Input<string>;
-    /**
-     * The publisher of the extension, available publishers
-     * can be found by using the Azure CLI.
-     */
     readonly publisher?: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the virtual network. Changing this forces a new resource to be
-     * created.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The settings passed to the extension, these are
-     * specified as a JSON object in a string.
-     */
     readonly settings?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The type of extension, available types for a publisher can
-     * be found using the Azure CLI.
-     */
     readonly type?: pulumi.Input<string>;
-    /**
-     * Specifies the version of the extension to
-     * use, available versions can be found using the Azure CLI.
-     */
     readonly typeHandlerVersion?: pulumi.Input<string>;
-    /**
-     * The name of the virtual machine. Changing
-     * this forces a new resource to be created.
-     */
     readonly virtualMachineName?: pulumi.Input<string>;
 }
 
@@ -298,59 +109,15 @@ export interface ExtensionState {
  * The set of arguments for constructing a Extension resource.
  */
 export interface ExtensionArgs {
-    /**
-     * Specifies if the platform deploys
-     * the latest minor version update to the `type_handler_version` specified.
-     */
     readonly autoUpgradeMinorVersion?: pulumi.Input<boolean>;
-    /**
-     * The location where the extension is created. Changing
-     * this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the virtual machine extension peering. Changing
-     * this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The protected_settings passed to the
-     * extension, like settings, these are specified as a JSON object in a string.
-     */
     readonly protectedSettings?: pulumi.Input<string>;
-    /**
-     * The publisher of the extension, available publishers
-     * can be found by using the Azure CLI.
-     */
     readonly publisher: pulumi.Input<string>;
-    /**
-     * The name of the resource group in which to
-     * create the virtual network. Changing this forces a new resource to be
-     * created.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The settings passed to the extension, these are
-     * specified as a JSON object in a string.
-     */
     readonly settings?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
-    /**
-     * The type of extension, available types for a publisher can
-     * be found using the Azure CLI.
-     */
     readonly type: pulumi.Input<string>;
-    /**
-     * Specifies the version of the extension to
-     * use, available versions can be found using the Azure CLI.
-     */
     readonly typeHandlerVersion: pulumi.Input<string>;
-    /**
-     * The name of the virtual machine. Changing
-     * this forces a new resource to be created.
-     */
     readonly virtualMachineName: pulumi.Input<string>;
 }

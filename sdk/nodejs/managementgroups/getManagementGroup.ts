@@ -4,22 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Management Group.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_management_group_test = pulumi.output(azure.managementgroups.getManagementGroup({
- *     groupId: "00000000-0000-0000-0000-000000000000",
- * }));
- * 
- * export const displayName = azurerm_management_group_test.apply(__arg0 => __arg0.displayName);
- * ```
- */
 export function getManagementGroup(args: GetManagementGroupArgs, opts?: pulumi.InvokeOptions): Promise<GetManagementGroupResult> {
     return pulumi.runtime.invoke("azure:managementgroups/getManagementGroup:getManagementGroup", {
         "groupId": args.groupId,
@@ -30,9 +14,6 @@ export function getManagementGroup(args: GetManagementGroupArgs, opts?: pulumi.I
  * A collection of arguments for invoking getManagementGroup.
  */
 export interface GetManagementGroupArgs {
-    /**
-     * Specifies the UUID of this Management Group.
-     */
     readonly groupId: string;
 }
 
@@ -40,17 +21,8 @@ export interface GetManagementGroupArgs {
  * A collection of values returned by getManagementGroup.
  */
 export interface GetManagementGroupResult {
-    /**
-     * A friendly name for the Management Group.
-     */
     readonly displayName: string;
-    /**
-     * The ID of any Parent Management Group.
-     */
     readonly parentManagementGroupId: string;
-    /**
-     * A list of Subscription ID's which are assigned to the Management Group.
-     */
     readonly subscriptionIds: string[];
     /**
      * id is the provider-assigned unique ID for this managed resource.

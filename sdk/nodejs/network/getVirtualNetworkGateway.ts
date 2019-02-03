@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Virtual Network Gateway.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_virtual_network_gateway_test = pulumi.output(azure.network.getVirtualNetworkGateway({
- *     name: "production",
- *     resourceGroupName: "networking",
- * }));
- * 
- * export const virtualNetworkGatewayId = azurerm_virtual_network_gateway_test.apply(__arg0 => __arg0.id);
- * ```
- */
 export function getVirtualNetworkGateway(args: GetVirtualNetworkGatewayArgs, opts?: pulumi.InvokeOptions): Promise<GetVirtualNetworkGatewayResult> {
     return pulumi.runtime.invoke("azure:network/getVirtualNetworkGateway:getVirtualNetworkGateway", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getVirtualNetworkGateway(args: GetVirtualNetworkGatewayArgs, opt
  * A collection of arguments for invoking getVirtualNetworkGateway.
  */
 export interface GetVirtualNetworkGatewayArgs {
-    /**
-     * Specifies the name of the Virtual Network Gateway.
-     */
     readonly name: string;
-    /**
-     * Specifies the name of the resource group the Virtual Network Gateway is located in.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,50 +23,16 @@ export interface GetVirtualNetworkGatewayArgs {
  * A collection of values returned by getVirtualNetworkGateway.
  */
 export interface GetVirtualNetworkGatewayResult {
-    /**
-     * (Optional) Is this an Active-Active Gateway?
-     */
     readonly activeActive: boolean;
     readonly bgpSettings: { asn: number, peerWeight: number, peeringAddress: string }[];
-    /**
-     * The ID of the local network gateway
-     * through which outbound Internet traffic from the virtual network in which the
-     * gateway is created will be routed (*forced tunneling*). Refer to the
-     * [Azure documentation on forced tunneling](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-forced-tunneling-rm).
-     */
     readonly defaultLocalNetworkGatewayId: string;
-    /**
-     * Will BGP (Border Gateway Protocol) will be enabled
-     * for this Virtual Network Gateway.
-     */
     readonly enableBgp: boolean;
-    /**
-     * One or two `ip_configuration` blocks documented below.
-     */
     readonly ipConfigurations: { name: string, privateIpAddressAllocation: string, publicIpAddressId: string, subnetId: string }[];
-    /**
-     * The location/region where the Virtual Network Gateway is located.
-     */
     readonly location: string;
-    /**
-     * Configuration of the size and capacity of the Virtual Network Gateway.
-     */
     readonly sku: string;
-    /**
-     * A mapping of tags assigned to the resource.
-     */
     readonly tags: {[key: string]: any};
-    /**
-     * The type of the Virtual Network Gateway.
-     */
     readonly type: string;
-    /**
-     * A `vpn_client_configuration` block which is documented below.
-     */
     readonly vpnClientConfigurations: { addressSpaces: string[], radiusServerAddress: string, radiusServerSecret: string, revokedCertificates: { name: string, thumbprint: string }[], rootCertificates: { name: string, publicCertData: string }[], vpnClientProtocols: string[] }[];
-    /**
-     * The routing type of the Virtual Network Gateway.
-     */
     readonly vpnType: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

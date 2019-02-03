@@ -4,44 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Allows you to manage an Azure SQL Elastic Pool.
- * 
- * > **NOTE:** -  This version of the `Elasticpool` resource is being **deprecated** and should no longer be used. Please use the azurerm_mssql_elasticpool version instead.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_resource_group_test = new azure.core.ResourceGroup("test", {
- *     location: "West US",
- *     name: "my-resource-group",
- * });
- * const azurerm_sql_server_test = new azure.sql.SqlServer("test", {
- *     administratorLogin: "4dm1n157r470r",
- *     administratorLoginPassword: "4-v3ry-53cr37-p455w0rd",
- *     location: azurerm_resource_group_test.location,
- *     name: "my-sql-server",
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     version: "12.0",
- * });
- * const azurerm_sql_elasticpool_test = new azure.sql.ElasticPool("test", {
- *     dbDtuMax: 5,
- *     dbDtuMin: 0,
- *     dtu: 50,
- *     edition: "Basic",
- *     location: azurerm_resource_group_test.location,
- *     name: "test",
- *     poolSize: 5000,
- *     resourceGroupName: azurerm_resource_group_test.name,
- *     serverName: azurerm_sql_server_test.name,
- * });
- * ```
- * > **NOTE on `azurerm_sql_elasticpool`:** -  The values of `edition`, `dtu`, and `pool_size` must be consistent with the [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus). Any inconsistent argument configuration will be rejected.
- * 
- */
 export class ElasticPool extends pulumi.CustomResource {
     /**
      * Get an existing ElasticPool resource's state with the given name, ID, and optional extra
@@ -55,49 +17,16 @@ export class ElasticPool extends pulumi.CustomResource {
         return new ElasticPool(name, <any>state, { ...opts, id: id });
     }
 
-    /**
-     * The creation date of the SQL Elastic Pool.
-     */
     public /*out*/ readonly creationDate: pulumi.Output<string>;
-    /**
-     * The maximum DTU which will be guaranteed to all databases in the elastic pool to be created.
-     */
     public readonly dbDtuMax: pulumi.Output<number>;
-    /**
-     * The minimum DTU which will be guaranteed to all databases in the elastic pool to be created.
-     */
     public readonly dbDtuMin: pulumi.Output<number>;
-    /**
-     * The total shared DTU for the elastic pool. Valid values depend on the `edition` which has been defined. Refer to [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus) for valid combinations.
-     */
     public readonly dtu: pulumi.Output<number>;
-    /**
-     * The edition of the elastic pool to be created. Valid values are `Basic`, `Standard`, and `Premium`. Refer to [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus) for details. Changing this forces a new resource to be created.
-     */
     public readonly edition: pulumi.Output<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     public readonly location: pulumi.Output<string>;
-    /**
-     * The name of the elastic pool. This needs to be globally unique. Changing this forces a new resource to be created.
-     */
     public readonly name: pulumi.Output<string>;
-    /**
-     * The maximum size in MB that all databases in the elastic pool can grow to. The maximum size must be consistent with combination of `edition` and `dtu` and the limits documented in [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus). If not defined when creating an elastic pool, the value is set to the size implied by `edition` and `dtu`.
-     */
     public readonly poolSize: pulumi.Output<number>;
-    /**
-     * The name of the resource group in which to create the elastic pool. This must be the same as the resource group of the underlying SQL server.
-     */
     public readonly resourceGroupName: pulumi.Output<string>;
-    /**
-     * The name of the SQL Server on which to create the elastic pool. Changing this forces a new resource to be created.
-     */
     public readonly serverName: pulumi.Output<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -160,49 +89,16 @@ export class ElasticPool extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ElasticPool resources.
  */
 export interface ElasticPoolState {
-    /**
-     * The creation date of the SQL Elastic Pool.
-     */
     readonly creationDate?: pulumi.Input<string>;
-    /**
-     * The maximum DTU which will be guaranteed to all databases in the elastic pool to be created.
-     */
     readonly dbDtuMax?: pulumi.Input<number>;
-    /**
-     * The minimum DTU which will be guaranteed to all databases in the elastic pool to be created.
-     */
     readonly dbDtuMin?: pulumi.Input<number>;
-    /**
-     * The total shared DTU for the elastic pool. Valid values depend on the `edition` which has been defined. Refer to [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus) for valid combinations.
-     */
     readonly dtu?: pulumi.Input<number>;
-    /**
-     * The edition of the elastic pool to be created. Valid values are `Basic`, `Standard`, and `Premium`. Refer to [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus) for details. Changing this forces a new resource to be created.
-     */
     readonly edition?: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location?: pulumi.Input<string>;
-    /**
-     * The name of the elastic pool. This needs to be globally unique. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The maximum size in MB that all databases in the elastic pool can grow to. The maximum size must be consistent with combination of `edition` and `dtu` and the limits documented in [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus). If not defined when creating an elastic pool, the value is set to the size implied by `edition` and `dtu`.
-     */
     readonly poolSize?: pulumi.Input<number>;
-    /**
-     * The name of the resource group in which to create the elastic pool. This must be the same as the resource group of the underlying SQL server.
-     */
     readonly resourceGroupName?: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server on which to create the elastic pool. Changing this forces a new resource to be created.
-     */
     readonly serverName?: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -210,44 +106,14 @@ export interface ElasticPoolState {
  * The set of arguments for constructing a ElasticPool resource.
  */
 export interface ElasticPoolArgs {
-    /**
-     * The maximum DTU which will be guaranteed to all databases in the elastic pool to be created.
-     */
     readonly dbDtuMax?: pulumi.Input<number>;
-    /**
-     * The minimum DTU which will be guaranteed to all databases in the elastic pool to be created.
-     */
     readonly dbDtuMin?: pulumi.Input<number>;
-    /**
-     * The total shared DTU for the elastic pool. Valid values depend on the `edition` which has been defined. Refer to [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus) for valid combinations.
-     */
     readonly dtu: pulumi.Input<number>;
-    /**
-     * The edition of the elastic pool to be created. Valid values are `Basic`, `Standard`, and `Premium`. Refer to [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus) for details. Changing this forces a new resource to be created.
-     */
     readonly edition: pulumi.Input<string>;
-    /**
-     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
-     */
     readonly location: pulumi.Input<string>;
-    /**
-     * The name of the elastic pool. This needs to be globally unique. Changing this forces a new resource to be created.
-     */
     readonly name?: pulumi.Input<string>;
-    /**
-     * The maximum size in MB that all databases in the elastic pool can grow to. The maximum size must be consistent with combination of `edition` and `dtu` and the limits documented in [Azure SQL Database Service Tiers](https://docs.microsoft.com/en-gb/azure/sql-database/sql-database-service-tiers#elastic-pool-service-tiers-and-performance-in-edtus). If not defined when creating an elastic pool, the value is set to the size implied by `edition` and `dtu`.
-     */
     readonly poolSize?: pulumi.Input<number>;
-    /**
-     * The name of the resource group in which to create the elastic pool. This must be the same as the resource group of the underlying SQL server.
-     */
     readonly resourceGroupName: pulumi.Input<string>;
-    /**
-     * The name of the SQL Server on which to create the elastic pool. Changing this forces a new resource to be created.
-     */
     readonly serverName: pulumi.Input<string>;
-    /**
-     * A mapping of tags to assign to the resource.
-     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

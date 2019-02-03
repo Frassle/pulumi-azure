@@ -4,23 +4,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-/**
- * Use this data source to access information about an existing Notification Hub Namespace.
- * 
- * ## Example Usage
- * 
- * ```typescript
- * import * as pulumi from "@pulumi/pulumi";
- * import * as azure from "@pulumi/azure";
- * 
- * const azurerm_notification_hub_namespace_test = pulumi.output(azure.notificationhub.getNamespace({
- *     name: "my-namespace",
- *     resourceGroupName: "my-resource-group",
- * }));
- * 
- * export const servicebusEndpoint = azurerm_notification_hub_namespace_test.apply(__arg0 => __arg0.servicebusEndpoint);
- * ```
- */
 export function getNamespace(args: GetNamespaceArgs, opts?: pulumi.InvokeOptions): Promise<GetNamespaceResult> {
     return pulumi.runtime.invoke("azure:notificationhub/getNamespace:getNamespace", {
         "name": args.name,
@@ -32,13 +15,7 @@ export function getNamespace(args: GetNamespaceArgs, opts?: pulumi.InvokeOptions
  * A collection of arguments for invoking getNamespace.
  */
 export interface GetNamespaceArgs {
-    /**
-     * Specifies the Name of the Notification Hub Namespace.
-     */
     readonly name: string;
-    /**
-     * Specifies the Name of the Resource Group within which the Notification Hub exists.
-     */
     readonly resourceGroupName: string;
 }
 
@@ -46,22 +23,10 @@ export interface GetNamespaceArgs {
  * A collection of values returned by getNamespace.
  */
 export interface GetNamespaceResult {
-    /**
-     * Is this Notification Hub Namespace enabled?
-     */
     readonly enabled: boolean;
-    /**
-     * The Azure Region in which this Notification Hub Namespace exists.
-     */
     readonly location: string;
-    /**
-     * The Type of Namespace, such as `Messaging` or `NotificationHub`.
-     */
     readonly namespaceType: string;
     readonly servicebusEndpoint: string;
-    /**
-     * A `sku` block as defined below.
-     */
     readonly sku: { name: string };
     /**
      * id is the provider-assigned unique ID for this managed resource.
