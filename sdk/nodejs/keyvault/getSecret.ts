@@ -4,8 +4,29 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Key Vault Secret.
+ * 
+ * > **Note:** All arguments including the secret value will be stored in the raw state as plain-text.
+ * [Read more about sensitive data in state](https://www.terraform.io/docs/state/sensitive-data.html).
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = pulumi.output(azure.keyvault.getSecret({
+ *     name: "secret-sauce",
+ *     vaultUri: "https://rickslab.vault.azure.net/",
+ * }));
+ * 
+ * export const secretValue = test.apply(test => test.value);
+ * ```
+ */
 export function getSecret(args: GetSecretArgs, opts?: pulumi.InvokeOptions): Promise<GetSecretResult> {
     return pulumi.runtime.invoke("azure:keyvault/getSecret:getSecret", {
+        "keyVaultId": args.keyVaultId,
         "name": args.name,
         "vaultUri": args.vaultUri,
     }, opts);
@@ -15,17 +36,38 @@ export function getSecret(args: GetSecretArgs, opts?: pulumi.InvokeOptions): Pro
  * A collection of arguments for invoking getSecret.
  */
 export interface GetSecretArgs {
+    readonly keyVaultId?: string;
+    /**
+     * Specifies the name of the Key Vault Secret.
+     */
     readonly name: string;
-    readonly vaultUri: string;
+    /**
+     * Specifies the ID of the Key Vault Key Vault instance where the Secret resides, available on the `azurerm_key_vault` Data Source / Resource.
+     */
+    readonly vaultUri?: string;
 }
 
 /**
  * A collection of values returned by getSecret.
  */
 export interface GetSecretResult {
+    /**
+     * The content type for the Key Vault Secret.
+     */
     readonly contentType: string;
+    readonly keyVaultId: string;
+    /**
+     * Any tags assigned to this resource.
+     */
     readonly tags: {[key: string]: any};
+    /**
+     * The value of the Key Vault Secret.
+     */
     readonly value: string;
+    readonly vaultUri: string;
+    /**
+     * The current version of the Key Vault Secret.
+     */
     readonly version: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

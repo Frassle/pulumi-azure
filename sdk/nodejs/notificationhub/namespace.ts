@@ -4,6 +4,28 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Notification Hub Namespace.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "Australia East",
+ * });
+ * const testNamespace = new azure.notificationhub.Namespace("test", {
+ *     location: testResourceGroup.location,
+ *     namespaceType: "NotificationHub",
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         name: "Free",
+ *     },
+ * });
+ * ```
+ */
 export class Namespace extends pulumi.CustomResource {
     /**
      * Get an existing Namespace resource's state with the given name, ID, and optional extra
@@ -17,12 +39,33 @@ export class Namespace extends pulumi.CustomResource {
         return new Namespace(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Is this Notification Hub Namespace enabled? Defaults to `true`.
+     */
     public readonly enabled: pulumi.Output<boolean | undefined>;
+    /**
+     * The Azure Region in which this Notification Hub Namespace should be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The name to use for this Notification Hub Namespace. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The Type of Namespace - possible values are `Messaging` or `NotificationHub`. Changing this forces a new resource to be created.
+     */
     public readonly namespaceType: pulumi.Output<string>;
+    /**
+     * The name of the Resource Group in which the Notification Hub Namespace should exist. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The ServiceBus Endpoint for this Notification Hub Namespace.
+     */
     public /*out*/ readonly servicebusEndpoint: pulumi.Output<string>;
+    /**
+     * A `sku` block as defined below.
+     */
     public readonly sku: pulumi.Output<{ name: string }>;
 
     /**
@@ -74,12 +117,33 @@ export class Namespace extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Namespace resources.
  */
 export interface NamespaceState {
+    /**
+     * Is this Notification Hub Namespace enabled? Defaults to `true`.
+     */
     readonly enabled?: pulumi.Input<boolean>;
+    /**
+     * The Azure Region in which this Notification Hub Namespace should be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The name to use for this Notification Hub Namespace. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The Type of Namespace - possible values are `Messaging` or `NotificationHub`. Changing this forces a new resource to be created.
+     */
     readonly namespaceType?: pulumi.Input<string>;
+    /**
+     * The name of the Resource Group in which the Notification Hub Namespace should exist. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The ServiceBus Endpoint for this Notification Hub Namespace.
+     */
     readonly servicebusEndpoint?: pulumi.Input<string>;
+    /**
+     * A `sku` block as defined below.
+     */
     readonly sku?: pulumi.Input<{ name: pulumi.Input<string> }>;
 }
 
@@ -87,10 +151,28 @@ export interface NamespaceState {
  * The set of arguments for constructing a Namespace resource.
  */
 export interface NamespaceArgs {
+    /**
+     * Is this Notification Hub Namespace enabled? Defaults to `true`.
+     */
     readonly enabled?: pulumi.Input<boolean>;
+    /**
+     * The Azure Region in which this Notification Hub Namespace should be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The name to use for this Notification Hub Namespace. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The Type of Namespace - possible values are `Messaging` or `NotificationHub`. Changing this forces a new resource to be created.
+     */
     readonly namespaceType: pulumi.Input<string>;
+    /**
+     * The name of the Resource Group in which the Notification Hub Namespace should exist. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A `sku` block as defined below.
+     */
     readonly sku: pulumi.Input<{ name: pulumi.Input<string> }>;
 }

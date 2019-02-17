@@ -4,6 +4,33 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Allows you to manage an Azure SQL Firewall Rule
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testSqlServer = new azure.sql.SqlServer("test", {
+ *     administratorLogin: "4dm1n157r470r",
+ *     administratorLoginPassword: "4-v3ry-53cr37-p455w0rd",
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ *     version: "12.0",
+ * });
+ * const testFirewallRule = new azure.sql.FirewallRule("test", {
+ *     endIpAddress: "10.0.17.62",
+ *     resourceGroupName: testResourceGroup.name,
+ *     serverName: testSqlServer.name,
+ *     startIpAddress: "10.0.17.62",
+ * });
+ * ```
+ */
 export class FirewallRule extends pulumi.CustomResource {
     /**
      * Get an existing FirewallRule resource's state with the given name, ID, and optional extra
@@ -17,10 +44,26 @@ export class FirewallRule extends pulumi.CustomResource {
         return new FirewallRule(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The ending IP address to allow through the firewall for this rule.
+     */
     public readonly endIpAddress: pulumi.Output<string>;
+    /**
+     * The name of the firewall rule.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the sql server.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The name of the SQL Server on which to create the Firewall Rule.
+     */
     public readonly serverName: pulumi.Output<string>;
+    /**
+     * The starting IP address to allow through the firewall for this rule.
+     */
     public readonly startIpAddress: pulumi.Output<string>;
 
     /**
@@ -68,10 +111,26 @@ export class FirewallRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering FirewallRule resources.
  */
 export interface FirewallRuleState {
+    /**
+     * The ending IP address to allow through the firewall for this rule.
+     */
     readonly endIpAddress?: pulumi.Input<string>;
+    /**
+     * The name of the firewall rule.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the sql server.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The name of the SQL Server on which to create the Firewall Rule.
+     */
     readonly serverName?: pulumi.Input<string>;
+    /**
+     * The starting IP address to allow through the firewall for this rule.
+     */
     readonly startIpAddress?: pulumi.Input<string>;
 }
 
@@ -79,9 +138,25 @@ export interface FirewallRuleState {
  * The set of arguments for constructing a FirewallRule resource.
  */
 export interface FirewallRuleArgs {
+    /**
+     * The ending IP address to allow through the firewall for this rule.
+     */
     readonly endIpAddress: pulumi.Input<string>;
+    /**
+     * The name of the firewall rule.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the sql server.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The name of the SQL Server on which to create the Firewall Rule.
+     */
     readonly serverName: pulumi.Input<string>;
+    /**
+     * The starting IP address to allow through the firewall for this rule.
+     */
     readonly startIpAddress: pulumi.Input<string>;
 }

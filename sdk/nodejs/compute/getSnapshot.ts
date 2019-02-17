@@ -4,6 +4,21 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Snapshot.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = pulumi.output(azure.compute.getSnapshot({
+ *     name: "my-snapshot",
+ *     resourceGroupName: "my-resource-group",
+ * }));
+ * ```
+ */
 export function getSnapshot(args: GetSnapshotArgs, opts?: pulumi.InvokeOptions): Promise<GetSnapshotResult> {
     return pulumi.runtime.invoke("azure:compute/getSnapshot:getSnapshot", {
         "name": args.name,
@@ -15,7 +30,13 @@ export function getSnapshot(args: GetSnapshotArgs, opts?: pulumi.InvokeOptions):
  * A collection of arguments for invoking getSnapshot.
  */
 export interface GetSnapshotArgs {
+    /**
+     * Specifies the name of the Snapshot.
+     */
     readonly name: string;
+    /**
+     * Specifies the name of the resource group the Snapshot is located in.
+     */
     readonly resourceGroupName: string;
 }
 
@@ -24,11 +45,23 @@ export interface GetSnapshotArgs {
  */
 export interface GetSnapshotResult {
     readonly creationOption: string;
+    /**
+     * The size of the Snapshotted Disk in GB.
+     */
     readonly diskSizeGb: number;
     readonly encryptionSettings: { diskEncryptionKeys: { secretUrl: string, sourceVaultId: string }[], enabled: boolean, keyEncryptionKeys: { keyUrl: string, sourceVaultId: string }[] }[];
     readonly osType: string;
+    /**
+     * The reference to an existing snapshot.
+     */
     readonly sourceResourceId: string;
+    /**
+     * The URI to a Managed or Unmanaged Disk.
+     */
     readonly sourceUri: string;
+    /**
+     * The ID of an storage account.
+     */
     readonly storageAccountId: string;
     readonly timeCreated: string;
     /**

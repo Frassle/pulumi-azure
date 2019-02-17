@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Enables you to manage DNS NS Records within Azure DNS.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testZone = new azure.dns.Zone("test", {
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testNsRecord = new azure.dns.NsRecord("test", {
+ *     records: [
+ *         "ns1.contoso.com",
+ *         "ns2.contoso.com",
+ *     ],
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         Environment: "Production",
+ *     },
+ *     ttl: 300,
+ *     zoneName: testZone.name,
+ * });
+ * ```
+ */
 export class NsRecord extends pulumi.CustomResource {
     /**
      * Get an existing NsRecord resource's state with the given name, ID, and optional extra
@@ -17,12 +46,33 @@ export class NsRecord extends pulumi.CustomResource {
         return new NsRecord(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the DNS NS Record.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * A list of values that make up the NS record. Each `record` block supports fields documented below. This field has been deprecated and will be removed in a future release.
+     */
     public readonly record: pulumi.Output<{ nsdname: string }[]>;
+    /**
+     * A list of values that make up the NS record. *WARNING*: Either `records` or `record` is required.
+     */
     public readonly records: pulumi.Output<string[]>;
+    /**
+     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * The Time To Live (TTL) of the DNS record in seconds.
+     */
     public readonly ttl: pulumi.Output<number>;
+    /**
+     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly zoneName: pulumi.Output<string>;
 
     /**
@@ -71,12 +121,33 @@ export class NsRecord extends pulumi.CustomResource {
  * Input properties used for looking up and filtering NsRecord resources.
  */
 export interface NsRecordState {
+    /**
+     * The name of the DNS NS Record.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * A list of values that make up the NS record. Each `record` block supports fields documented below. This field has been deprecated and will be removed in a future release.
+     */
     readonly record?: pulumi.Input<pulumi.Input<{ nsdname: pulumi.Input<string> }>[]>;
+    /**
+     * A list of values that make up the NS record. *WARNING*: Either `records` or `record` is required.
+     */
     readonly records?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The Time To Live (TTL) of the DNS record in seconds.
+     */
     readonly ttl?: pulumi.Input<number>;
+    /**
+     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly zoneName?: pulumi.Input<string>;
 }
 
@@ -84,11 +155,32 @@ export interface NsRecordState {
  * The set of arguments for constructing a NsRecord resource.
  */
 export interface NsRecordArgs {
+    /**
+     * The name of the DNS NS Record.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * A list of values that make up the NS record. Each `record` block supports fields documented below. This field has been deprecated and will be removed in a future release.
+     */
     readonly record?: pulumi.Input<pulumi.Input<{ nsdname: pulumi.Input<string> }>[]>;
+    /**
+     * A list of values that make up the NS record. *WARNING*: Either `records` or `record` is required.
+     */
     readonly records?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The Time To Live (TTL) of the DNS record in seconds.
+     */
     readonly ttl: pulumi.Input<number>;
+    /**
+     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly zoneName: pulumi.Input<string>;
 }

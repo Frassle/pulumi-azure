@@ -4,8 +4,40 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
-export function getRoleDefinition(args: GetRoleDefinitionArgs, opts?: pulumi.InvokeOptions): Promise<GetRoleDefinitionResult> {
+/**
+ * Use this data source to access information about an existing Role Definition.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const builtin = pulumi.output(azure.role.getBuiltinRoleDefinition({
+ *     name: "Contributor",
+ * }));
+ * const primary = pulumi.output(azure.core.getSubscription({}));
+ * const customDefinition = new azure.role.Definition("custom", {
+ *     roleDefinitionId: "00000000-0000-0000-0000-000000000000",
+ *     scope: primary.apply(primary => primary.id),
+ * });
+ * const customRoleDefinition = pulumi.output(azure.role.getRoleDefinition({
+ *     roleDefinitionId: customDefinition.roleDefinitionId,
+ *     scope: primary.apply(primary => primary.id),
+ * }));
+ * const custom_byname = pulumi.output(azure.role.getRoleDefinition({
+ *     name: customDefinition.name,
+ *     scope: primary.apply(primary => primary.id),
+ * }));
+ * 
+ * export const contributorRoleDefinitionId = azurerm_role_definition_builtin.id.apply(id => id);
+ * export const customRoleDefinitionId = customRoleDefinition.apply(customRoleDefinition => customRoleDefinition.id);
+ * ```
+ */
+export function getRoleDefinition(args?: GetRoleDefinitionArgs, opts?: pulumi.InvokeOptions): Promise<GetRoleDefinitionResult> {
+    args = args || {};
     return pulumi.runtime.invoke("azure:role/getRoleDefinition:getRoleDefinition", {
+        "name": args.name,
         "roleDefinitionId": args.roleDefinitionId,
         "scope": args.scope,
     }, opts);
@@ -15,18 +47,41 @@ export function getRoleDefinition(args: GetRoleDefinitionArgs, opts?: pulumi.Inv
  * A collection of arguments for invoking getRoleDefinition.
  */
 export interface GetRoleDefinitionArgs {
-    readonly roleDefinitionId: string;
-    readonly scope: string;
+    /**
+     * Specifies the Name of either a built-in or custom Role Definition.
+     */
+    readonly name?: string;
+    /**
+     * Specifies the ID of the Role Definition as a UUID/GUID.
+     */
+    readonly roleDefinitionId?: string;
+    /**
+     * Specifies the Scope at which the Custom Role Definition exists.
+     */
+    readonly scope?: string;
 }
 
 /**
  * A collection of values returned by getRoleDefinition.
  */
 export interface GetRoleDefinitionResult {
+    /**
+     * One or more assignable scopes for this Role Definition, such as `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333`, `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup`, or `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup/providers/Microsoft.Compute/virtualMachines/myVM`.
+     */
     readonly assignableScopes: string[];
+    /**
+     * the Description of the built-in Role.
+     */
     readonly description: string;
     readonly name: string;
+    /**
+     * a `permissions` block as documented below.
+     */
     readonly permissions: { actions: string[], dataActions?: string[], notActions: string[], notDataActions?: string[] }[];
+    readonly roleDefinitionId: string;
+    /**
+     * the Type of the Role.
+     */
     readonly type: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

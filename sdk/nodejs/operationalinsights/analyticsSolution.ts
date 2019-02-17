@@ -4,6 +4,44 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Log Analytics (formally Operational Insights) Solution.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * import * as random from "@pulumi/random";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "westeurope",
+ * });
+ * const workspace = new random.RandomId("workspace", {
+ *     byteLength: 8,
+ *     keepers: {
+ *         // Generate a new id each time we switch to a new resource group
+ *         group_name: testResourceGroup.name,
+ *     },
+ * });
+ * const testAnalyticsWorkspace = new azure.operationalinsights.AnalyticsWorkspace("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: "PerGB2018",
+ * });
+ * const testAnalyticsSolution = new azure.operationalinsights.AnalyticsSolution("test", {
+ *     location: testResourceGroup.location,
+ *     plan: {
+ *         product: "OMSGallery/ContainerInsights",
+ *         publisher: "Microsoft",
+ *     },
+ *     resourceGroupName: testResourceGroup.name,
+ *     solutionName: "ContainerInsights",
+ *     workspaceName: testAnalyticsWorkspace.name,
+ *     workspaceResourceId: testAnalyticsWorkspace.id,
+ * });
+ * ```
+ */
 export class AnalyticsSolution extends pulumi.CustomResource {
     /**
      * Get an existing AnalyticsSolution resource's state with the given name, ID, and optional extra
@@ -17,11 +55,29 @@ export class AnalyticsSolution extends pulumi.CustomResource {
         return new AnalyticsSolution(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * A `plan` block as documented below.
+     */
     public readonly plan: pulumi.Output<{ name: string, product: string, promotionCode?: string, publisher: string }>;
+    /**
+     * The name of the resource group in which the Log Analytics solution is created. Changing this forces a new resource to be created. Note: The solution and it's related workspace can only exist in the same resource group.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Specifies the name of the solution to be deployed. See [here for options](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-add-solutions).Changing this forces a new resource to be created.
+     */
     public readonly solutionName: pulumi.Output<string>;
+    /**
+     * The full name of the Log Analytics workspace with which the solution will be linked. Changing this forces a new resource to be created.
+     */
     public readonly workspaceName: pulumi.Output<string>;
+    /**
+     * The full resource ID of the Log Analytics workspace with which the solution will be linked. Changing this forces a new resource to be created.
+     */
     public readonly workspaceResourceId: pulumi.Output<string>;
 
     /**
@@ -77,11 +133,29 @@ export class AnalyticsSolution extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AnalyticsSolution resources.
  */
 export interface AnalyticsSolutionState {
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * A `plan` block as documented below.
+     */
     readonly plan?: pulumi.Input<{ name?: pulumi.Input<string>, product: pulumi.Input<string>, promotionCode?: pulumi.Input<string>, publisher: pulumi.Input<string> }>;
+    /**
+     * The name of the resource group in which the Log Analytics solution is created. Changing this forces a new resource to be created. Note: The solution and it's related workspace can only exist in the same resource group.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the solution to be deployed. See [here for options](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-add-solutions).Changing this forces a new resource to be created.
+     */
     readonly solutionName?: pulumi.Input<string>;
+    /**
+     * The full name of the Log Analytics workspace with which the solution will be linked. Changing this forces a new resource to be created.
+     */
     readonly workspaceName?: pulumi.Input<string>;
+    /**
+     * The full resource ID of the Log Analytics workspace with which the solution will be linked. Changing this forces a new resource to be created.
+     */
     readonly workspaceResourceId?: pulumi.Input<string>;
 }
 
@@ -89,10 +163,28 @@ export interface AnalyticsSolutionState {
  * The set of arguments for constructing a AnalyticsSolution resource.
  */
 export interface AnalyticsSolutionArgs {
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * A `plan` block as documented below.
+     */
     readonly plan: pulumi.Input<{ name?: pulumi.Input<string>, product: pulumi.Input<string>, promotionCode?: pulumi.Input<string>, publisher: pulumi.Input<string> }>;
+    /**
+     * The name of the resource group in which the Log Analytics solution is created. Changing this forces a new resource to be created. Note: The solution and it's related workspace can only exist in the same resource group.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Specifies the name of the solution to be deployed. See [here for options](https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-add-solutions).Changing this forces a new resource to be created.
+     */
     readonly solutionName: pulumi.Input<string>;
+    /**
+     * The full name of the Log Analytics workspace with which the solution will be linked. Changing this forces a new resource to be created.
+     */
     readonly workspaceName: pulumi.Input<string>;
+    /**
+     * The full resource ID of the Log Analytics workspace with which the solution will be linked. Changing this forces a new resource to be created.
+     */
     readonly workspaceResourceId: pulumi.Input<string>;
 }

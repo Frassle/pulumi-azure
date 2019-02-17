@@ -4,6 +4,29 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage an Azure Data Lake Analytics Account.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "northeurope",
+ * });
+ * const exampleStore = new azure.datalake.Store("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleAnalyticsAccount = new azure.datalake.AnalyticsAccount("example", {
+ *     defaultStoreAccountName: exampleStore.name,
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * ```
+ */
 export class AnalyticsAccount extends pulumi.CustomResource {
     /**
      * Get an existing AnalyticsAccount resource's state with the given name, ID, and optional extra
@@ -17,11 +40,29 @@ export class AnalyticsAccount extends pulumi.CustomResource {
         return new AnalyticsAccount(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the data lake store to use by default. Changing this forces a new resource to be created.
+     */
     public readonly defaultStoreAccountName: pulumi.Output<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Data Lake Analytics Account. Changing this forces a new resource to be created. Has to be between 3 to 24 characters.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the Data Lake Analytics Account.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * The monthly commitment tier for Data Lake Analytics Account. Accepted values are `Consumption`, `Commitment_100000AUHours`, `Commitment_10000AUHours`, `Commitment_1000AUHours`, `Commitment_100AUHours`, `Commitment_500000AUHours`, `Commitment_50000AUHours`, `Commitment_5000AUHours`, or `Commitment_500AUHours`.
+     */
     public readonly tier: pulumi.Output<string | undefined>;
 
     /**
@@ -68,11 +109,29 @@ export class AnalyticsAccount extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AnalyticsAccount resources.
  */
 export interface AnalyticsAccountState {
+    /**
+     * Specifies the data lake store to use by default. Changing this forces a new resource to be created.
+     */
     readonly defaultStoreAccountName?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Data Lake Analytics Account. Changing this forces a new resource to be created. Has to be between 3 to 24 characters.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the Data Lake Analytics Account.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The monthly commitment tier for Data Lake Analytics Account. Accepted values are `Consumption`, `Commitment_100000AUHours`, `Commitment_10000AUHours`, `Commitment_1000AUHours`, `Commitment_100AUHours`, `Commitment_500000AUHours`, `Commitment_50000AUHours`, `Commitment_5000AUHours`, or `Commitment_500AUHours`.
+     */
     readonly tier?: pulumi.Input<string>;
 }
 
@@ -80,10 +139,28 @@ export interface AnalyticsAccountState {
  * The set of arguments for constructing a AnalyticsAccount resource.
  */
 export interface AnalyticsAccountArgs {
+    /**
+     * Specifies the data lake store to use by default. Changing this forces a new resource to be created.
+     */
     readonly defaultStoreAccountName: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Data Lake Analytics Account. Changing this forces a new resource to be created. Has to be between 3 to 24 characters.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the Data Lake Analytics Account.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The monthly commitment tier for Data Lake Analytics Account. Accepted values are `Consumption`, `Commitment_100000AUHours`, `Commitment_10000AUHours`, `Commitment_1000AUHours`, `Commitment_100AUHours`, `Commitment_500000AUHours`, `Commitment_50000AUHours`, `Commitment_5000AUHours`, or `Commitment_500AUHours`.
+     */
     readonly tier?: pulumi.Input<string>;
 }

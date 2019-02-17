@@ -4,6 +4,29 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Enables you to manage DNS AAAA Records within Azure DNS.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testZone = new azure.dns.Zone("test", {
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testAaaaRecord = new azure.dns.AaaaRecord("test", {
+ *     records: ["2607:f8b0:4009:1803::1005"],
+ *     resourceGroupName: testResourceGroup.name,
+ *     ttl: 300,
+ *     zoneName: testZone.name,
+ * });
+ * ```
+ */
 export class AaaaRecord extends pulumi.CustomResource {
     /**
      * Get an existing AaaaRecord resource's state with the given name, ID, and optional extra
@@ -17,11 +40,26 @@ export class AaaaRecord extends pulumi.CustomResource {
         return new AaaaRecord(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the DNS AAAA Record.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * List of IPv6 Addresses.
+     */
     public readonly records: pulumi.Output<string[]>;
+    /**
+     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
     public readonly ttl: pulumi.Output<number>;
+    /**
+     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly zoneName: pulumi.Output<string>;
 
     /**
@@ -71,11 +109,26 @@ export class AaaaRecord extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AaaaRecord resources.
  */
 export interface AaaaRecordState {
+    /**
+     * The name of the DNS AAAA Record.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * List of IPv6 Addresses.
+     */
     readonly records?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
     readonly ttl?: pulumi.Input<number>;
+    /**
+     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly zoneName?: pulumi.Input<string>;
 }
 
@@ -83,10 +136,25 @@ export interface AaaaRecordState {
  * The set of arguments for constructing a AaaaRecord resource.
  */
 export interface AaaaRecordArgs {
+    /**
+     * The name of the DNS AAAA Record.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * List of IPv6 Addresses.
+     */
     readonly records: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Specifies the resource group where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
     readonly ttl: pulumi.Input<number>;
+    /**
+     * Specifies the DNS Zone where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly zoneName: pulumi.Input<string>;
 }

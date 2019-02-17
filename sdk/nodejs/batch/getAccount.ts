@@ -4,6 +4,23 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Batch Account.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = pulumi.output(azure.batch.getAccount({
+ *     name: "testbatchaccount",
+ *     resourceGroupName: "test",
+ * }));
+ * 
+ * export const poolAllocationMode = test.apply(test => test.poolAllocationMode);
+ * ```
+ */
 export function getAccount(args: GetAccountArgs, opts?: pulumi.InvokeOptions): Promise<GetAccountResult> {
     return pulumi.runtime.invoke("azure:batch/getAccount:getAccount", {
         "name": args.name,
@@ -15,7 +32,13 @@ export function getAccount(args: GetAccountArgs, opts?: pulumi.InvokeOptions): P
  * A collection of arguments for invoking getAccount.
  */
 export interface GetAccountArgs {
+    /**
+     * The name of the Batch account.
+     */
     readonly name: string;
+    /**
+     * The Name of the Resource Group where this Batch account exists.
+     */
     readonly resourceGroupName: string;
 }
 
@@ -23,9 +46,21 @@ export interface GetAccountArgs {
  * A collection of values returned by getAccount.
  */
 export interface GetAccountResult {
+    /**
+     * The Azure Region in which this Batch account exists.
+     */
     readonly location: string;
+    /**
+     * The pool allocation mode configured for this Batch account.
+     */
     readonly poolAllocationMode: string;
+    /**
+     * The ID of the Storage Account used for this Batch account.
+     */
     readonly storageAccountId: string;
+    /**
+     * A map of tags assigned to the Batch account.
+     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

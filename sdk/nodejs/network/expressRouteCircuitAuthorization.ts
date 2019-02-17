@@ -4,6 +4,39 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages an ExpressRoute Circuit Authorization.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testExpressRouteCircuit = new azure.network.ExpressRouteCircuit("test", {
+ *     allowClassicOperations: false,
+ *     bandwidthInMbps: 50,
+ *     location: testResourceGroup.location,
+ *     peeringLocation: "Silicon Valley",
+ *     resourceGroupName: testResourceGroup.name,
+ *     serviceProviderName: "Equinix",
+ *     sku: {
+ *         family: "MeteredData",
+ *         tier: "Standard",
+ *     },
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ * });
+ * const testExpressRouteCircuitAuthorization = new azure.network.ExpressRouteCircuitAuthorization("test", {
+ *     expressRouteCircuitName: testExpressRouteCircuit.name,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * ```
+ */
 export class ExpressRouteCircuitAuthorization extends pulumi.CustomResource {
     /**
      * Get an existing ExpressRouteCircuitAuthorization resource's state with the given name, ID, and optional extra
@@ -17,10 +50,27 @@ export class ExpressRouteCircuitAuthorization extends pulumi.CustomResource {
         return new ExpressRouteCircuitAuthorization(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The Authorization Key.
+     */
     public /*out*/ readonly authorizationKey: pulumi.Output<string>;
+    /**
+     * The authorization use status.
+     */
     public /*out*/ readonly authorizationUseStatus: pulumi.Output<string>;
+    /**
+     * The name of the Express Route Circuit in which to create the Authorization.
+     */
     public readonly expressRouteCircuitName: pulumi.Output<string>;
+    /**
+     * The name of the ExpressRoute circuit. Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the ExpressRoute circuit. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -62,10 +112,27 @@ export class ExpressRouteCircuitAuthorization extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ExpressRouteCircuitAuthorization resources.
  */
 export interface ExpressRouteCircuitAuthorizationState {
+    /**
+     * The Authorization Key.
+     */
     readonly authorizationKey?: pulumi.Input<string>;
+    /**
+     * The authorization use status.
+     */
     readonly authorizationUseStatus?: pulumi.Input<string>;
+    /**
+     * The name of the Express Route Circuit in which to create the Authorization.
+     */
     readonly expressRouteCircuitName?: pulumi.Input<string>;
+    /**
+     * The name of the ExpressRoute circuit. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the ExpressRoute circuit. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -73,7 +140,18 @@ export interface ExpressRouteCircuitAuthorizationState {
  * The set of arguments for constructing a ExpressRouteCircuitAuthorization resource.
  */
 export interface ExpressRouteCircuitAuthorizationArgs {
+    /**
+     * The name of the Express Route Circuit in which to create the Authorization.
+     */
     readonly expressRouteCircuitName: pulumi.Input<string>;
+    /**
+     * The name of the ExpressRoute circuit. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the ExpressRoute circuit. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

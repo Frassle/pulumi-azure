@@ -4,6 +4,20 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Subscription.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const current = pulumi.output(azure.core.getSubscription({}));
+ * 
+ * export const currentSubscriptionDisplayName = current.apply(current => current.displayName);
+ * ```
+ */
 export function getSubscription(args?: GetSubscriptionArgs, opts?: pulumi.InvokeOptions): Promise<GetSubscriptionResult> {
     args = args || {};
     return pulumi.runtime.invoke("azure:core/getSubscription:getSubscription", {
@@ -15,6 +29,9 @@ export function getSubscription(args?: GetSubscriptionArgs, opts?: pulumi.Invoke
  * A collection of arguments for invoking getSubscription.
  */
 export interface GetSubscriptionArgs {
+    /**
+     * Specifies the ID of the subscription. If this argument is omitted, the subscription ID of the current Azure Resource Manager provider is used.
+     */
     readonly subscriptionId?: string;
 }
 
@@ -22,10 +39,25 @@ export interface GetSubscriptionArgs {
  * A collection of values returned by getSubscription.
  */
 export interface GetSubscriptionResult {
+    /**
+     * The subscription display name.
+     */
     readonly displayName: string;
+    /**
+     * The subscription location placement ID.
+     */
     readonly locationPlacementId: string;
+    /**
+     * The subscription quota ID.
+     */
     readonly quotaId: string;
+    /**
+     * The subscription spending limit.
+     */
     readonly spendingLimit: string;
+    /**
+     * The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
+     */
     readonly state: string;
     readonly subscriptionId: string;
     /**

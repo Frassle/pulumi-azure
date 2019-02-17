@@ -4,6 +4,9 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Batch pool
+ */
 export function getPool(args: GetPoolArgs, opts?: pulumi.InvokeOptions): Promise<GetPoolResult> {
     return pulumi.runtime.invoke("azure:batch/getPool:getPool", {
         "accountName": args.accountName,
@@ -27,11 +30,30 @@ export interface GetPoolArgs {
  * A collection of values returned by getPool.
  */
 export interface GetPoolResult {
+    /**
+     * A `auto_scale` block that describes the scale settings when using auto scale.
+     */
     readonly autoScales: { evaluationInterval: string, formula: string }[];
     readonly displayName: string;
+    /**
+     * A `fixed_scale` block that describes the scale settings when using fixed scale.
+     */
     readonly fixedScales: { resizeTimeout: string, targetDedicatedNodes: number, targetLowPriorityNodes: number }[];
+    /**
+     * The maximum number of tasks that can run concurrently on a single compute node in the pool.
+     */
+    readonly maxTasksPerNode: number;
+    /**
+     * The Sku of the node agents in the Batch pool.
+     */
     readonly nodeAgentSkuId: string;
+    /**
+     * The reference of the storage image used by the nodes in the Batch pool.
+     */
     readonly storageImageReferences: { id: string, offer: string, publisher: string, sku: string, version: string }[];
+    /**
+     * The size of the VM created in the Batch pool.
+     */
     readonly vmSize: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

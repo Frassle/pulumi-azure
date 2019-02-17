@@ -4,6 +4,62 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Key Vault Secret.
+ * 
+ * > **Note:** All arguments including the secret value will be stored in the raw state as plain-text.
+ * [Read more about sensitive data in state](https://www.terraform.io/docs/state/sensitive-data.html).
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * import * as random from "@pulumi/random";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const current = pulumi.output(azure.core.getClientConfig({}));
+ * const server = new random.RandomId("server", {
+ *     byteLength: 8,
+ *     keepers: {
+ *         ami_id: 1,
+ *     },
+ * });
+ * const testKeyVault = new azure.keyvault.KeyVault("test", {
+ *     accessPolicies: [{
+ *         keyPermissions: [
+ *             "create",
+ *             "get",
+ *         ],
+ *         objectId: current.apply(current => current.servicePrincipalObjectId),
+ *         secretPermissions: [
+ *             "set",
+ *             "get",
+ *             "delete",
+ *         ],
+ *         tenantId: current.apply(current => current.tenantId),
+ *     }],
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         name: "premium",
+ *     },
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ *     tenantId: current.apply(current => current.tenantId),
+ * });
+ * const testSecret = new azure.keyvault.Secret("test", {
+ *     keyVaultId: testKeyVault.id,
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ *     value: "szechuan",
+ * });
+ * ```
+ */
 export class Secret extends pulumi.CustomResource {
     /**
      * Get an existing Secret resource's state with the given name, ID, and optional extra
@@ -17,11 +73,30 @@ export class Secret extends pulumi.CustomResource {
         return new Secret(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the content type for the Key Vault Secret.
+     */
     public readonly contentType: pulumi.Output<string | undefined>;
+    /**
+     * The ID of the Key Vault where the Secret should be created.
+     */
+    public readonly keyVaultId: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Key Vault Secret. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * Specifies the value of the Key Vault Secret.
+     */
     public readonly value: pulumi.Output<string>;
     public readonly vaultUri: pulumi.Output<string>;
+    /**
+     * The current version of the Key Vault Secret.
+     */
     public /*out*/ readonly version: pulumi.Output<string>;
 
     /**
@@ -37,6 +112,7 @@ export class Secret extends pulumi.CustomResource {
         if (opts && opts.id) {
             const state: SecretState = argsOrState as SecretState | undefined;
             inputs["contentType"] = state ? state.contentType : undefined;
+            inputs["keyVaultId"] = state ? state.keyVaultId : undefined;
             inputs["name"] = state ? state.name : undefined;
             inputs["tags"] = state ? state.tags : undefined;
             inputs["value"] = state ? state.value : undefined;
@@ -47,10 +123,8 @@ export class Secret extends pulumi.CustomResource {
             if (!args || args.value === undefined) {
                 throw new Error("Missing required property 'value'");
             }
-            if (!args || args.vaultUri === undefined) {
-                throw new Error("Missing required property 'vaultUri'");
-            }
             inputs["contentType"] = args ? args.contentType : undefined;
+            inputs["keyVaultId"] = args ? args.keyVaultId : undefined;
             inputs["name"] = args ? args.name : undefined;
             inputs["tags"] = args ? args.tags : undefined;
             inputs["value"] = args ? args.value : undefined;
@@ -65,11 +139,30 @@ export class Secret extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Secret resources.
  */
 export interface SecretState {
+    /**
+     * Specifies the content type for the Key Vault Secret.
+     */
     readonly contentType?: pulumi.Input<string>;
+    /**
+     * The ID of the Key Vault where the Secret should be created.
+     */
+    readonly keyVaultId?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Key Vault Secret. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * Specifies the value of the Key Vault Secret.
+     */
     readonly value?: pulumi.Input<string>;
     readonly vaultUri?: pulumi.Input<string>;
+    /**
+     * The current version of the Key Vault Secret.
+     */
     readonly version?: pulumi.Input<string>;
 }
 
@@ -77,9 +170,25 @@ export interface SecretState {
  * The set of arguments for constructing a Secret resource.
  */
 export interface SecretArgs {
+    /**
+     * Specifies the content type for the Key Vault Secret.
+     */
     readonly contentType?: pulumi.Input<string>;
+    /**
+     * The ID of the Key Vault where the Secret should be created.
+     */
+    readonly keyVaultId?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Key Vault Secret. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * Specifies the value of the Key Vault Secret.
+     */
     readonly value: pulumi.Input<string>;
-    readonly vaultUri: pulumi.Input<string>;
+    readonly vaultUri?: pulumi.Input<string>;
 }

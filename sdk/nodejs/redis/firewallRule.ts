@@ -4,6 +4,47 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Firewall Rule associated with a Redis Cache.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * import * as random from "@pulumi/random";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const server = new random.RandomId("server", {
+ *     byteLength: 8,
+ *     keepers: {
+ *         azi_id: 1,
+ *     },
+ * });
+ * const testCache = new azure.redis.Cache("test", {
+ *     capacity: 1,
+ *     enableNonSslPort: false,
+ *     family: "P",
+ *     location: testResourceGroup.location,
+ *     redisConfiguration: {
+ *         maxclients: 256,
+ *         maxmemoryDelta: 2,
+ *         maxmemoryPolicy: "allkeys-lru",
+ *         maxmemoryReserved: 2,
+ *     },
+ *     resourceGroupName: testResourceGroup.name,
+ *     skuName: "Premium",
+ * });
+ * const testFirewallRule = new azure.redis.FirewallRule("test", {
+ *     endIp: "2.3.4.5",
+ *     redisCacheName: testCache.name,
+ *     resourceGroupName: testResourceGroup.name,
+ *     startIp: "1.2.3.4",
+ * });
+ * ```
+ */
 export class FirewallRule extends pulumi.CustomResource {
     /**
      * Get an existing FirewallRule resource's state with the given name, ID, and optional extra
@@ -17,10 +58,25 @@ export class FirewallRule extends pulumi.CustomResource {
         return new FirewallRule(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The highest IP address included in the range.
+     */
     public readonly endIp: pulumi.Output<string>;
+    /**
+     * The name of the Firewall Rule. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the Redis Cache. Changing this forces a new resource to be created.
+     */
     public readonly redisCacheName: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which this Redis Cache exists.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The lowest IP address included in the range
+     */
     public readonly startIp: pulumi.Output<string>;
 
     /**
@@ -68,10 +124,25 @@ export class FirewallRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering FirewallRule resources.
  */
 export interface FirewallRuleState {
+    /**
+     * The highest IP address included in the range.
+     */
     readonly endIp?: pulumi.Input<string>;
+    /**
+     * The name of the Firewall Rule. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the Redis Cache. Changing this forces a new resource to be created.
+     */
     readonly redisCacheName?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which this Redis Cache exists.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The lowest IP address included in the range
+     */
     readonly startIp?: pulumi.Input<string>;
 }
 
@@ -79,9 +150,24 @@ export interface FirewallRuleState {
  * The set of arguments for constructing a FirewallRule resource.
  */
 export interface FirewallRuleArgs {
+    /**
+     * The highest IP address included in the range.
+     */
     readonly endIp: pulumi.Input<string>;
+    /**
+     * The name of the Firewall Rule. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the Redis Cache. Changing this forces a new resource to be created.
+     */
     readonly redisCacheName: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which this Redis Cache exists.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The lowest IP address included in the range
+     */
     readonly startIp: pulumi.Input<string>;
 }

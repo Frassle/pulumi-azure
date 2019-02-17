@@ -4,6 +4,33 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a SQL Azure Database Server.
+ * 
+ * > **Note:** All arguments including the administrator login and password will be stored in the raw state as plain-text.
+ * [Read more about sensitive data in state](https://www.terraform.io/docs/state/sensitive-data.html).
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testSqlServer = new azure.sql.SqlServer("test", {
+ *     administratorLogin: "mradministrator",
+ *     administratorLoginPassword: "thisIsDog11",
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         environment: "production",
+ *     },
+ *     version: "12.0",
+ * });
+ * ```
+ */
 export class SqlServer extends pulumi.CustomResource {
     /**
      * Get an existing SqlServer resource's state with the given name, ID, and optional extra
@@ -17,13 +44,37 @@ export class SqlServer extends pulumi.CustomResource {
         return new SqlServer(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The administrator login name for the new server. Changing this forces a new resource to be created.
+     */
     public readonly administratorLogin: pulumi.Output<string>;
+    /**
+     * The password associated with the `administrator_login` user. Needs to comply with Azure's [Password Policy](https://msdn.microsoft.com/library/ms161959.aspx)
+     */
     public readonly administratorLoginPassword: pulumi.Output<string>;
+    /**
+     * The fully qualified domain name of the Azure SQL Server (e.g. myServerName.database.windows.net)
+     */
     public /*out*/ readonly fullyQualifiedDomainName: pulumi.Output<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The name of the SQL Server. This needs to be globally unique within Azure.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the SQL Server.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server).
+     */
     public readonly version: pulumi.Output<string>;
 
     /**
@@ -80,13 +131,37 @@ export class SqlServer extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SqlServer resources.
  */
 export interface SqlServerState {
+    /**
+     * The administrator login name for the new server. Changing this forces a new resource to be created.
+     */
     readonly administratorLogin?: pulumi.Input<string>;
+    /**
+     * The password associated with the `administrator_login` user. Needs to comply with Azure's [Password Policy](https://msdn.microsoft.com/library/ms161959.aspx)
+     */
     readonly administratorLoginPassword?: pulumi.Input<string>;
+    /**
+     * The fully qualified domain name of the Azure SQL Server (e.g. myServerName.database.windows.net)
+     */
     readonly fullyQualifiedDomainName?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The name of the SQL Server. This needs to be globally unique within Azure.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the SQL Server.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server).
+     */
     readonly version?: pulumi.Input<string>;
 }
 
@@ -94,11 +169,32 @@ export interface SqlServerState {
  * The set of arguments for constructing a SqlServer resource.
  */
 export interface SqlServerArgs {
+    /**
+     * The administrator login name for the new server. Changing this forces a new resource to be created.
+     */
     readonly administratorLogin: pulumi.Input<string>;
+    /**
+     * The password associated with the `administrator_login` user. Needs to comply with Azure's [Password Policy](https://msdn.microsoft.com/library/ms161959.aspx)
+     */
     readonly administratorLoginPassword: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The name of the SQL Server. This needs to be globally unique within Azure.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the SQL Server.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server).
+     */
     readonly version: pulumi.Input<string>;
 }

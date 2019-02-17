@@ -4,6 +4,45 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a MySQL Database within a MySQL Server
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const testServer = new azure.mysql.Server("test", {
+ *     administratorLogin: "mysqladminun",
+ *     administratorLoginPassword: "H@Sh1CoR3!",
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         capacity: 2,
+ *         family: "Gen4",
+ *         name: "B_Gen4_2",
+ *         tier: "Basic",
+ *     },
+ *     sslEnforcement: "Enabled",
+ *     storageProfile: {
+ *         backupRetentionDays: 7,
+ *         geoRedundantBackup: "Disabled",
+ *         storageMb: 5120,
+ *     },
+ *     version: "5.7",
+ * });
+ * const testDatabase = new azure.mysql.Database("test", {
+ *     charset: "utf8",
+ *     collation: "utf8_unicode_ci",
+ *     resourceGroupName: testResourceGroup.name,
+ *     serverName: testServer.name,
+ * });
+ * ```
+ */
 export class Database extends pulumi.CustomResource {
     /**
      * Get an existing Database resource's state with the given name, ID, and optional extra
@@ -17,10 +56,25 @@ export class Database extends pulumi.CustomResource {
         return new Database(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the Charset for the MySQL Database, which needs [to be a valid MySQL Charset](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html). Changing this forces a new resource to be created.
+     */
     public readonly charset: pulumi.Output<string>;
+    /**
+     * Specifies the Collation for the MySQL Database, which needs [to be a valid MySQL Collation](https://dev.mysql.com/doc/refman/5.7/en/charset-mysql.html). Changing this forces a new resource to be created.
+     */
     public readonly collation: pulumi.Output<string>;
+    /**
+     * Specifies the name of the MySQL Database, which needs [to be a valid MySQL identifier](https://dev.mysql.com/doc/refman/5.7/en/identifiers.html). Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
+     */
     public readonly serverName: pulumi.Output<string>;
 
     /**
@@ -68,10 +122,25 @@ export class Database extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Database resources.
  */
 export interface DatabaseState {
+    /**
+     * Specifies the Charset for the MySQL Database, which needs [to be a valid MySQL Charset](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html). Changing this forces a new resource to be created.
+     */
     readonly charset?: pulumi.Input<string>;
+    /**
+     * Specifies the Collation for the MySQL Database, which needs [to be a valid MySQL Collation](https://dev.mysql.com/doc/refman/5.7/en/charset-mysql.html). Changing this forces a new resource to be created.
+     */
     readonly collation?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MySQL Database, which needs [to be a valid MySQL identifier](https://dev.mysql.com/doc/refman/5.7/en/identifiers.html). Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
+     */
     readonly serverName?: pulumi.Input<string>;
 }
 
@@ -79,9 +148,24 @@ export interface DatabaseState {
  * The set of arguments for constructing a Database resource.
  */
 export interface DatabaseArgs {
+    /**
+     * Specifies the Charset for the MySQL Database, which needs [to be a valid MySQL Charset](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html). Changing this forces a new resource to be created.
+     */
     readonly charset: pulumi.Input<string>;
+    /**
+     * Specifies the Collation for the MySQL Database, which needs [to be a valid MySQL Collation](https://dev.mysql.com/doc/refman/5.7/en/charset-mysql.html). Changing this forces a new resource to be created.
+     */
     readonly collation: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MySQL Database, which needs [to be a valid MySQL identifier](https://dev.mysql.com/doc/refman/5.7/en/identifiers.html). Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
+     */
     readonly serverName: pulumi.Input<string>;
 }

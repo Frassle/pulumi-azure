@@ -4,6 +4,29 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Recurrence Trigger within a Logic App Workflow
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "East US",
+ * });
+ * const testWorkflow = new azure.logicapps.Workflow("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testTriggerRecurrence = new azure.logicapps.TriggerRecurrence("test", {
+ *     frequency: "Day",
+ *     interval: 1,
+ *     logicAppId: testWorkflow.id,
+ * });
+ * ```
+ */
 export class TriggerRecurrence extends pulumi.CustomResource {
     /**
      * Get an existing TriggerRecurrence resource's state with the given name, ID, and optional extra
@@ -17,9 +40,21 @@ export class TriggerRecurrence extends pulumi.CustomResource {
         return new TriggerRecurrence(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the Frequency at which this Trigger should be run. Possible values include `Month`, `Week`, `Day`, `Hour`, `Minute` and `Second`.
+     */
     public readonly frequency: pulumi.Output<string>;
+    /**
+     * Specifies interval used for the Frequency, for example a value of `4` for `interval` and `hour` for `frequency` would run the Trigger every 4 hours.
+     */
     public readonly interval: pulumi.Output<number>;
+    /**
+     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     public readonly logicAppId: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Recurrence Triggers to be created within the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
 
     /**
@@ -62,9 +97,21 @@ export class TriggerRecurrence extends pulumi.CustomResource {
  * Input properties used for looking up and filtering TriggerRecurrence resources.
  */
 export interface TriggerRecurrenceState {
+    /**
+     * Specifies the Frequency at which this Trigger should be run. Possible values include `Month`, `Week`, `Day`, `Hour`, `Minute` and `Second`.
+     */
     readonly frequency?: pulumi.Input<string>;
+    /**
+     * Specifies interval used for the Frequency, for example a value of `4` for `interval` and `hour` for `frequency` would run the Trigger every 4 hours.
+     */
     readonly interval?: pulumi.Input<number>;
+    /**
+     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly logicAppId?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Recurrence Triggers to be created within the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
 }
 
@@ -72,8 +119,20 @@ export interface TriggerRecurrenceState {
  * The set of arguments for constructing a TriggerRecurrence resource.
  */
 export interface TriggerRecurrenceArgs {
+    /**
+     * Specifies the Frequency at which this Trigger should be run. Possible values include `Month`, `Week`, `Day`, `Hour`, `Minute` and `Second`.
+     */
     readonly frequency: pulumi.Input<string>;
+    /**
+     * Specifies interval used for the Frequency, for example a value of `4` for `interval` and `hour` for `frequency` would run the Trigger every 4 hours.
+     */
     readonly interval: pulumi.Input<number>;
+    /**
+     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly logicAppId: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Recurrence Triggers to be created within the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
 }

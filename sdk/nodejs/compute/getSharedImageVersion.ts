@@ -4,6 +4,25 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Version of a Shared Image within a Shared Image Gallery.
+ * 
+ * > **NOTE** Shared Image Galleries are currently in Public Preview. You can find more information, including [how to register for the Public Preview here](https://azure.microsoft.com/en-gb/blog/announcing-the-public-preview-of-shared-image-gallery/).
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = pulumi.output(azure.compute.getSharedImageVersion({
+ *     galleryName: "my-image-gallery",
+ *     imageName: "my-image",
+ *     name: "1.0.0",
+ *     resourceGroupName: "example-resources",
+ * }));
+ * ```
+ */
 export function getSharedImageVersion(args: GetSharedImageVersionArgs, opts?: pulumi.InvokeOptions): Promise<GetSharedImageVersionResult> {
     return pulumi.runtime.invoke("azure:compute/getSharedImageVersion:getSharedImageVersion", {
         "galleryName": args.galleryName,
@@ -17,9 +36,21 @@ export function getSharedImageVersion(args: GetSharedImageVersionArgs, opts?: pu
  * A collection of arguments for invoking getSharedImageVersion.
  */
 export interface GetSharedImageVersionArgs {
+    /**
+     * The name of the Shared Image in which the Shared Image exists.
+     */
     readonly galleryName: string;
+    /**
+     * The name of the Shared Image in which this Version exists.
+     */
     readonly imageName: string;
+    /**
+     * The name of the Image Version.
+     */
     readonly name: string;
+    /**
+     * The name of the Resource Group in which the Shared Image Gallery exists.
+     */
     readonly resourceGroupName: string;
 }
 
@@ -27,10 +58,25 @@ export interface GetSharedImageVersionArgs {
  * A collection of values returned by getSharedImageVersion.
  */
 export interface GetSharedImageVersionResult {
+    /**
+     * Is this Image Version excluded from the `latest` filter?
+     */
     readonly excludeFromLatest: boolean;
+    /**
+     * The supported Azure location where the Shared Image Gallery exists.
+     */
     readonly location: string;
+    /**
+     * The ID of the Managed Image which was the source of this Shared Image Version.
+     */
     readonly managedImageId: string;
+    /**
+     * A mapping of tags assigned to the Shared Image.
+     */
     readonly tags: {[key: string]: any};
+    /**
+     * One or more `target_region` blocks as documented below.
+     */
     readonly targetRegions: { name: string, regionalReplicaCount: number }[];
     /**
      * id is the provider-assigned unique ID for this managed resource.

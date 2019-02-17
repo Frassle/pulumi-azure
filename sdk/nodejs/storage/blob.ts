@@ -4,6 +4,38 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage an Azure Storage Blob.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "westus",
+ * });
+ * const testAccount = new azure.storage.Account("test", {
+ *     accountReplicationType: "LRS",
+ *     accountTier: "Standard",
+ *     location: "westus",
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testContainer = new azure.storage.Container("test", {
+ *     containerAccessType: "private",
+ *     resourceGroupName: testResourceGroup.name,
+ *     storageAccountName: testAccount.name,
+ * });
+ * const testsb = new azure.storage.Blob("testsb", {
+ *     resourceGroupName: testResourceGroup.name,
+ *     size: 5120,
+ *     storageAccountName: testAccount.name,
+ *     storageContainerName: testContainer.name,
+ *     type: "page",
+ * });
+ * ```
+ */
 export class Blob extends pulumi.CustomResource {
     /**
      * Get an existing Blob resource's state with the given name, ID, and optional extra
@@ -17,17 +49,57 @@ export class Blob extends pulumi.CustomResource {
         return new Blob(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The number of attempts to make per page or block when uploading. Defaults to `1`.
+     */
     public readonly attempts: pulumi.Output<number | undefined>;
+    /**
+     * The content type of the storage blob. Cannot be defined if `source_uri` is defined. Defaults to `application/octet-stream`.
+     */
     public readonly contentType: pulumi.Output<string | undefined>;
+    /**
+     * The name of the storage blob. Must be unique within the storage container the blob is located.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The number of workers per CPU core to run for concurrent uploads. Defaults to `8`.
+     */
     public readonly parallelism: pulumi.Output<number | undefined>;
+    /**
+     * The name of the resource group in which to
+     * create the storage container. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Used only for `page` blobs to specify the size in bytes of the blob to be created. Must be a multiple of 512. Defaults to 0.
+     */
     public readonly size: pulumi.Output<number | undefined>;
+    /**
+     * An absolute path to a file on the local system. Cannot be defined if `source_uri` is defined.
+     */
     public readonly source: pulumi.Output<string | undefined>;
+    /**
+     * The URI of an existing blob, or a file in the Azure File service, to use as the source contents
+     * for the blob to be created. Changing this forces a new resource to be created. Cannot be defined if `source` is defined.
+     */
     public readonly sourceUri: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the storage account in which to create the storage container.
+     * Changing this forces a new resource to be created.
+     */
     public readonly storageAccountName: pulumi.Output<string>;
+    /**
+     * The name of the storage container in which this blob should be created.
+     */
     public readonly storageContainerName: pulumi.Output<string>;
+    /**
+     * The type of the storage blob to be created. One of either `block` or `page`. When not copying from an existing blob,
+     * this becomes required.
+     */
     public readonly type: pulumi.Output<string | undefined>;
+    /**
+     * The URL of the blob
+     */
     public /*out*/ readonly url: pulumi.Output<string>;
 
     /**
@@ -86,17 +158,57 @@ export class Blob extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Blob resources.
  */
 export interface BlobState {
+    /**
+     * The number of attempts to make per page or block when uploading. Defaults to `1`.
+     */
     readonly attempts?: pulumi.Input<number>;
+    /**
+     * The content type of the storage blob. Cannot be defined if `source_uri` is defined. Defaults to `application/octet-stream`.
+     */
     readonly contentType?: pulumi.Input<string>;
+    /**
+     * The name of the storage blob. Must be unique within the storage container the blob is located.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The number of workers per CPU core to run for concurrent uploads. Defaults to `8`.
+     */
     readonly parallelism?: pulumi.Input<number>;
+    /**
+     * The name of the resource group in which to
+     * create the storage container. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Used only for `page` blobs to specify the size in bytes of the blob to be created. Must be a multiple of 512. Defaults to 0.
+     */
     readonly size?: pulumi.Input<number>;
+    /**
+     * An absolute path to a file on the local system. Cannot be defined if `source_uri` is defined.
+     */
     readonly source?: pulumi.Input<string>;
+    /**
+     * The URI of an existing blob, or a file in the Azure File service, to use as the source contents
+     * for the blob to be created. Changing this forces a new resource to be created. Cannot be defined if `source` is defined.
+     */
     readonly sourceUri?: pulumi.Input<string>;
+    /**
+     * Specifies the storage account in which to create the storage container.
+     * Changing this forces a new resource to be created.
+     */
     readonly storageAccountName?: pulumi.Input<string>;
+    /**
+     * The name of the storage container in which this blob should be created.
+     */
     readonly storageContainerName?: pulumi.Input<string>;
+    /**
+     * The type of the storage blob to be created. One of either `block` or `page`. When not copying from an existing blob,
+     * this becomes required.
+     */
     readonly type?: pulumi.Input<string>;
+    /**
+     * The URL of the blob
+     */
     readonly url?: pulumi.Input<string>;
 }
 
@@ -104,15 +216,52 @@ export interface BlobState {
  * The set of arguments for constructing a Blob resource.
  */
 export interface BlobArgs {
+    /**
+     * The number of attempts to make per page or block when uploading. Defaults to `1`.
+     */
     readonly attempts?: pulumi.Input<number>;
+    /**
+     * The content type of the storage blob. Cannot be defined if `source_uri` is defined. Defaults to `application/octet-stream`.
+     */
     readonly contentType?: pulumi.Input<string>;
+    /**
+     * The name of the storage blob. Must be unique within the storage container the blob is located.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The number of workers per CPU core to run for concurrent uploads. Defaults to `8`.
+     */
     readonly parallelism?: pulumi.Input<number>;
+    /**
+     * The name of the resource group in which to
+     * create the storage container. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Used only for `page` blobs to specify the size in bytes of the blob to be created. Must be a multiple of 512. Defaults to 0.
+     */
     readonly size?: pulumi.Input<number>;
+    /**
+     * An absolute path to a file on the local system. Cannot be defined if `source_uri` is defined.
+     */
     readonly source?: pulumi.Input<string>;
+    /**
+     * The URI of an existing blob, or a file in the Azure File service, to use as the source contents
+     * for the blob to be created. Changing this forces a new resource to be created. Cannot be defined if `source` is defined.
+     */
     readonly sourceUri?: pulumi.Input<string>;
+    /**
+     * Specifies the storage account in which to create the storage container.
+     * Changing this forces a new resource to be created.
+     */
     readonly storageAccountName: pulumi.Input<string>;
+    /**
+     * The name of the storage container in which this blob should be created.
+     */
     readonly storageContainerName: pulumi.Input<string>;
+    /**
+     * The type of the storage blob to be created. One of either `block` or `page`. When not copying from an existing blob,
+     * this becomes required.
+     */
     readonly type?: pulumi.Input<string>;
 }

@@ -4,6 +4,73 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a [metric-based alert rule](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitor-quick-resource-metric-alert-portal) in Azure Monitor.
+ * 
+ * > **NOTE:** This resource has been deprecated in favour of the `azurerm_monitor_metric_alertrule` resource and will be removed in the next major version of the AzureRM Provider. The new resource shares the same fields as this one, and information on migrating across can be found in this guide.
+ * 
+ * ## Example Usage (CPU Percentage of a virtual machine)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = new azure.monitoring.AlertRule("test", {
+ *     aggregation: "Average",
+ *     description: "An alert rule to watch the metric Percentage CPU",
+ *     emailAction: {
+ *         customEmails: ["some.user@example.com"],
+ *         sendToServiceOwners: false,
+ *     },
+ *     enabled: true,
+ *     location: azurerm_resource_group_test.location,
+ *     metricName: "Percentage CPU",
+ *     operator: "GreaterThan",
+ *     period: "PT5M",
+ *     resourceGroupName: azurerm_resource_group_test.name,
+ *     resourceId: azurerm_virtual_machine_test.id,
+ *     threshold: 75,
+ *     webhookAction: {
+ *         properties: {
+ *             acceptance_test: "true",
+ *             severity: "incredible",
+ *         },
+ *         serviceUri: "https://example.com/some-url",
+ *     },
+ * });
+ * ```
+ * 
+ * ## Example Usage (Storage usage of a SQL Database)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = new azure.monitoring.AlertRule("test", {
+ *     aggregation: "Maximum",
+ *     description: "An alert rule to watch the metric Storage",
+ *     emailAction: {
+ *         customEmails: ["some.user@example.com"],
+ *         sendToServiceOwners: false,
+ *     },
+ *     enabled: true,
+ *     location: azurerm_resource_group_test.location,
+ *     metricName: "storage",
+ *     operator: "GreaterThan",
+ *     period: "PT10M",
+ *     resourceGroupName: azurerm_resource_group_test.name,
+ *     resourceId: azurerm_sql_database_test.id,
+ *     threshold: 1073741824,
+ *     webhookAction: {
+ *         properties: {
+ *             acceptance_test: "true",
+ *             severity: "incredible",
+ *         },
+ *         serviceUri: "https://example.com/some-url",
+ *     },
+ * });
+ * ```
+ */
 export class AlertRule extends pulumi.CustomResource {
     /**
      * Get an existing AlertRule resource's state with the given name, ID, and optional extra
@@ -17,19 +84,61 @@ export class AlertRule extends pulumi.CustomResource {
         return new AlertRule(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Defines how the metric data is combined over time. Possible values are `Average`, `Minimum`, `Maximum`, `Total`, and `Last`.
+     */
     public readonly aggregation: pulumi.Output<string>;
+    /**
+     * A verbose description of the alert rule that will be included in the alert email.
+     */
     public readonly description: pulumi.Output<string>;
+    /**
+     * A `email_action` block as defined below.
+     */
     public readonly emailAction: pulumi.Output<{ customEmails: string[], sendToServiceOwners: boolean }>;
+    /**
+     * If `true`, the alert rule is enabled. Defaults to `true`.
+     */
     public readonly enabled: pulumi.Output<boolean | undefined>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The metric that defines what the rule monitors.
+     */
     public readonly metricName: pulumi.Output<string>;
+    /**
+     * Specifies the name of the alert rule. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The operator used to compare the metric data and the threshold. Possible values are `GreaterThan`, `GreaterThanOrEqual`, `LessThan`, and `LessThanOrEqual`.
+     */
     public readonly operator: pulumi.Output<string>;
+    /**
+     * The period of time formatted in [ISO 8601 duration format](https://en.wikipedia.org/wiki/ISO_8601#Durations) that is used to monitor the alert activity based on the threshold. The period must be between 5 minutes and 1 day.
+     */
     public readonly period: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the alert rule. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The ID of the resource monitored by the alert rule.
+     */
     public readonly resourceId: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource. Changing this forces a new resource to be created.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * The threshold value that activates the alert.
+     */
     public readonly threshold: pulumi.Output<number>;
+    /**
+     * A `webhook_action` block as defined below.
+     */
     public readonly webhookAction: pulumi.Output<{ properties: {[key: string]: string}, serviceUri: string }>;
 
     /**
@@ -107,19 +216,61 @@ export class AlertRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AlertRule resources.
  */
 export interface AlertRuleState {
+    /**
+     * Defines how the metric data is combined over time. Possible values are `Average`, `Minimum`, `Maximum`, `Total`, and `Last`.
+     */
     readonly aggregation?: pulumi.Input<string>;
+    /**
+     * A verbose description of the alert rule that will be included in the alert email.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * A `email_action` block as defined below.
+     */
     readonly emailAction?: pulumi.Input<{ customEmails?: pulumi.Input<pulumi.Input<string>[]>, sendToServiceOwners?: pulumi.Input<boolean> }>;
+    /**
+     * If `true`, the alert rule is enabled. Defaults to `true`.
+     */
     readonly enabled?: pulumi.Input<boolean>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The metric that defines what the rule monitors.
+     */
     readonly metricName?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the alert rule. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The operator used to compare the metric data and the threshold. Possible values are `GreaterThan`, `GreaterThanOrEqual`, `LessThan`, and `LessThanOrEqual`.
+     */
     readonly operator?: pulumi.Input<string>;
+    /**
+     * The period of time formatted in [ISO 8601 duration format](https://en.wikipedia.org/wiki/ISO_8601#Durations) that is used to monitor the alert activity based on the threshold. The period must be between 5 minutes and 1 day.
+     */
     readonly period?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the alert rule. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The ID of the resource monitored by the alert rule.
+     */
     readonly resourceId?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource. Changing this forces a new resource to be created.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The threshold value that activates the alert.
+     */
     readonly threshold?: pulumi.Input<number>;
+    /**
+     * A `webhook_action` block as defined below.
+     */
     readonly webhookAction?: pulumi.Input<{ properties?: pulumi.Input<{[key: string]: pulumi.Input<string>}>, serviceUri: pulumi.Input<string> }>;
 }
 
@@ -127,18 +278,60 @@ export interface AlertRuleState {
  * The set of arguments for constructing a AlertRule resource.
  */
 export interface AlertRuleArgs {
+    /**
+     * Defines how the metric data is combined over time. Possible values are `Average`, `Minimum`, `Maximum`, `Total`, and `Last`.
+     */
     readonly aggregation: pulumi.Input<string>;
+    /**
+     * A verbose description of the alert rule that will be included in the alert email.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * A `email_action` block as defined below.
+     */
     readonly emailAction?: pulumi.Input<{ customEmails?: pulumi.Input<pulumi.Input<string>[]>, sendToServiceOwners?: pulumi.Input<boolean> }>;
+    /**
+     * If `true`, the alert rule is enabled. Defaults to `true`.
+     */
     readonly enabled?: pulumi.Input<boolean>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The metric that defines what the rule monitors.
+     */
     readonly metricName: pulumi.Input<string>;
+    /**
+     * Specifies the name of the alert rule. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The operator used to compare the metric data and the threshold. Possible values are `GreaterThan`, `GreaterThanOrEqual`, `LessThan`, and `LessThanOrEqual`.
+     */
     readonly operator: pulumi.Input<string>;
+    /**
+     * The period of time formatted in [ISO 8601 duration format](https://en.wikipedia.org/wiki/ISO_8601#Durations) that is used to monitor the alert activity based on the threshold. The period must be between 5 minutes and 1 day.
+     */
     readonly period: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the alert rule. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The ID of the resource monitored by the alert rule.
+     */
     readonly resourceId: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource. Changing this forces a new resource to be created.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The threshold value that activates the alert.
+     */
     readonly threshold: pulumi.Input<number>;
+    /**
+     * A `webhook_action` block as defined below.
+     */
     readonly webhookAction?: pulumi.Input<{ properties?: pulumi.Input<{[key: string]: pulumi.Input<string>}>, serviceUri: pulumi.Input<string> }>;
 }

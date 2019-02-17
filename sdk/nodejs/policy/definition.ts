@@ -4,6 +4,47 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a policy rule definition on a management group or your provider subscription. 
+ * 
+ * Policy definitions do not take effect until they are assigned to a scope using a Policy Assignment.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const policy = new azure.policy.Definition("policy", {
+ *     displayName: "acceptance test policy definition",
+ *     mode: "Indexed",
+ *     parameters: `	{
+ *     "allowedLocations": {
+ *       "type": "Array",
+ *       "metadata": {
+ *         "description": "The list of allowed locations for resources.",
+ *         "displayName": "Allowed locations",
+ *         "strongType": "location"
+ *       }
+ *     }
+ *   }
+ * `,
+ *     policyRule: `	{
+ *     "if": {
+ *       "not": {
+ *         "field": "location",
+ *         "in": "[parameters('allowedLocations')]"
+ *       }
+ *     },
+ *     "then": {
+ *       "effect": "audit"
+ *     }
+ *   }
+ * `,
+ *     policyType: "Custom",
+ * });
+ * ```
+ */
 export class Definition extends pulumi.CustomResource {
     /**
      * Get an existing Definition resource's state with the given name, ID, and optional extra
@@ -17,14 +58,51 @@ export class Definition extends pulumi.CustomResource {
         return new Definition(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The description of the policy definition.
+     */
     public readonly description: pulumi.Output<string | undefined>;
+    /**
+     * The display name of the policy definition.
+     */
     public readonly displayName: pulumi.Output<string>;
+    /**
+     * The ID of the Management Group where this policy should be defined. Changing this forces a new resource to be created.
+     */
     public readonly managementGroupId: pulumi.Output<string | undefined>;
+    /**
+     * The metadata for the policy definition. This
+     * is a json object representing additional metadata that should be stored
+     * with the policy definition.
+     */
     public readonly metadata: pulumi.Output<string | undefined>;
+    /**
+     * The policy mode that allows you to specify which resource
+     * types will be evaluated.  The value can be "All", "Indexed" or
+     * "NotSpecified". Changing this resource forces a new resource to be
+     * created.
+     */
     public readonly mode: pulumi.Output<string>;
+    /**
+     * The name of the policy definition. Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Parameters for the policy definition. This field
+     * is a json object that allows you to parameterize your policy definition.
+     */
     public readonly parameters: pulumi.Output<string | undefined>;
+    /**
+     * The policy rule for the policy definition. This
+     * is a json object representing the rule that contains an if and
+     * a then block.
+     */
     public readonly policyRule: pulumi.Output<string | undefined>;
+    /**
+     * The policy type.  The value can be "BuiltIn", "Custom"
+     * or "NotSpecified". Changing this forces a new resource to be created.
+     */
     public readonly policyType: pulumi.Output<string>;
 
     /**
@@ -77,14 +155,51 @@ export class Definition extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Definition resources.
  */
 export interface DefinitionState {
+    /**
+     * The description of the policy definition.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * The display name of the policy definition.
+     */
     readonly displayName?: pulumi.Input<string>;
+    /**
+     * The ID of the Management Group where this policy should be defined. Changing this forces a new resource to be created.
+     */
     readonly managementGroupId?: pulumi.Input<string>;
+    /**
+     * The metadata for the policy definition. This
+     * is a json object representing additional metadata that should be stored
+     * with the policy definition.
+     */
     readonly metadata?: pulumi.Input<string>;
+    /**
+     * The policy mode that allows you to specify which resource
+     * types will be evaluated.  The value can be "All", "Indexed" or
+     * "NotSpecified". Changing this resource forces a new resource to be
+     * created.
+     */
     readonly mode?: pulumi.Input<string>;
+    /**
+     * The name of the policy definition. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Parameters for the policy definition. This field
+     * is a json object that allows you to parameterize your policy definition.
+     */
     readonly parameters?: pulumi.Input<string>;
+    /**
+     * The policy rule for the policy definition. This
+     * is a json object representing the rule that contains an if and
+     * a then block.
+     */
     readonly policyRule?: pulumi.Input<string>;
+    /**
+     * The policy type.  The value can be "BuiltIn", "Custom"
+     * or "NotSpecified". Changing this forces a new resource to be created.
+     */
     readonly policyType?: pulumi.Input<string>;
 }
 
@@ -92,13 +207,50 @@ export interface DefinitionState {
  * The set of arguments for constructing a Definition resource.
  */
 export interface DefinitionArgs {
+    /**
+     * The description of the policy definition.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * The display name of the policy definition.
+     */
     readonly displayName: pulumi.Input<string>;
+    /**
+     * The ID of the Management Group where this policy should be defined. Changing this forces a new resource to be created.
+     */
     readonly managementGroupId?: pulumi.Input<string>;
+    /**
+     * The metadata for the policy definition. This
+     * is a json object representing additional metadata that should be stored
+     * with the policy definition.
+     */
     readonly metadata?: pulumi.Input<string>;
+    /**
+     * The policy mode that allows you to specify which resource
+     * types will be evaluated.  The value can be "All", "Indexed" or
+     * "NotSpecified". Changing this resource forces a new resource to be
+     * created.
+     */
     readonly mode: pulumi.Input<string>;
+    /**
+     * The name of the policy definition. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Parameters for the policy definition. This field
+     * is a json object that allows you to parameterize your policy definition.
+     */
     readonly parameters?: pulumi.Input<string>;
+    /**
+     * The policy rule for the policy definition. This
+     * is a json object representing the rule that contains an if and
+     * a then block.
+     */
     readonly policyRule?: pulumi.Input<string>;
+    /**
+     * The policy type.  The value can be "BuiltIn", "Custom"
+     * or "NotSpecified". Changing this forces a new resource to be created.
+     */
     readonly policyType: pulumi.Input<string>;
 }

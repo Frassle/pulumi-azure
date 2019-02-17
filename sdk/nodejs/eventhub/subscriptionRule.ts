@@ -4,6 +4,88 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a ServiceBus Subscription Rule.
+ * 
+ * ## Example Usage (SQL Filter)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleNamespace = new azure.eventhub.Namespace("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: "Standard",
+ *     tags: {
+ *         source: "terraform",
+ *     },
+ * });
+ * const exampleTopic = new azure.eventhub.Topic("example", {
+ *     enablePartitioning: true,
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleSubscription = new azure.eventhub.Subscription("example", {
+ *     maxDeliveryCount: 1,
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     topicName: exampleTopic.name,
+ * });
+ * const exampleSubscriptionRule = new azure.eventhub.SubscriptionRule("example", {
+ *     filterType: "SqlFilter",
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sqlFilter: "color = 'red'",
+ *     subscriptionName: exampleSubscription.name,
+ *     topicName: exampleTopic.name,
+ * });
+ * ```
+ * 
+ * ## Example Usage (Correlation Filter)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleNamespace = new azure.eventhub.Namespace("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: "Standard",
+ *     tags: {
+ *         source: "terraform",
+ *     },
+ * });
+ * const exampleTopic = new azure.eventhub.Topic("example", {
+ *     enablePartitioning: true,
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleSubscription = new azure.eventhub.Subscription("example", {
+ *     maxDeliveryCount: 1,
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     topicName: exampleTopic.name,
+ * });
+ * const exampleSubscriptionRule = new azure.eventhub.SubscriptionRule("example", {
+ *     correlationFilter: {
+ *         correlationId: "high",
+ *         label: "red",
+ *     },
+ *     filterType: "CorrelationFilter",
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     subscriptionName: exampleSubscription.name,
+ *     topicName: exampleTopic.name,
+ * });
+ * ```
+ */
 export class SubscriptionRule extends pulumi.CustomResource {
     /**
      * Get an existing SubscriptionRule resource's state with the given name, ID, and optional extra
@@ -17,14 +99,41 @@ export class SubscriptionRule extends pulumi.CustomResource {
         return new SubscriptionRule(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Represents set of actions written in SQL language-based syntax that is performed against a BrokeredMessage.
+     */
     public readonly action: pulumi.Output<string | undefined>;
+    /**
+     * A `correlation_filter` block as documented below to be evaluated against a BrokeredMessage. Required when `filter_type` is set to `CorrelationFilter`.
+     */
     public readonly correlationFilter: pulumi.Output<{ contentType?: string, correlationId?: string, label?: string, messageId?: string, replyTo?: string, replyToSessionId?: string, sessionId?: string, to?: string } | undefined>;
+    /**
+     * Type of filter to be applied to a BrokeredMessage. Possible values are `SqlFilter` and `CorrelationFilter`.
+     */
     public readonly filterType: pulumi.Output<string>;
+    /**
+     * Specifies the name of the ServiceBus Subscription Rule. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the ServiceBus Namespace in which the ServiceBus Topic exists. Changing this forces a new resource to be created.
+     */
     public readonly namespaceName: pulumi.Output<string>;
+    /**
+     * The name of the resource group in the ServiceBus Namespace exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Represents a filter written in SQL language-based syntax that to be evaluated against a BrokeredMessage. Required when `filter_type` is set to `SqlFilter`.
+     */
     public readonly sqlFilter: pulumi.Output<string | undefined>;
+    /**
+     * The name of the ServiceBus Subscription in which this Rule should be created. Changing this forces a new resource to be created.
+     */
     public readonly subscriptionName: pulumi.Output<string>;
+    /**
+     * The name of the ServiceBus Topic in which the ServiceBus Subscription exists. Changing this forces a new resource to be created.
+     */
     public readonly topicName: pulumi.Output<string>;
 
     /**
@@ -83,14 +192,41 @@ export class SubscriptionRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SubscriptionRule resources.
  */
 export interface SubscriptionRuleState {
+    /**
+     * Represents set of actions written in SQL language-based syntax that is performed against a BrokeredMessage.
+     */
     readonly action?: pulumi.Input<string>;
+    /**
+     * A `correlation_filter` block as documented below to be evaluated against a BrokeredMessage. Required when `filter_type` is set to `CorrelationFilter`.
+     */
     readonly correlationFilter?: pulumi.Input<{ contentType?: pulumi.Input<string>, correlationId?: pulumi.Input<string>, label?: pulumi.Input<string>, messageId?: pulumi.Input<string>, replyTo?: pulumi.Input<string>, replyToSessionId?: pulumi.Input<string>, sessionId?: pulumi.Input<string>, to?: pulumi.Input<string> }>;
+    /**
+     * Type of filter to be applied to a BrokeredMessage. Possible values are `SqlFilter` and `CorrelationFilter`.
+     */
     readonly filterType?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the ServiceBus Subscription Rule. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Namespace in which the ServiceBus Topic exists. Changing this forces a new resource to be created.
+     */
     readonly namespaceName?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in the ServiceBus Namespace exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Represents a filter written in SQL language-based syntax that to be evaluated against a BrokeredMessage. Required when `filter_type` is set to `SqlFilter`.
+     */
     readonly sqlFilter?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Subscription in which this Rule should be created. Changing this forces a new resource to be created.
+     */
     readonly subscriptionName?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Topic in which the ServiceBus Subscription exists. Changing this forces a new resource to be created.
+     */
     readonly topicName?: pulumi.Input<string>;
 }
 
@@ -98,13 +234,40 @@ export interface SubscriptionRuleState {
  * The set of arguments for constructing a SubscriptionRule resource.
  */
 export interface SubscriptionRuleArgs {
+    /**
+     * Represents set of actions written in SQL language-based syntax that is performed against a BrokeredMessage.
+     */
     readonly action?: pulumi.Input<string>;
+    /**
+     * A `correlation_filter` block as documented below to be evaluated against a BrokeredMessage. Required when `filter_type` is set to `CorrelationFilter`.
+     */
     readonly correlationFilter?: pulumi.Input<{ contentType?: pulumi.Input<string>, correlationId?: pulumi.Input<string>, label?: pulumi.Input<string>, messageId?: pulumi.Input<string>, replyTo?: pulumi.Input<string>, replyToSessionId?: pulumi.Input<string>, sessionId?: pulumi.Input<string>, to?: pulumi.Input<string> }>;
+    /**
+     * Type of filter to be applied to a BrokeredMessage. Possible values are `SqlFilter` and `CorrelationFilter`.
+     */
     readonly filterType: pulumi.Input<string>;
+    /**
+     * Specifies the name of the ServiceBus Subscription Rule. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Namespace in which the ServiceBus Topic exists. Changing this forces a new resource to be created.
+     */
     readonly namespaceName: pulumi.Input<string>;
+    /**
+     * The name of the resource group in the ServiceBus Namespace exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Represents a filter written in SQL language-based syntax that to be evaluated against a BrokeredMessage. Required when `filter_type` is set to `SqlFilter`.
+     */
     readonly sqlFilter?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Subscription in which this Rule should be created. Changing this forces a new resource to be created.
+     */
     readonly subscriptionName: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Topic in which the ServiceBus Subscription exists. Changing this forces a new resource to be created.
+     */
     readonly topicName: pulumi.Input<string>;
 }

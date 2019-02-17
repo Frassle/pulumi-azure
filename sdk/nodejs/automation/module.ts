@@ -4,6 +4,34 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Automation Module.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleAccount = new azure.automation.Account("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: {
+ *         name: "Basic",
+ *     },
+ * });
+ * const exampleModule = new azure.automation.Module("example", {
+ *     automationAccountName: exampleAccount.name,
+ *     moduleLink: {
+ *         uri: "https://devopsgallerystorage.blob.core.windows.net/packages/xactivedirectory.2.19.0.nupkg",
+ *     },
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * ```
+ */
 export class Module extends pulumi.CustomResource {
     /**
      * Get an existing Module resource's state with the given name, ID, and optional extra
@@ -17,9 +45,21 @@ export class Module extends pulumi.CustomResource {
         return new Module(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the automation account in which the Module is created. Changing this forces a new resource to be created.
+     */
     public readonly automationAccountName: pulumi.Output<string>;
+    /**
+     * The published Module link.
+     */
     public readonly moduleLink: pulumi.Output<{ hash?: { algorithm: string, value: string }, uri: string }>;
+    /**
+     * Specifies the name of the Module. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the Module is created. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -62,9 +102,21 @@ export class Module extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Module resources.
  */
 export interface ModuleState {
+    /**
+     * The name of the automation account in which the Module is created. Changing this forces a new resource to be created.
+     */
     readonly automationAccountName?: pulumi.Input<string>;
+    /**
+     * The published Module link.
+     */
     readonly moduleLink?: pulumi.Input<{ hash?: pulumi.Input<{ algorithm: pulumi.Input<string>, value: pulumi.Input<string> }>, uri: pulumi.Input<string> }>;
+    /**
+     * Specifies the name of the Module. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the Module is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -72,8 +124,20 @@ export interface ModuleState {
  * The set of arguments for constructing a Module resource.
  */
 export interface ModuleArgs {
+    /**
+     * The name of the automation account in which the Module is created. Changing this forces a new resource to be created.
+     */
     readonly automationAccountName: pulumi.Input<string>;
+    /**
+     * The published Module link.
+     */
     readonly moduleLink: pulumi.Input<{ hash?: pulumi.Input<{ algorithm: pulumi.Input<string>, value: pulumi.Input<string> }>, uri: pulumi.Input<string> }>;
+    /**
+     * Specifies the name of the Module. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the Module is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

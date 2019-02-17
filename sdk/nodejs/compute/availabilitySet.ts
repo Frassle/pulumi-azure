@@ -4,6 +4,27 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages an availability set for virtual machines.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testAvailabilitySet = new azure.compute.AvailabilitySet("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ * });
+ * ```
+ */
 export class AvailabilitySet extends pulumi.CustomResource {
     /**
      * Get an existing AvailabilitySet resource's state with the given name, ID, and optional extra
@@ -17,12 +38,33 @@ export class AvailabilitySet extends pulumi.CustomResource {
         return new AvailabilitySet(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies whether the availability set is managed or not. Possible values are `true` (to specify aligned) or `false` (to specify classic). Default is `false`.
+     */
     public readonly managed: pulumi.Output<boolean | undefined>;
+    /**
+     * Specifies the name of the availability set. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Specifies the number of fault domains that are used. Defaults to 3.
+     */
     public readonly platformFaultDomainCount: pulumi.Output<number | undefined>;
+    /**
+     * Specifies the number of update domains that are used. Defaults to 5.
+     */
     public readonly platformUpdateDomainCount: pulumi.Output<number | undefined>;
+    /**
+     * The name of the resource group in which to create the availability set. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -68,12 +110,33 @@ export class AvailabilitySet extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AvailabilitySet resources.
  */
 export interface AvailabilitySetState {
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies whether the availability set is managed or not. Possible values are `true` (to specify aligned) or `false` (to specify classic). Default is `false`.
+     */
     readonly managed?: pulumi.Input<boolean>;
+    /**
+     * Specifies the name of the availability set. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the number of fault domains that are used. Defaults to 3.
+     */
     readonly platformFaultDomainCount?: pulumi.Input<number>;
+    /**
+     * Specifies the number of update domains that are used. Defaults to 5.
+     */
     readonly platformUpdateDomainCount?: pulumi.Input<number>;
+    /**
+     * The name of the resource group in which to create the availability set. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -81,11 +144,32 @@ export interface AvailabilitySetState {
  * The set of arguments for constructing a AvailabilitySet resource.
  */
 export interface AvailabilitySetArgs {
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies whether the availability set is managed or not. Possible values are `true` (to specify aligned) or `false` (to specify classic). Default is `false`.
+     */
     readonly managed?: pulumi.Input<boolean>;
+    /**
+     * Specifies the name of the availability set. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the number of fault domains that are used. Defaults to 3.
+     */
     readonly platformFaultDomainCount?: pulumi.Input<number>;
+    /**
+     * Specifies the number of update domains that are used. Defaults to 5.
+     */
     readonly platformUpdateDomainCount?: pulumi.Input<number>;
+    /**
+     * The name of the resource group in which to create the availability set. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

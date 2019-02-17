@@ -4,6 +4,33 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Route Table
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testRouteTable = new azure.network.RouteTable("test", {
+ *     disableBgpRoutePropagation: false,
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     routes: [{
+ *         addressPrefix: "10.1.0.0/16",
+ *         name: "route1",
+ *         nextHopType: "vnetlocal",
+ *     }],
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ * });
+ * ```
+ */
 export class RouteTable extends pulumi.CustomResource {
     /**
      * Get an existing RouteTable resource's state with the given name, ID, and optional extra
@@ -17,12 +44,33 @@ export class RouteTable extends pulumi.CustomResource {
         return new RouteTable(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Boolean flag which controls propagation of routes learned by BGP on that route table. True means disable.
+     */
     public readonly disableBgpRoutePropagation: pulumi.Output<boolean | undefined>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The name of the route table. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the route table. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Can be specified multiple times to define multiple routes. Each `route` block supports fields documented below.
+     */
     public readonly routes: pulumi.Output<{ addressPrefix: string, name: string, nextHopInIpAddress?: string, nextHopType: string }[]>;
+    /**
+     * The collection of Subnets associated with this route table.
+     */
     public /*out*/ readonly subnets: pulumi.Output<string[]>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -68,12 +116,33 @@ export class RouteTable extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RouteTable resources.
  */
 export interface RouteTableState {
+    /**
+     * Boolean flag which controls propagation of routes learned by BGP on that route table. True means disable.
+     */
     readonly disableBgpRoutePropagation?: pulumi.Input<boolean>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The name of the route table. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the route table. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Can be specified multiple times to define multiple routes. Each `route` block supports fields documented below.
+     */
     readonly routes?: pulumi.Input<pulumi.Input<{ addressPrefix: pulumi.Input<string>, name: pulumi.Input<string>, nextHopInIpAddress?: pulumi.Input<string>, nextHopType: pulumi.Input<string> }>[]>;
+    /**
+     * The collection of Subnets associated with this route table.
+     */
     readonly subnets?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -81,10 +150,28 @@ export interface RouteTableState {
  * The set of arguments for constructing a RouteTable resource.
  */
 export interface RouteTableArgs {
+    /**
+     * Boolean flag which controls propagation of routes learned by BGP on that route table. True means disable.
+     */
     readonly disableBgpRoutePropagation?: pulumi.Input<boolean>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The name of the route table. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the route table. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Can be specified multiple times to define multiple routes. Each `route` block supports fields documented below.
+     */
     readonly routes?: pulumi.Input<pulumi.Input<{ addressPrefix: pulumi.Input<string>, name: pulumi.Input<string>, nextHopInIpAddress?: pulumi.Input<string>, nextHopType: pulumi.Input<string> }>[]>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

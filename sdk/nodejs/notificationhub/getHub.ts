@@ -4,6 +4,24 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Notification Hub within a Notification Hub Namespace.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = pulumi.output(azure.notificationhub.getHub({
+ *     name: "notification-hub",
+ *     namespaceName: "namespace-name",
+ *     resourceGroupName: "resource-group-name",
+ * }));
+ * 
+ * export const id = test.apply(test => test.id);
+ * ```
+ */
 export function getHub(args: GetHubArgs, opts?: pulumi.InvokeOptions): Promise<GetHubResult> {
     return pulumi.runtime.invoke("azure:notificationhub/getHub:getHub", {
         "name": args.name,
@@ -16,8 +34,17 @@ export function getHub(args: GetHubArgs, opts?: pulumi.InvokeOptions): Promise<G
  * A collection of arguments for invoking getHub.
  */
 export interface GetHubArgs {
+    /**
+     * Specifies the Name of the Notification Hub.
+     */
     readonly name: string;
+    /**
+     * Specifies the Name of the Notification Hub Namespace which contains the Notification Hub.
+     */
     readonly namespaceName: string;
+    /**
+     * Specifies the Name of the Resource Group within which the Notification Hub exists.
+     */
     readonly resourceGroupName: string;
 }
 
@@ -25,8 +52,17 @@ export interface GetHubArgs {
  * A collection of values returned by getHub.
  */
 export interface GetHubResult {
+    /**
+     * A `apns_credential` block as defined below.
+     */
     readonly apnsCredentials: { applicationMode: string, bundleId: string, keyId: string, teamId: string, token: string }[];
+    /**
+     * A `gcm_credential` block as defined below.
+     */
     readonly gcmCredentials: { apiKey: string }[];
+    /**
+     * The Azure Region in which this Notification Hub exists.
+     */
     readonly location: string;
     /**
      * id is the provider-assigned unique ID for this managed resource.

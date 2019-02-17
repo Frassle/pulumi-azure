@@ -4,6 +4,44 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Sets a MySQL Configuration value on a MySQL Server.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const testServer = new azure.mysql.Server("test", {
+ *     administratorLogin: "psqladminun",
+ *     administratorLoginPassword: "H@Sh1CoR3!",
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         capacity: 2,
+ *         family: "Gen4",
+ *         name: "B_Gen4_2",
+ *         tier: "Basic",
+ *     },
+ *     sslEnforcement: "Enabled",
+ *     storageProfile: {
+ *         backupRetentionDays: 7,
+ *         geoRedundantBackup: "Disabled",
+ *         storageMb: 5120,
+ *     },
+ *     version: "5.7",
+ * });
+ * const testConfiguration = new azure.mysql.Configuration("test", {
+ *     resourceGroupName: testResourceGroup.name,
+ *     serverName: testServer.name,
+ *     value: "600",
+ * });
+ * ```
+ */
 export class Configuration extends pulumi.CustomResource {
     /**
      * Get an existing Configuration resource's state with the given name, ID, and optional extra
@@ -17,9 +55,21 @@ export class Configuration extends pulumi.CustomResource {
         return new Configuration(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the name of the MySQL Configuration, which needs [to be a valid MySQL configuration name](https://dev.mysql.com/doc/refman/5.7/en/server-configuration.html). Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
+     */
     public readonly serverName: pulumi.Output<string>;
+    /**
+     * Specifies the value of the MySQL Configuration. See the MySQL documentation for valid values.
+     */
     public readonly value: pulumi.Output<string>;
 
     /**
@@ -62,9 +112,21 @@ export class Configuration extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Configuration resources.
  */
 export interface ConfigurationState {
+    /**
+     * Specifies the name of the MySQL Configuration, which needs [to be a valid MySQL configuration name](https://dev.mysql.com/doc/refman/5.7/en/server-configuration.html). Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
+     */
     readonly serverName?: pulumi.Input<string>;
+    /**
+     * Specifies the value of the MySQL Configuration. See the MySQL documentation for valid values.
+     */
     readonly value?: pulumi.Input<string>;
 }
 
@@ -72,8 +134,20 @@ export interface ConfigurationState {
  * The set of arguments for constructing a Configuration resource.
  */
 export interface ConfigurationArgs {
+    /**
+     * Specifies the name of the MySQL Configuration, which needs [to be a valid MySQL configuration name](https://dev.mysql.com/doc/refman/5.7/en/server-configuration.html). Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the MySQL Server exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MySQL Server. Changing this forces a new resource to be created.
+     */
     readonly serverName: pulumi.Input<string>;
+    /**
+     * Specifies the value of the MySQL Configuration. See the MySQL documentation for valid values.
+     */
     readonly value: pulumi.Input<string>;
 }

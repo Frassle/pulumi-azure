@@ -4,6 +4,45 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Hostname Binding within an App Service.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * import * as random from "@pulumi/random";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const server = new random.RandomId("server", {
+ *     byteLength: 8,
+ *     keepers: {
+ *         azi_id: 1,
+ *     },
+ * });
+ * const testPlan = new azure.appservice.Plan("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         size: "S1",
+ *         tier: "Standard",
+ *     },
+ * });
+ * const testAppService = new azure.appservice.AppService("test", {
+ *     appServicePlanId: testPlan.id,
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testCustomHostnameBinding = new azure.appservice.CustomHostnameBinding("test", {
+ *     appServiceName: testAppService.name,
+ *     hostname: "www.mywebsite.com",
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * ```
+ */
 export class CustomHostnameBinding extends pulumi.CustomResource {
     /**
      * Get an existing CustomHostnameBinding resource's state with the given name, ID, and optional extra
@@ -17,8 +56,17 @@ export class CustomHostnameBinding extends pulumi.CustomResource {
         return new CustomHostnameBinding(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the App Service in which to add the Custom Hostname Binding. Changing this forces a new resource to be created.
+     */
     public readonly appServiceName: pulumi.Output<string>;
+    /**
+     * Specifies the Custom Hostname to use for the App Service, example `www.example.com`. Changing this forces a new resource to be created.
+     */
     public readonly hostname: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the App Service exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -59,8 +107,17 @@ export class CustomHostnameBinding extends pulumi.CustomResource {
  * Input properties used for looking up and filtering CustomHostnameBinding resources.
  */
 export interface CustomHostnameBindingState {
+    /**
+     * The name of the App Service in which to add the Custom Hostname Binding. Changing this forces a new resource to be created.
+     */
     readonly appServiceName?: pulumi.Input<string>;
+    /**
+     * Specifies the Custom Hostname to use for the App Service, example `www.example.com`. Changing this forces a new resource to be created.
+     */
     readonly hostname?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the App Service exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -68,7 +125,16 @@ export interface CustomHostnameBindingState {
  * The set of arguments for constructing a CustomHostnameBinding resource.
  */
 export interface CustomHostnameBindingArgs {
+    /**
+     * The name of the App Service in which to add the Custom Hostname Binding. Changing this forces a new resource to be created.
+     */
     readonly appServiceName: pulumi.Input<string>;
+    /**
+     * Specifies the Custom Hostname to use for the App Service, example `www.example.com`. Changing this forces a new resource to be created.
+     */
     readonly hostname: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the App Service exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

@@ -4,6 +4,72 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Assigns a given Principal (User or Application) to a given Role.
+ * 
+ * ## Example Usage (using a built-in Role)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testClientConfig = pulumi.output(azure.core.getClientConfig({}));
+ * const primary = pulumi.output(azure.core.getSubscription({}));
+ * const testAssignment = new azure.role.Assignment("test", {
+ *     principalId: testClientConfig.apply(testClientConfig => testClientConfig.servicePrincipalObjectId),
+ *     roleDefinitionName: "Reader",
+ *     scope: primary.apply(primary => primary.id),
+ * });
+ * ```
+ * 
+ * ## Example Usage (Custom Role & Service Principal)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testClientConfig = pulumi.output(azure.core.getClientConfig({}));
+ * const primary = pulumi.output(azure.core.getSubscription({}));
+ * const testDefinition = new azure.role.Definition("test", {
+ *     assignableScopes: [primary.apply(primary => primary.id)],
+ *     permissions: [{
+ *         actions: ["Microsoft.Resources/subscriptions/resourceGroups/read"],
+ *         notActions: [],
+ *     }],
+ *     roleDefinitionId: "00000000-0000-0000-0000-000000000000",
+ *     scope: primary.apply(primary => primary.id),
+ * });
+ * const testAssignment = new azure.role.Assignment("test", {
+ *     principalId: testClientConfig.apply(testClientConfig => testClientConfig.servicePrincipalObjectId),
+ *     roleDefinitionId: testDefinition.id,
+ *     scope: primary.apply(primary => primary.id),
+ * });
+ * ```
+ * 
+ * ## Example Usage (Custom Role & User)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testClientConfig = pulumi.output(azure.core.getClientConfig({}));
+ * const primary = pulumi.output(azure.core.getSubscription({}));
+ * const testDefinition = new azure.role.Definition("test", {
+ *     assignableScopes: [primary.apply(primary => primary.id)],
+ *     permissions: [{
+ *         actions: ["Microsoft.Resources/subscriptions/resourceGroups/read"],
+ *         notActions: [],
+ *     }],
+ *     roleDefinitionId: "00000000-0000-0000-0000-000000000000",
+ *     scope: primary.apply(primary => primary.id),
+ * });
+ * const testAssignment = new azure.role.Assignment("test", {
+ *     principalId: testClientConfig.apply(testClientConfig => testClientConfig.clientId),
+ *     roleDefinitionId: testDefinition.id,
+ *     scope: primary.apply(primary => primary.id),
+ * });
+ * ```
+ */
 export class Assignment extends pulumi.CustomResource {
     /**
      * Get an existing Assignment resource's state with the given name, ID, and optional extra
@@ -17,10 +83,25 @@ export class Assignment extends pulumi.CustomResource {
         return new Assignment(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * A unique UUID/GUID for this Role Assignment - one will be generated if not specified. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The ID of the Principal (User or Application) to assign the Role Definition to. Changing this forces a new resource to be created.
+     */
     public readonly principalId: pulumi.Output<string>;
+    /**
+     * The Scoped-ID of the Role Definition. Changing this forces a new resource to be created. Conflicts with `role_definition_name`.
+     */
     public readonly roleDefinitionId: pulumi.Output<string>;
+    /**
+     * The name of a built-in Role. Changing this forces a new resource to be created. Conflicts with `role_definition_id`.
+     */
     public readonly roleDefinitionName: pulumi.Output<string>;
+    /**
+     * The scope at which the Role Assignment applies too, such as `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333`, `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup`, or `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup/providers/Microsoft.Compute/virtualMachines/myVM`. Changing this forces a new resource to be created.
+     */
     public readonly scope: pulumi.Output<string>;
 
     /**
@@ -62,10 +143,25 @@ export class Assignment extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Assignment resources.
  */
 export interface AssignmentState {
+    /**
+     * A unique UUID/GUID for this Role Assignment - one will be generated if not specified. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The ID of the Principal (User or Application) to assign the Role Definition to. Changing this forces a new resource to be created.
+     */
     readonly principalId?: pulumi.Input<string>;
+    /**
+     * The Scoped-ID of the Role Definition. Changing this forces a new resource to be created. Conflicts with `role_definition_name`.
+     */
     readonly roleDefinitionId?: pulumi.Input<string>;
+    /**
+     * The name of a built-in Role. Changing this forces a new resource to be created. Conflicts with `role_definition_id`.
+     */
     readonly roleDefinitionName?: pulumi.Input<string>;
+    /**
+     * The scope at which the Role Assignment applies too, such as `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333`, `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup`, or `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup/providers/Microsoft.Compute/virtualMachines/myVM`. Changing this forces a new resource to be created.
+     */
     readonly scope?: pulumi.Input<string>;
 }
 
@@ -73,9 +169,24 @@ export interface AssignmentState {
  * The set of arguments for constructing a Assignment resource.
  */
 export interface AssignmentArgs {
+    /**
+     * A unique UUID/GUID for this Role Assignment - one will be generated if not specified. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The ID of the Principal (User or Application) to assign the Role Definition to. Changing this forces a new resource to be created.
+     */
     readonly principalId: pulumi.Input<string>;
+    /**
+     * The Scoped-ID of the Role Definition. Changing this forces a new resource to be created. Conflicts with `role_definition_name`.
+     */
     readonly roleDefinitionId?: pulumi.Input<string>;
+    /**
+     * The name of a built-in Role. Changing this forces a new resource to be created. Conflicts with `role_definition_id`.
+     */
     readonly roleDefinitionName?: pulumi.Input<string>;
+    /**
+     * The scope at which the Role Assignment applies too, such as `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333`, `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup`, or `/subscriptions/0b1f6471-1bf0-4dda-aec3-111122223333/resourceGroups/myGroup/providers/Microsoft.Compute/virtualMachines/myVM`. Changing this forces a new resource to be created.
+     */
     readonly scope: pulumi.Input<string>;
 }

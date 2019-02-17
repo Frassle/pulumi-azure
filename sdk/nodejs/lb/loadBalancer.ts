@@ -4,6 +4,33 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a Load Balancer Resource.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testPublicIp = new azure.network.PublicIp("test", {
+ *     allocationMethod: "Static",
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testLoadBalancer = new azure.lb.LoadBalancer("test", {
+ *     frontendIpConfigurations: [{
+ *         name: "PublicIPAddress",
+ *         publicIpAddressId: testPublicIp.id,
+ *     }],
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * ```
+ */
 export class LoadBalancer extends pulumi.CustomResource {
     /**
      * Get an existing LoadBalancer resource's state with the given name, ID, and optional extra
@@ -17,13 +44,37 @@ export class LoadBalancer extends pulumi.CustomResource {
         return new LoadBalancer(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * A `frontend_ip_configuration` block as documented below.
+     */
     public readonly frontendIpConfigurations: pulumi.Output<{ inboundNatRules: string[], loadBalancerRules: string[], name: string, privateIpAddress: string, privateIpAddressAllocation: string, publicIpAddressId: string, subnetId: string, zones?: string }[] | undefined>;
+    /**
+     * Specifies the supported Azure Region where the Load Balancer should be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies the name of the frontend ip configuration.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Private IP Address to assign to the Load Balancer. The last one and first four IPs in any range are reserved and cannot be manually assigned.
+     */
     public /*out*/ readonly privateIpAddress: pulumi.Output<string>;
+    /**
+     * The list of private IP address assigned to the load balancer in `frontend_ip_configuration` blocks, if any.
+     */
     public /*out*/ readonly privateIpAddresses: pulumi.Output<string[]>;
+    /**
+     * The name of the Resource Group in which to create the Load Balancer.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The SKU of the Azure Load Balancer. Accepted values are `Basic` and `Standard`. Defaults to `Basic`.
+     */
     public readonly sku: pulumi.Output<string | undefined>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -71,13 +122,37 @@ export class LoadBalancer extends pulumi.CustomResource {
  * Input properties used for looking up and filtering LoadBalancer resources.
  */
 export interface LoadBalancerState {
+    /**
+     * A `frontend_ip_configuration` block as documented below.
+     */
     readonly frontendIpConfigurations?: pulumi.Input<pulumi.Input<{ inboundNatRules?: pulumi.Input<pulumi.Input<string>[]>, loadBalancerRules?: pulumi.Input<pulumi.Input<string>[]>, name: pulumi.Input<string>, privateIpAddress?: pulumi.Input<string>, privateIpAddressAllocation?: pulumi.Input<string>, publicIpAddressId?: pulumi.Input<string>, subnetId?: pulumi.Input<string>, zones?: pulumi.Input<string> }>[]>;
+    /**
+     * Specifies the supported Azure Region where the Load Balancer should be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the frontend ip configuration.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Private IP Address to assign to the Load Balancer. The last one and first four IPs in any range are reserved and cannot be manually assigned.
+     */
     readonly privateIpAddress?: pulumi.Input<string>;
+    /**
+     * The list of private IP address assigned to the load balancer in `frontend_ip_configuration` blocks, if any.
+     */
     readonly privateIpAddresses?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The name of the Resource Group in which to create the Load Balancer.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The SKU of the Azure Load Balancer. Accepted values are `Basic` and `Standard`. Defaults to `Basic`.
+     */
     readonly sku?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -85,10 +160,28 @@ export interface LoadBalancerState {
  * The set of arguments for constructing a LoadBalancer resource.
  */
 export interface LoadBalancerArgs {
+    /**
+     * A `frontend_ip_configuration` block as documented below.
+     */
     readonly frontendIpConfigurations?: pulumi.Input<pulumi.Input<{ inboundNatRules?: pulumi.Input<pulumi.Input<string>[]>, loadBalancerRules?: pulumi.Input<pulumi.Input<string>[]>, name: pulumi.Input<string>, privateIpAddress?: pulumi.Input<string>, privateIpAddressAllocation?: pulumi.Input<string>, publicIpAddressId?: pulumi.Input<string>, subnetId?: pulumi.Input<string>, zones?: pulumi.Input<string> }>[]>;
+    /**
+     * Specifies the supported Azure Region where the Load Balancer should be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies the name of the frontend ip configuration.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the Resource Group in which to create the Load Balancer.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The SKU of the Azure Load Balancer. Accepted values are `Basic` and `Standard`. Defaults to `Basic`.
+     */
     readonly sku?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

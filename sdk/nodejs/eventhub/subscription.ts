@@ -4,6 +4,39 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a ServiceBus Subscription.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleNamespace = new azure.eventhub.Namespace("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: "Standard",
+ *     tags: {
+ *         source: "terraform",
+ *     },
+ * });
+ * const exampleTopic = new azure.eventhub.Topic("example", {
+ *     enablePartitioning: true,
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleSubscription = new azure.eventhub.Subscription("example", {
+ *     maxDeliveryCount: 1,
+ *     namespaceName: exampleNamespace.name,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     topicName: exampleTopic.name,
+ * });
+ * ```
+ */
 export class Subscription extends pulumi.CustomResource {
     /**
      * Get an existing Subscription resource's state with the given name, ID, and optional extra
@@ -17,19 +50,74 @@ export class Subscription extends pulumi.CustomResource {
         return new Subscription(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The idle interval after which the
+     * Subscription is automatically deleted, minimum of 5 minutes. Provided in the
+     * TimeSpan format.
+     */
     public readonly autoDeleteOnIdle: pulumi.Output<string>;
     public readonly deadLetteringOnFilterEvaluationExceptions: pulumi.Output<boolean | undefined>;
+    /**
+     * Boolean flag which controls
+     * whether the Subscription has dead letter support when a message expires. Defaults
+     * to false.
+     */
     public readonly deadLetteringOnMessageExpiration: pulumi.Output<boolean | undefined>;
+    /**
+     * The TTL of messages sent to this Subscription
+     * if no TTL value is set on the message itself. Provided in the TimeSpan
+     * format.
+     */
     public readonly defaultMessageTtl: pulumi.Output<string>;
+    /**
+     * Boolean flag which controls whether the
+     * Subscription supports batched operations. Defaults to false.
+     */
     public readonly enableBatchedOperations: pulumi.Output<boolean | undefined>;
+    /**
+     * The name of a Queue or Topic to automatically forward 
+     * messages to.
+     */
     public readonly forwardTo: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the supported Azure location where the resource exists.
+     * Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string | undefined>;
+    /**
+     * The lock duration for the subscription, maximum
+     * supported value is 5 minutes. Defaults to 1 minute.
+     */
     public readonly lockDuration: pulumi.Output<string>;
+    /**
+     * The maximum number of deliveries.
+     */
     public readonly maxDeliveryCount: pulumi.Output<number>;
+    /**
+     * Specifies the name of the ServiceBus Subscription resource.
+     * Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the ServiceBus Namespace to create
+     * this Subscription in. Changing this forces a new resource to be created.
+     */
     public readonly namespaceName: pulumi.Output<string>;
+    /**
+     * Boolean flag which controls whether this Subscription
+     * supports the concept of a session. Defaults to false. Changing this forces a
+     * new resource to be created.
+     */
     public readonly requiresSession: pulumi.Output<boolean | undefined>;
+    /**
+     * The name of the resource group in which to
+     * create the namespace. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The name of the ServiceBus Topic to create
+     * this Subscription in. Changing this forces a new resource to be created.
+     */
     public readonly topicName: pulumi.Output<string>;
 
     /**
@@ -95,19 +183,74 @@ export class Subscription extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Subscription resources.
  */
 export interface SubscriptionState {
+    /**
+     * The idle interval after which the
+     * Subscription is automatically deleted, minimum of 5 minutes. Provided in the
+     * TimeSpan format.
+     */
     readonly autoDeleteOnIdle?: pulumi.Input<string>;
     readonly deadLetteringOnFilterEvaluationExceptions?: pulumi.Input<boolean>;
+    /**
+     * Boolean flag which controls
+     * whether the Subscription has dead letter support when a message expires. Defaults
+     * to false.
+     */
     readonly deadLetteringOnMessageExpiration?: pulumi.Input<boolean>;
+    /**
+     * The TTL of messages sent to this Subscription
+     * if no TTL value is set on the message itself. Provided in the TimeSpan
+     * format.
+     */
     readonly defaultMessageTtl?: pulumi.Input<string>;
+    /**
+     * Boolean flag which controls whether the
+     * Subscription supports batched operations. Defaults to false.
+     */
     readonly enableBatchedOperations?: pulumi.Input<boolean>;
+    /**
+     * The name of a Queue or Topic to automatically forward 
+     * messages to.
+     */
     readonly forwardTo?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists.
+     * Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The lock duration for the subscription, maximum
+     * supported value is 5 minutes. Defaults to 1 minute.
+     */
     readonly lockDuration?: pulumi.Input<string>;
+    /**
+     * The maximum number of deliveries.
+     */
     readonly maxDeliveryCount?: pulumi.Input<number>;
+    /**
+     * Specifies the name of the ServiceBus Subscription resource.
+     * Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Namespace to create
+     * this Subscription in. Changing this forces a new resource to be created.
+     */
     readonly namespaceName?: pulumi.Input<string>;
+    /**
+     * Boolean flag which controls whether this Subscription
+     * supports the concept of a session. Defaults to false. Changing this forces a
+     * new resource to be created.
+     */
     readonly requiresSession?: pulumi.Input<boolean>;
+    /**
+     * The name of the resource group in which to
+     * create the namespace. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Topic to create
+     * this Subscription in. Changing this forces a new resource to be created.
+     */
     readonly topicName?: pulumi.Input<string>;
 }
 
@@ -115,18 +258,73 @@ export interface SubscriptionState {
  * The set of arguments for constructing a Subscription resource.
  */
 export interface SubscriptionArgs {
+    /**
+     * The idle interval after which the
+     * Subscription is automatically deleted, minimum of 5 minutes. Provided in the
+     * TimeSpan format.
+     */
     readonly autoDeleteOnIdle?: pulumi.Input<string>;
     readonly deadLetteringOnFilterEvaluationExceptions?: pulumi.Input<boolean>;
+    /**
+     * Boolean flag which controls
+     * whether the Subscription has dead letter support when a message expires. Defaults
+     * to false.
+     */
     readonly deadLetteringOnMessageExpiration?: pulumi.Input<boolean>;
+    /**
+     * The TTL of messages sent to this Subscription
+     * if no TTL value is set on the message itself. Provided in the TimeSpan
+     * format.
+     */
     readonly defaultMessageTtl?: pulumi.Input<string>;
+    /**
+     * Boolean flag which controls whether the
+     * Subscription supports batched operations. Defaults to false.
+     */
     readonly enableBatchedOperations?: pulumi.Input<boolean>;
+    /**
+     * The name of a Queue or Topic to automatically forward 
+     * messages to.
+     */
     readonly forwardTo?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists.
+     * Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The lock duration for the subscription, maximum
+     * supported value is 5 minutes. Defaults to 1 minute.
+     */
     readonly lockDuration?: pulumi.Input<string>;
+    /**
+     * The maximum number of deliveries.
+     */
     readonly maxDeliveryCount: pulumi.Input<number>;
+    /**
+     * Specifies the name of the ServiceBus Subscription resource.
+     * Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Namespace to create
+     * this Subscription in. Changing this forces a new resource to be created.
+     */
     readonly namespaceName: pulumi.Input<string>;
+    /**
+     * Boolean flag which controls whether this Subscription
+     * supports the concept of a session. Defaults to false. Changing this forces a
+     * new resource to be created.
+     */
     readonly requiresSession?: pulumi.Input<boolean>;
+    /**
+     * The name of the resource group in which to
+     * create the namespace. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The name of the ServiceBus Topic to create
+     * this Subscription in. Changing this forces a new resource to be created.
+     */
     readonly topicName: pulumi.Input<string>;
 }

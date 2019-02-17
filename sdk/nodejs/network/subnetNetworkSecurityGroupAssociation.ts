@@ -4,6 +4,52 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Associates a Network Security Group with a Subnet within a Virtual Network.
+ * 
+ * > **NOTE:** Subnet `<->` Network Security Group associations currently need to be configured on both this resource and using the `network_security_group_id` field on the `azurerm_subnet` resource. The next major version of the AzureRM Provider (2.0) will remove the `network_security_group_id` field from the `azurerm_subnet` resource such that this resource is used to link resources in future.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const testNetworkSecurityGroup = new azure.network.NetworkSecurityGroup("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     securityRules: [{
+ *         access: "Allow",
+ *         destinationAddressPrefix: "*",
+ *         destinationPortRange: "*",
+ *         direction: "Inbound",
+ *         name: "test123",
+ *         priority: 100,
+ *         protocol: "Tcp",
+ *         sourceAddressPrefix: "*",
+ *         sourcePortRange: "*",
+ *     }],
+ * });
+ * const testVirtualNetwork = new azure.network.VirtualNetwork("test", {
+ *     addressSpaces: ["10.0.0.0/16"],
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testSubnet = new azure.network.Subnet("test", {
+ *     addressPrefix: "10.0.2.0/24",
+ *     networkSecurityGroupId: testNetworkSecurityGroup.id,
+ *     resourceGroupName: testResourceGroup.name,
+ *     virtualNetworkName: testVirtualNetwork.name,
+ * });
+ * const testSubnetNetworkSecurityGroupAssociation = new azure.network.SubnetNetworkSecurityGroupAssociation("test", {
+ *     networkSecurityGroupId: testNetworkSecurityGroup.id,
+ *     subnetId: testSubnet.id,
+ * });
+ * ```
+ */
 export class SubnetNetworkSecurityGroupAssociation extends pulumi.CustomResource {
     /**
      * Get an existing SubnetNetworkSecurityGroupAssociation resource's state with the given name, ID, and optional extra
@@ -17,7 +63,13 @@ export class SubnetNetworkSecurityGroupAssociation extends pulumi.CustomResource
         return new SubnetNetworkSecurityGroupAssociation(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The ID of the Network Security Group which should be associated with the Subnet. Changing this forces a new resource to be created.
+     */
     public readonly networkSecurityGroupId: pulumi.Output<string>;
+    /**
+     * The ID of the Subnet. Changing this forces a new resource to be created.
+     */
     public readonly subnetId: pulumi.Output<string>;
 
     /**
@@ -53,7 +105,13 @@ export class SubnetNetworkSecurityGroupAssociation extends pulumi.CustomResource
  * Input properties used for looking up and filtering SubnetNetworkSecurityGroupAssociation resources.
  */
 export interface SubnetNetworkSecurityGroupAssociationState {
+    /**
+     * The ID of the Network Security Group which should be associated with the Subnet. Changing this forces a new resource to be created.
+     */
     readonly networkSecurityGroupId?: pulumi.Input<string>;
+    /**
+     * The ID of the Subnet. Changing this forces a new resource to be created.
+     */
     readonly subnetId?: pulumi.Input<string>;
 }
 
@@ -61,6 +119,12 @@ export interface SubnetNetworkSecurityGroupAssociationState {
  * The set of arguments for constructing a SubnetNetworkSecurityGroupAssociation resource.
  */
 export interface SubnetNetworkSecurityGroupAssociationArgs {
+    /**
+     * The ID of the Network Security Group which should be associated with the Subnet. Changing this forces a new resource to be created.
+     */
     readonly networkSecurityGroupId: pulumi.Input<string>;
+    /**
+     * The ID of the Subnet. Changing this forces a new resource to be created.
+     */
     readonly subnetId: pulumi.Input<string>;
 }

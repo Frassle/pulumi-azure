@@ -4,6 +4,37 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Consumer Group within an IotHub
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testIoTHub = new azure.iot.IoTHub("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         capacity: 1,
+ *         name: "S1",
+ *         tier: "Standard",
+ *     },
+ *     tags: {
+ *         purpose: "testing",
+ *     },
+ * });
+ * const testConsumerGroup = new azure.iot.ConsumerGroup("test", {
+ *     eventhubEndpointName: "events",
+ *     iothubName: testIoTHub.name,
+ *     resourceGroupName: azurerm_resource_group_foo.name,
+ * });
+ * ```
+ */
 export class ConsumerGroup extends pulumi.CustomResource {
     /**
      * Get an existing ConsumerGroup resource's state with the given name, ID, and optional extra
@@ -17,9 +48,21 @@ export class ConsumerGroup extends pulumi.CustomResource {
         return new ConsumerGroup(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the Event Hub-compatible endpoint in the IoT hub. Changing this forces a new resource to be created.
+     */
     public readonly eventhubEndpointName: pulumi.Output<string>;
+    /**
+     * The name of the IoT Hub. Changing this forces a new resource to be created.
+     */
     public readonly iothubName: pulumi.Output<string>;
+    /**
+     * The name of this Consumer Group. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group that contains the IoT hub. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -62,9 +105,21 @@ export class ConsumerGroup extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ConsumerGroup resources.
  */
 export interface ConsumerGroupState {
+    /**
+     * The name of the Event Hub-compatible endpoint in the IoT hub. Changing this forces a new resource to be created.
+     */
     readonly eventhubEndpointName?: pulumi.Input<string>;
+    /**
+     * The name of the IoT Hub. Changing this forces a new resource to be created.
+     */
     readonly iothubName?: pulumi.Input<string>;
+    /**
+     * The name of this Consumer Group. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group that contains the IoT hub. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -72,8 +127,20 @@ export interface ConsumerGroupState {
  * The set of arguments for constructing a ConsumerGroup resource.
  */
 export interface ConsumerGroupArgs {
+    /**
+     * The name of the Event Hub-compatible endpoint in the IoT hub. Changing this forces a new resource to be created.
+     */
     readonly eventhubEndpointName: pulumi.Input<string>;
+    /**
+     * The name of the IoT Hub. Changing this forces a new resource to be created.
+     */
     readonly iothubName: pulumi.Input<string>;
+    /**
+     * The name of this Consumer Group. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group that contains the IoT hub. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

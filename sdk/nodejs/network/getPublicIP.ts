@@ -4,6 +4,76 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Public IP Address.
+ * 
+ * ## Example Usage (reference an existing)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = pulumi.output(azure.network.getPublicIP({
+ *     name: "name_of_public_ip",
+ *     resourceGroupName: "name_of_resource_group",
+ * }));
+ * 
+ * export const domainNameLabel = test.apply(test => test.domainNameLabel);
+ * export const publicIpAddress = test.apply(test => test.ipAddress);
+ * ```
+ * 
+ * ## Example Usage (Retrieve the Dynamic Public IP of a new VM)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US 2",
+ * });
+ * const testPublicIp = new azure.network.PublicIp("test", {
+ *     allocationMethod: "Dynamic",
+ *     idleTimeoutInMinutes: 30,
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         environment: "test",
+ *     },
+ * });
+ * const testVirtualNetwork = new azure.network.VirtualNetwork("test", {
+ *     addressSpaces: ["10.0.0.0/16"],
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testSubnet = new azure.network.Subnet("test", {
+ *     addressPrefix: "10.0.2.0/24",
+ *     resourceGroupName: testResourceGroup.name,
+ *     virtualNetworkName: testVirtualNetwork.name,
+ * });
+ * const testNetworkInterface = new azure.network.NetworkInterface("test", {
+ *     ipConfigurations: [{
+ *         name: "testconfiguration1",
+ *         privateIpAddress: "10.0.2.5",
+ *         privateIpAddressAllocation: "Static",
+ *         publicIpAddressId: testPublicIp.id,
+ *         subnetId: testSubnet.id,
+ *     }],
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testVirtualMachine = new azure.compute.VirtualMachine("test", {
+ *     location: testResourceGroup.location,
+ *     networkInterfaceIds: [testNetworkInterface.id],
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testPublicIP = pulumi.output(azure.network.getPublicIP({
+ *     name: testPublicIp.name,
+ *     resourceGroupName: testVirtualMachine.resourceGroupName,
+ * }));
+ * 
+ * export const publicIpAddress = testPublicIP.apply(testPublicIP => testPublicIP.ipAddress);
+ * ```
+ */
 export function getPublicIP(args: GetPublicIPArgs, opts?: pulumi.InvokeOptions): Promise<GetPublicIPResult> {
     return pulumi.runtime.invoke("azure:network/getPublicIP:getPublicIP", {
         "name": args.name,
@@ -17,7 +87,13 @@ export function getPublicIP(args: GetPublicIPArgs, opts?: pulumi.InvokeOptions):
  * A collection of arguments for invoking getPublicIP.
  */
 export interface GetPublicIPArgs {
+    /**
+     * Specifies the name of the public IP address.
+     */
     readonly name: string;
+    /**
+     * Specifies the name of the resource group.
+     */
     readonly resourceGroupName: string;
     readonly tags?: {[key: string]: any};
     readonly zones?: string[];
@@ -28,14 +104,32 @@ export interface GetPublicIPArgs {
  */
 export interface GetPublicIPResult {
     readonly allocationMethod: string;
+    /**
+     * The label for the Domain Name.
+     */
     readonly domainNameLabel: string;
+    /**
+     * Fully qualified domain name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.
+     */
     readonly fqdn: string;
+    /**
+     * Specifies the timeout for the TCP idle connection.
+     */
     readonly idleTimeoutInMinutes: number;
+    /**
+     * The IP address value that was allocated.
+     */
     readonly ipAddress: string;
+    /**
+     * The IP version being used, for example `IPv4` or `IPv6`.
+     */
     readonly ipVersion: string;
     readonly location: string;
     readonly reverseFqdn: string;
     readonly sku: string;
+    /**
+     * A mapping of tags to assigned to the resource.
+     */
     readonly tags: {[key: string]: any};
     readonly zones: string[];
     /**

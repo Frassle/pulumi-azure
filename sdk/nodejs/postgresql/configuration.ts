@@ -4,6 +4,44 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Sets a PostgreSQL Configuration value on a PostgreSQL Server.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const testServer = new azure.postgresql.Server("test", {
+ *     administratorLogin: "psqladminun",
+ *     administratorLoginPassword: "H@Sh1CoR3!",
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         capacity: 2,
+ *         family: "Gen4",
+ *         name: "B_Gen4_2",
+ *         tier: "Basic",
+ *     },
+ *     sslEnforcement: "Enabled",
+ *     storageProfile: {
+ *         backupRetentionDays: 7,
+ *         geoRedundantBackup: "Disabled",
+ *         storageMb: 5120,
+ *     },
+ *     version: "9.5",
+ * });
+ * const testConfiguration = new azure.postgresql.Configuration("test", {
+ *     resourceGroupName: testResourceGroup.name,
+ *     serverName: testServer.name,
+ *     value: "on",
+ * });
+ * ```
+ */
 export class Configuration extends pulumi.CustomResource {
     /**
      * Get an existing Configuration resource's state with the given name, ID, and optional extra
@@ -17,9 +55,21 @@ export class Configuration extends pulumi.CustomResource {
         return new Configuration(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the name of the PostgreSQL Configuration, which needs [to be a valid PostgreSQL configuration name](https://www.postgresql.org/docs/current/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIER). Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the PostgreSQL Server exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Specifies the name of the PostgreSQL Server. Changing this forces a new resource to be created.
+     */
     public readonly serverName: pulumi.Output<string>;
+    /**
+     * Specifies the value of the PostgreSQL Configuration. See the PostgreSQL documentation for valid values.
+     */
     public readonly value: pulumi.Output<string>;
 
     /**
@@ -62,9 +112,21 @@ export class Configuration extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Configuration resources.
  */
 export interface ConfigurationState {
+    /**
+     * Specifies the name of the PostgreSQL Configuration, which needs [to be a valid PostgreSQL configuration name](https://www.postgresql.org/docs/current/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIER). Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the PostgreSQL Server exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the PostgreSQL Server. Changing this forces a new resource to be created.
+     */
     readonly serverName?: pulumi.Input<string>;
+    /**
+     * Specifies the value of the PostgreSQL Configuration. See the PostgreSQL documentation for valid values.
+     */
     readonly value?: pulumi.Input<string>;
 }
 
@@ -72,8 +134,20 @@ export interface ConfigurationState {
  * The set of arguments for constructing a Configuration resource.
  */
 export interface ConfigurationArgs {
+    /**
+     * Specifies the name of the PostgreSQL Configuration, which needs [to be a valid PostgreSQL configuration name](https://www.postgresql.org/docs/current/static/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIER). Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the PostgreSQL Server exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Specifies the name of the PostgreSQL Server. Changing this forces a new resource to be created.
+     */
     readonly serverName: pulumi.Input<string>;
+    /**
+     * Specifies the value of the PostgreSQL Configuration. See the PostgreSQL documentation for valid values.
+     */
     readonly value: pulumi.Input<string>;
 }

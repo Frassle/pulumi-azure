@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Custom Trigger within a Logic App Workflow
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "East US",
+ * });
+ * const testWorkflow = new azure.logicapps.Workflow("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testTriggerCustom = new azure.logicapps.TriggerCustom("test", {
+ *     body: `{
+ *   "recurrence": {
+ *     "frequency": "Day",
+ *     "interval": 1
+ *   },
+ *   "type": "Recurrence"
+ * }
+ * `,
+ *     logicAppId: testWorkflow.id,
+ * });
+ * ```
+ */
 export class TriggerCustom extends pulumi.CustomResource {
     /**
      * Get an existing TriggerCustom resource's state with the given name, ID, and optional extra
@@ -17,8 +46,17 @@ export class TriggerCustom extends pulumi.CustomResource {
         return new TriggerCustom(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the JSON Blob defining the Body of this Custom Trigger.
+     */
     public readonly body: pulumi.Output<string>;
+    /**
+     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     public readonly logicAppId: pulumi.Output<string>;
+    /**
+     * Specifies the name of the HTTP Trigger to be created within the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
 
     /**
@@ -56,8 +94,17 @@ export class TriggerCustom extends pulumi.CustomResource {
  * Input properties used for looking up and filtering TriggerCustom resources.
  */
 export interface TriggerCustomState {
+    /**
+     * Specifies the JSON Blob defining the Body of this Custom Trigger.
+     */
     readonly body?: pulumi.Input<string>;
+    /**
+     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly logicAppId?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the HTTP Trigger to be created within the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
 }
 
@@ -65,7 +112,16 @@ export interface TriggerCustomState {
  * The set of arguments for constructing a TriggerCustom resource.
  */
 export interface TriggerCustomArgs {
+    /**
+     * Specifies the JSON Blob defining the Body of this Custom Trigger.
+     */
     readonly body: pulumi.Input<string>;
+    /**
+     * Specifies the ID of the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly logicAppId: pulumi.Input<string>;
+    /**
+     * Specifies the name of the HTTP Trigger to be created within the Logic App Workflow. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
 }

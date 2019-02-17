@@ -4,6 +4,33 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Automation DSC Configuration.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleAccount = new azure.automation.Account("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: {
+ *         name: "Basic",
+ *     },
+ * });
+ * const exampleDscConfiguration = new azure.automation.DscConfiguration("example", {
+ *     automationAccountName: exampleAccount.name,
+ *     contentEmbedded: "configuration test {}",
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * ```
+ */
 export class DscConfiguration extends pulumi.CustomResource {
     /**
      * Get an existing DscConfiguration resource's state with the given name, ID, and optional extra
@@ -17,12 +44,33 @@ export class DscConfiguration extends pulumi.CustomResource {
         return new DscConfiguration(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the automation account in which the DSC Configuration is created. Changing this forces a new resource to be created.
+     */
     public readonly automationAccountName: pulumi.Output<string>;
+    /**
+     * The PowerShell DSC Configuration script.
+     */
     public readonly contentEmbedded: pulumi.Output<string>;
+    /**
+     * Description to go with DSC Configuration.
+     */
     public readonly description: pulumi.Output<string | undefined>;
+    /**
+     * Must be the same location as the Automation Account.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Verbose log option.
+     */
     public readonly logVerbose: pulumi.Output<boolean | undefined>;
+    /**
+     * Specifies the name of the DSC Configuration. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the DSC Configuration is created. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
     public /*out*/ readonly state: pulumi.Output<string>;
 
@@ -77,12 +125,33 @@ export class DscConfiguration extends pulumi.CustomResource {
  * Input properties used for looking up and filtering DscConfiguration resources.
  */
 export interface DscConfigurationState {
+    /**
+     * The name of the automation account in which the DSC Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly automationAccountName?: pulumi.Input<string>;
+    /**
+     * The PowerShell DSC Configuration script.
+     */
     readonly contentEmbedded?: pulumi.Input<string>;
+    /**
+     * Description to go with DSC Configuration.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * Must be the same location as the Automation Account.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Verbose log option.
+     */
     readonly logVerbose?: pulumi.Input<boolean>;
+    /**
+     * Specifies the name of the DSC Configuration. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the DSC Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
     readonly state?: pulumi.Input<string>;
 }
@@ -91,11 +160,32 @@ export interface DscConfigurationState {
  * The set of arguments for constructing a DscConfiguration resource.
  */
 export interface DscConfigurationArgs {
+    /**
+     * The name of the automation account in which the DSC Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly automationAccountName: pulumi.Input<string>;
+    /**
+     * The PowerShell DSC Configuration script.
+     */
     readonly contentEmbedded: pulumi.Input<string>;
+    /**
+     * Description to go with DSC Configuration.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * Must be the same location as the Automation Account.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Verbose log option.
+     */
     readonly logVerbose?: pulumi.Input<boolean>;
+    /**
+     * Specifies the name of the DSC Configuration. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the DSC Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

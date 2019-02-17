@@ -4,6 +4,39 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Automation Runbook.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleAccount = new azure.automation.Account("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: {
+ *         name: "Basic",
+ *     },
+ * });
+ * const exampleRunBook = new azure.automation.RunBook("example", {
+ *     accountName: exampleAccount.name,
+ *     description: "This is an example runbook",
+ *     location: exampleResourceGroup.location,
+ *     logProgress: true,
+ *     logVerbose: true,
+ *     publishContentLink: {
+ *         uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-automation-runbook-getvms/Runbooks/Get-AzureVMTutorial.ps1",
+ *     },
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     runbookType: "PowerShellWorkflow",
+ * });
+ * ```
+ */
 export class RunBook extends pulumi.CustomResource {
     /**
      * Get an existing RunBook resource's state with the given name, ID, and optional extra
@@ -17,16 +50,49 @@ export class RunBook extends pulumi.CustomResource {
         return new RunBook(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the automation account in which the Runbook is created. Changing this forces a new resource to be created.
+     */
     public readonly accountName: pulumi.Output<string>;
+    /**
+     * The desired content of the runbook.
+     */
     public readonly content: pulumi.Output<string>;
+    /**
+     * A description for this credential.
+     */
     public readonly description: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Progress log option.
+     */
     public readonly logProgress: pulumi.Output<boolean>;
+    /**
+     * Verbose log option.
+     */
     public readonly logVerbose: pulumi.Output<boolean>;
+    /**
+     * Specifies the name of the Runbook. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The published runbook content link.
+     */
     public readonly publishContentLink: pulumi.Output<{ hash?: { algorithm: string, value: string }, uri: string, version?: string }>;
+    /**
+     * The name of the resource group in which the Runbook is created. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The type of the runbook - can be either `Graph`, `GraphPowerShell`, `GraphPowerShellWorkflow`, `PowerShellWorkflow`, `PowerShell` or `Script`.
+     */
     public readonly runbookType: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -95,16 +161,49 @@ export class RunBook extends pulumi.CustomResource {
  * Input properties used for looking up and filtering RunBook resources.
  */
 export interface RunBookState {
+    /**
+     * The name of the automation account in which the Runbook is created. Changing this forces a new resource to be created.
+     */
     readonly accountName?: pulumi.Input<string>;
+    /**
+     * The desired content of the runbook.
+     */
     readonly content?: pulumi.Input<string>;
+    /**
+     * A description for this credential.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Progress log option.
+     */
     readonly logProgress?: pulumi.Input<boolean>;
+    /**
+     * Verbose log option.
+     */
     readonly logVerbose?: pulumi.Input<boolean>;
+    /**
+     * Specifies the name of the Runbook. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The published runbook content link.
+     */
     readonly publishContentLink?: pulumi.Input<{ hash?: pulumi.Input<{ algorithm: pulumi.Input<string>, value: pulumi.Input<string> }>, uri: pulumi.Input<string>, version?: pulumi.Input<string> }>;
+    /**
+     * The name of the resource group in which the Runbook is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The type of the runbook - can be either `Graph`, `GraphPowerShell`, `GraphPowerShellWorkflow`, `PowerShellWorkflow`, `PowerShell` or `Script`.
+     */
     readonly runbookType?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -112,15 +211,48 @@ export interface RunBookState {
  * The set of arguments for constructing a RunBook resource.
  */
 export interface RunBookArgs {
+    /**
+     * The name of the automation account in which the Runbook is created. Changing this forces a new resource to be created.
+     */
     readonly accountName: pulumi.Input<string>;
+    /**
+     * The desired content of the runbook.
+     */
     readonly content?: pulumi.Input<string>;
+    /**
+     * A description for this credential.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Progress log option.
+     */
     readonly logProgress: pulumi.Input<boolean>;
+    /**
+     * Verbose log option.
+     */
     readonly logVerbose: pulumi.Input<boolean>;
+    /**
+     * Specifies the name of the Runbook. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The published runbook content link.
+     */
     readonly publishContentLink: pulumi.Input<{ hash?: pulumi.Input<{ algorithm: pulumi.Input<string>, value: pulumi.Input<string> }>, uri: pulumi.Input<string>, version?: pulumi.Input<string> }>;
+    /**
+     * The name of the resource group in which the Runbook is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The type of the runbook - can be either `Graph`, `GraphPowerShell`, `GraphPowerShellWorkflow`, `PowerShellWorkflow`, `PowerShell` or `Script`.
+     */
     readonly runbookType: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

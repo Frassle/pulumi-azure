@@ -4,6 +4,35 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a Azure Data Lake Analytics Firewall Rule.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "northeurope",
+ * });
+ * const exampleStore = new azure.datalake.Store("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleAnalyticsAccount = new azure.datalake.AnalyticsAccount("example", {
+ *     defaultStoreAccountName: exampleStore.name,
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleAnalyticsFirewallRule = new azure.datalake.AnalyticsFirewallRule("example", {
+ *     accountName: azurerm_data_lake_analytics_example.name,
+ *     endIpAddress: "2.3.4.5",
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     startIpAddress: "1.2.3.4",
+ * });
+ * ```
+ */
 export class AnalyticsFirewallRule extends pulumi.CustomResource {
     /**
      * Get an existing AnalyticsFirewallRule resource's state with the given name, ID, and optional extra
@@ -17,10 +46,25 @@ export class AnalyticsFirewallRule extends pulumi.CustomResource {
         return new AnalyticsFirewallRule(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the name of the Data Lake Analytics for which the Firewall Rule should take effect.
+     */
     public readonly accountName: pulumi.Output<string>;
+    /**
+     * The End IP Address for the firewall rule.
+     */
     public readonly endIpAddress: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Data Lake Analytics. Changing this forces a new resource to be created. Has to be between 3 to 24 characters.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the Data Lake Analytics.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The Start IP address for the firewall rule.
+     */
     public readonly startIpAddress: pulumi.Output<string>;
 
     /**
@@ -68,10 +112,25 @@ export class AnalyticsFirewallRule extends pulumi.CustomResource {
  * Input properties used for looking up and filtering AnalyticsFirewallRule resources.
  */
 export interface AnalyticsFirewallRuleState {
+    /**
+     * Specifies the name of the Data Lake Analytics for which the Firewall Rule should take effect.
+     */
     readonly accountName?: pulumi.Input<string>;
+    /**
+     * The End IP Address for the firewall rule.
+     */
     readonly endIpAddress?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Data Lake Analytics. Changing this forces a new resource to be created. Has to be between 3 to 24 characters.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the Data Lake Analytics.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The Start IP address for the firewall rule.
+     */
     readonly startIpAddress?: pulumi.Input<string>;
 }
 
@@ -79,9 +138,24 @@ export interface AnalyticsFirewallRuleState {
  * The set of arguments for constructing a AnalyticsFirewallRule resource.
  */
 export interface AnalyticsFirewallRuleArgs {
+    /**
+     * Specifies the name of the Data Lake Analytics for which the Firewall Rule should take effect.
+     */
     readonly accountName: pulumi.Input<string>;
+    /**
+     * The End IP Address for the firewall rule.
+     */
     readonly endIpAddress: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Data Lake Analytics. Changing this forces a new resource to be created. Has to be between 3 to 24 characters.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the Data Lake Analytics.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The Start IP address for the firewall rule.
+     */
     readonly startIpAddress: pulumi.Input<string>;
 }

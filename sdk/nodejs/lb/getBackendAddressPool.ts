@@ -4,6 +4,27 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Load Balancer Backend Address Pool.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testLB = pulumi.output(azure.lb.getLB({
+ *     name: "example-lb",
+ *     resourceGroupName: "example-resources",
+ * }));
+ * const testBackendAddressPool = pulumi.output(azure.lb.getBackendAddressPool({
+ *     loadbalancerId: testLB.apply(testLB => testLB.id),
+ *     name: "first",
+ * }));
+ * 
+ * export const backendAddressPoolId = testBackendAddressPool.apply(testBackendAddressPool => testBackendAddressPool.id);
+ * ```
+ */
 export function getBackendAddressPool(args: GetBackendAddressPoolArgs, opts?: pulumi.InvokeOptions): Promise<GetBackendAddressPoolResult> {
     return pulumi.runtime.invoke("azure:lb/getBackendAddressPool:getBackendAddressPool", {
         "loadbalancerId": args.loadbalancerId,
@@ -15,7 +36,13 @@ export function getBackendAddressPool(args: GetBackendAddressPoolArgs, opts?: pu
  * A collection of arguments for invoking getBackendAddressPool.
  */
 export interface GetBackendAddressPoolArgs {
+    /**
+     * The ID of the Load Balancer in which the Backend Address Pool exists.
+     */
     readonly loadbalancerId: string;
+    /**
+     * Specifies the name of the Backend Address Pool.
+     */
     readonly name: string;
 }
 

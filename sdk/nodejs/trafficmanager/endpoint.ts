@@ -4,6 +4,50 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Traffic Manager Endpoint.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * import * as random from "@pulumi/random";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const server = new random.RandomId("server", {
+ *     byteLength: 8,
+ *     keepers: {
+ *         azi_id: 1,
+ *     },
+ * });
+ * const testProfile = new azure.trafficmanager.Profile("test", {
+ *     dnsConfigs: [{
+ *         relativeName: server.hex,
+ *         ttl: 100,
+ *     }],
+ *     monitorConfigs: [{
+ *         path: "/",
+ *         port: 80,
+ *         protocol: "http",
+ *     }],
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ *     trafficRoutingMethod: "Weighted",
+ * });
+ * const testEndpoint = new azure.trafficmanager.Endpoint("test", {
+ *     profileName: testProfile.name,
+ *     resourceGroupName: testResourceGroup.name,
+ *     target: "terraform.io",
+ *     type: "externalEndpoints",
+ *     weight: 100,
+ * });
+ * ```
+ */
 export class Endpoint extends pulumi.CustomResource {
     /**
      * Get an existing Endpoint resource's state with the given name, ID, and optional extra
@@ -17,18 +61,78 @@ export class Endpoint extends pulumi.CustomResource {
         return new Endpoint(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the Azure location of the Endpoint,
+     * this must be specified for Profiles using the `Performance` routing method
+     * if the Endpoint is of either type `nestedEndpoints` or `externalEndpoints`.
+     * For Endpoints of type `azureEndpoints` the value will be taken from the
+     * location of the Azure target resource.
+     */
     public readonly endpointLocation: pulumi.Output<string>;
     public /*out*/ readonly endpointMonitorStatus: pulumi.Output<string>;
+    /**
+     * The status of the Endpoint, can be set to
+     * either `Enabled` or `Disabled`. Defaults to `Enabled`.
+     */
     public readonly endpointStatus: pulumi.Output<string>;
+    /**
+     * A list of Geographic Regions used to distribute traffic, such as `WORLD`, `UK` or `DE`. The same location can't be specified in two endpoints. [See the Geographic Hierarchies documentation for more information](https://docs.microsoft.com/en-us/rest/api/trafficmanager/geographichierarchies/getdefault).
+     */
     public readonly geoMappings: pulumi.Output<string[] | undefined>;
+    /**
+     * This argument specifies the minimum number
+     * of endpoints that must be ‘online’ in the child profile in order for the
+     * parent profile to direct traffic to any of the endpoints in that child
+     * profile. This argument only applies to Endpoints of type `nestedEndpoints`
+     * and defaults to `1`.
+     */
     public readonly minChildEndpoints: pulumi.Output<number | undefined>;
+    /**
+     * The name of the Traffic Manager endpoint. Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Specifies the priority of this Endpoint, this must be
+     * specified for Profiles using the `Priority` traffic routing method. Supports
+     * values between 1 and 1000, with no Endpoints sharing the same value. If
+     * omitted the value will be computed in order of creation.
+     */
     public readonly priority: pulumi.Output<number>;
+    /**
+     * The name of the Traffic Manager Profile to attach
+     * create the Traffic Manager endpoint.
+     */
     public readonly profileName: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the Traffic Manager endpoint.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The FQDN DNS name of the target. This argument must be
+     * provided for an endpoint of type `externalEndpoints`, for other types it
+     * will be computed.
+     */
     public readonly target: pulumi.Output<string>;
+    /**
+     * The resource id of an Azure resource to
+     * target. This argument must be provided for an endpoint of type
+     * `azureEndpoints` or `nestedEndpoints`.
+     */
     public readonly targetResourceId: pulumi.Output<string | undefined>;
+    /**
+     * The Endpoint type, must be one of:
+     * - `azureEndpoints`
+     * - `externalEndpoints`
+     * - `nestedEndpoints`
+     */
     public readonly type: pulumi.Output<string>;
+    /**
+     * Specifies how much traffic should be distributed to this
+     * endpoint, this must be specified for Profiles using the  `Weighted` traffic
+     * routing method. Supports values between 1 and 1000.
+     */
     public readonly weight: pulumi.Output<number>;
 
     /**
@@ -89,18 +193,78 @@ export class Endpoint extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Endpoint resources.
  */
 export interface EndpointState {
+    /**
+     * Specifies the Azure location of the Endpoint,
+     * this must be specified for Profiles using the `Performance` routing method
+     * if the Endpoint is of either type `nestedEndpoints` or `externalEndpoints`.
+     * For Endpoints of type `azureEndpoints` the value will be taken from the
+     * location of the Azure target resource.
+     */
     readonly endpointLocation?: pulumi.Input<string>;
     readonly endpointMonitorStatus?: pulumi.Input<string>;
+    /**
+     * The status of the Endpoint, can be set to
+     * either `Enabled` or `Disabled`. Defaults to `Enabled`.
+     */
     readonly endpointStatus?: pulumi.Input<string>;
+    /**
+     * A list of Geographic Regions used to distribute traffic, such as `WORLD`, `UK` or `DE`. The same location can't be specified in two endpoints. [See the Geographic Hierarchies documentation for more information](https://docs.microsoft.com/en-us/rest/api/trafficmanager/geographichierarchies/getdefault).
+     */
     readonly geoMappings?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * This argument specifies the minimum number
+     * of endpoints that must be ‘online’ in the child profile in order for the
+     * parent profile to direct traffic to any of the endpoints in that child
+     * profile. This argument only applies to Endpoints of type `nestedEndpoints`
+     * and defaults to `1`.
+     */
     readonly minChildEndpoints?: pulumi.Input<number>;
+    /**
+     * The name of the Traffic Manager endpoint. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the priority of this Endpoint, this must be
+     * specified for Profiles using the `Priority` traffic routing method. Supports
+     * values between 1 and 1000, with no Endpoints sharing the same value. If
+     * omitted the value will be computed in order of creation.
+     */
     readonly priority?: pulumi.Input<number>;
+    /**
+     * The name of the Traffic Manager Profile to attach
+     * create the Traffic Manager endpoint.
+     */
     readonly profileName?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the Traffic Manager endpoint.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The FQDN DNS name of the target. This argument must be
+     * provided for an endpoint of type `externalEndpoints`, for other types it
+     * will be computed.
+     */
     readonly target?: pulumi.Input<string>;
+    /**
+     * The resource id of an Azure resource to
+     * target. This argument must be provided for an endpoint of type
+     * `azureEndpoints` or `nestedEndpoints`.
+     */
     readonly targetResourceId?: pulumi.Input<string>;
+    /**
+     * The Endpoint type, must be one of:
+     * - `azureEndpoints`
+     * - `externalEndpoints`
+     * - `nestedEndpoints`
+     */
     readonly type?: pulumi.Input<string>;
+    /**
+     * Specifies how much traffic should be distributed to this
+     * endpoint, this must be specified for Profiles using the  `Weighted` traffic
+     * routing method. Supports values between 1 and 1000.
+     */
     readonly weight?: pulumi.Input<number>;
 }
 
@@ -108,16 +272,76 @@ export interface EndpointState {
  * The set of arguments for constructing a Endpoint resource.
  */
 export interface EndpointArgs {
+    /**
+     * Specifies the Azure location of the Endpoint,
+     * this must be specified for Profiles using the `Performance` routing method
+     * if the Endpoint is of either type `nestedEndpoints` or `externalEndpoints`.
+     * For Endpoints of type `azureEndpoints` the value will be taken from the
+     * location of the Azure target resource.
+     */
     readonly endpointLocation?: pulumi.Input<string>;
+    /**
+     * The status of the Endpoint, can be set to
+     * either `Enabled` or `Disabled`. Defaults to `Enabled`.
+     */
     readonly endpointStatus?: pulumi.Input<string>;
+    /**
+     * A list of Geographic Regions used to distribute traffic, such as `WORLD`, `UK` or `DE`. The same location can't be specified in two endpoints. [See the Geographic Hierarchies documentation for more information](https://docs.microsoft.com/en-us/rest/api/trafficmanager/geographichierarchies/getdefault).
+     */
     readonly geoMappings?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * This argument specifies the minimum number
+     * of endpoints that must be ‘online’ in the child profile in order for the
+     * parent profile to direct traffic to any of the endpoints in that child
+     * profile. This argument only applies to Endpoints of type `nestedEndpoints`
+     * and defaults to `1`.
+     */
     readonly minChildEndpoints?: pulumi.Input<number>;
+    /**
+     * The name of the Traffic Manager endpoint. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the priority of this Endpoint, this must be
+     * specified for Profiles using the `Priority` traffic routing method. Supports
+     * values between 1 and 1000, with no Endpoints sharing the same value. If
+     * omitted the value will be computed in order of creation.
+     */
     readonly priority?: pulumi.Input<number>;
+    /**
+     * The name of the Traffic Manager Profile to attach
+     * create the Traffic Manager endpoint.
+     */
     readonly profileName: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the Traffic Manager endpoint.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The FQDN DNS name of the target. This argument must be
+     * provided for an endpoint of type `externalEndpoints`, for other types it
+     * will be computed.
+     */
     readonly target?: pulumi.Input<string>;
+    /**
+     * The resource id of an Azure resource to
+     * target. This argument must be provided for an endpoint of type
+     * `azureEndpoints` or `nestedEndpoints`.
+     */
     readonly targetResourceId?: pulumi.Input<string>;
+    /**
+     * The Endpoint type, must be one of:
+     * - `azureEndpoints`
+     * - `externalEndpoints`
+     * - `nestedEndpoints`
+     */
     readonly type: pulumi.Input<string>;
+    /**
+     * Specifies how much traffic should be distributed to this
+     * endpoint, this must be specified for Profiles using the  `Weighted` traffic
+     * routing method. Supports values between 1 and 1000.
+     */
     readonly weight?: pulumi.Input<number>;
 }

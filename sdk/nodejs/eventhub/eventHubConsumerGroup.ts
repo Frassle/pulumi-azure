@@ -4,6 +4,41 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Event Hubs Consumer Group as a nested resource within an Event Hub.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testEventHubNamespace = new azure.eventhub.EventHubNamespace("test", {
+ *     capacity: 2,
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: "Basic",
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ * });
+ * const testEventHub = new azure.eventhub.EventHub("test", {
+ *     messageRetention: 2,
+ *     namespaceName: testEventHubNamespace.name,
+ *     partitionCount: 2,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testEventHubConsumerGroup = new azure.eventhub.EventHubConsumerGroup("test", {
+ *     eventhubName: testEventHub.name,
+ *     namespaceName: testEventHubNamespace.name,
+ *     resourceGroupName: testResourceGroup.name,
+ *     userMetadata: "some-meta-data",
+ * });
+ * ```
+ */
 export class EventHubConsumerGroup extends pulumi.CustomResource {
     /**
      * Get an existing EventHubConsumerGroup resource's state with the given name, ID, and optional extra
@@ -17,11 +52,26 @@ export class EventHubConsumerGroup extends pulumi.CustomResource {
         return new EventHubConsumerGroup(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the name of the EventHub. Changing this forces a new resource to be created.
+     */
     public readonly eventhubName: pulumi.Output<string>;
     public readonly location: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the name of the EventHub Consumer Group resource. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Specifies the name of the grandparent EventHub Namespace. Changing this forces a new resource to be created.
+     */
     public readonly namespaceName: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the EventHub Consumer Group's grandparent Namespace exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Specifies the user metadata.
+     */
     public readonly userMetadata: pulumi.Output<string | undefined>;
 
     /**
@@ -68,11 +118,26 @@ export class EventHubConsumerGroup extends pulumi.CustomResource {
  * Input properties used for looking up and filtering EventHubConsumerGroup resources.
  */
 export interface EventHubConsumerGroupState {
+    /**
+     * Specifies the name of the EventHub. Changing this forces a new resource to be created.
+     */
     readonly eventhubName?: pulumi.Input<string>;
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the EventHub Consumer Group resource. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the grandparent EventHub Namespace. Changing this forces a new resource to be created.
+     */
     readonly namespaceName?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the EventHub Consumer Group's grandparent Namespace exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Specifies the user metadata.
+     */
     readonly userMetadata?: pulumi.Input<string>;
 }
 
@@ -80,10 +145,25 @@ export interface EventHubConsumerGroupState {
  * The set of arguments for constructing a EventHubConsumerGroup resource.
  */
 export interface EventHubConsumerGroupArgs {
+    /**
+     * Specifies the name of the EventHub. Changing this forces a new resource to be created.
+     */
     readonly eventhubName: pulumi.Input<string>;
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the EventHub Consumer Group resource. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the grandparent EventHub Namespace. Changing this forces a new resource to be created.
+     */
     readonly namespaceName: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the EventHub Consumer Group's grandparent Namespace exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Specifies the user metadata.
+     */
     readonly userMetadata?: pulumi.Input<string>;
 }

@@ -4,6 +4,30 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage an Azure Storage Queue.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "westus",
+ * });
+ * const testAccount = new azure.storage.Account("test", {
+ *     accountReplicationType: "LRS",
+ *     accountTier: "Standard",
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testQueue = new azure.storage.Queue("test", {
+ *     resourceGroupName: testResourceGroup.name,
+ *     storageAccountName: testAccount.name,
+ * });
+ * ```
+ */
 export class Queue extends pulumi.CustomResource {
     /**
      * Get an existing Queue resource's state with the given name, ID, and optional extra
@@ -17,8 +41,19 @@ export class Queue extends pulumi.CustomResource {
         return new Queue(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the storage queue. Must be unique within the storage account the queue is located.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the storage queue. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Specifies the storage account in which to create the storage queue.
+     * Changing this forces a new resource to be created.
+     */
     public readonly storageAccountName: pulumi.Output<string>;
 
     /**
@@ -56,8 +91,19 @@ export class Queue extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Queue resources.
  */
 export interface QueueState {
+    /**
+     * The name of the storage queue. Must be unique within the storage account the queue is located.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the storage queue. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Specifies the storage account in which to create the storage queue.
+     * Changing this forces a new resource to be created.
+     */
     readonly storageAccountName?: pulumi.Input<string>;
 }
 
@@ -65,7 +111,18 @@ export interface QueueState {
  * The set of arguments for constructing a Queue resource.
  */
 export interface QueueArgs {
+    /**
+     * The name of the storage queue. Must be unique within the storage account the queue is located.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the storage queue. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Specifies the storage account in which to create the storage queue.
+     * Changing this forces a new resource to be created.
+     */
     readonly storageAccountName: pulumi.Input<string>;
 }

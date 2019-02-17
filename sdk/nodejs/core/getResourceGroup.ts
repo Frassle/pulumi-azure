@@ -4,6 +4,27 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Use this data source to access information about an existing Resource Group.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = pulumi.output(azure.core.getResourceGroup({
+ *     name: "dsrg_test",
+ * }));
+ * const testManagedDisk = new azure.compute.ManagedDisk("test", {
+ *     createOption: "Empty",
+ *     diskSizeGb: 1,
+ *     location: testResourceGroup.apply(testResourceGroup => testResourceGroup.location),
+ *     resourceGroupName: testResourceGroup.apply(testResourceGroup => testResourceGroup.name),
+ *     storageAccountType: "Standard_LRS",
+ * });
+ * ```
+ */
 export function getResourceGroup(args: GetResourceGroupArgs, opts?: pulumi.InvokeOptions): Promise<GetResourceGroupResult> {
     return pulumi.runtime.invoke("azure:core/getResourceGroup:getResourceGroup", {
         "name": args.name,
@@ -14,6 +35,9 @@ export function getResourceGroup(args: GetResourceGroupArgs, opts?: pulumi.Invok
  * A collection of arguments for invoking getResourceGroup.
  */
 export interface GetResourceGroupArgs {
+    /**
+     * Specifies the name of the resource group.
+     */
     readonly name: string;
 }
 
@@ -21,7 +45,13 @@ export interface GetResourceGroupArgs {
  * A collection of values returned by getResourceGroup.
  */
 export interface GetResourceGroupResult {
+    /**
+     * The location of the resource group.
+     */
     readonly location: string;
+    /**
+     * A mapping of tags assigned to the resource group.
+     */
     readonly tags: {[key: string]: any};
     /**
      * id is the provider-assigned unique ID for this managed resource.

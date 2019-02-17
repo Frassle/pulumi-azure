@@ -4,6 +4,61 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Management Lock which is scoped to a Subscription, Resource Group or Resource.
+ * 
+ * ## Example Usage (Subscription Level Lock)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const current = pulumi.output(azure.core.getSubscription({}));
+ * const subscription_level = new azure.managementresource.ManangementLock("subscription-level", {
+ *     lockLevel: "CanNotDelete",
+ *     notes: "Items can't be deleted in this subscription!",
+ *     scope: current.apply(current => current.id),
+ * });
+ * ```
+ * 
+ * ## Example Usage (Resource Group Level Lock)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const resource_group_level = new azure.managementresource.ManangementLock("resource-group-level", {
+ *     lockLevel: "ReadOnly",
+ *     notes: "This Resource Group is Read-Only",
+ *     scope: test.id,
+ * });
+ * ```
+ * 
+ * ## Example Usage (Resource Level Lock)
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const testPublicIp = new azure.network.PublicIp("test", {
+ *     allocationMethod: "Static",
+ *     idleTimeoutInMinutes: 30,
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const public_ip = new azure.managementresource.ManangementLock("public-ip", {
+ *     lockLevel: "CanNotDelete",
+ *     notes: "Locked because it's needed by a third-party",
+ *     scope: testPublicIp.id,
+ * });
+ * ```
+ */
 export class ManangementLock extends pulumi.CustomResource {
     /**
      * Get an existing ManangementLock resource's state with the given name, ID, and optional extra
@@ -17,9 +72,21 @@ export class ManangementLock extends pulumi.CustomResource {
         return new ManangementLock(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the Level to be used for this Lock. Possible values are `CanNotDelete` and `ReadOnly`. Changing this forces a new resource to be created.
+     */
     public readonly lockLevel: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Management Lock. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Specifies some notes about the lock. Maximum of 512 characters. Changing this forces a new resource to be created.
+     */
     public readonly notes: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the scope at which the Management Lock should be created. Changing this forces a new resource to be created.
+     */
     public readonly scope: pulumi.Output<string>;
 
     /**
@@ -59,9 +126,21 @@ export class ManangementLock extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ManangementLock resources.
  */
 export interface ManangementLockState {
+    /**
+     * Specifies the Level to be used for this Lock. Possible values are `CanNotDelete` and `ReadOnly`. Changing this forces a new resource to be created.
+     */
     readonly lockLevel?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Management Lock. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies some notes about the lock. Maximum of 512 characters. Changing this forces a new resource to be created.
+     */
     readonly notes?: pulumi.Input<string>;
+    /**
+     * Specifies the scope at which the Management Lock should be created. Changing this forces a new resource to be created.
+     */
     readonly scope?: pulumi.Input<string>;
 }
 
@@ -69,8 +148,20 @@ export interface ManangementLockState {
  * The set of arguments for constructing a ManangementLock resource.
  */
 export interface ManangementLockArgs {
+    /**
+     * Specifies the Level to be used for this Lock. Possible values are `CanNotDelete` and `ReadOnly`. Changing this forces a new resource to be created.
+     */
     readonly lockLevel: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Management Lock. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies some notes about the lock. Maximum of 512 characters. Changing this forces a new resource to be created.
+     */
     readonly notes?: pulumi.Input<string>;
+    /**
+     * Specifies the scope at which the Management Lock should be created. Changing this forces a new resource to be created.
+     */
     readonly scope: pulumi.Input<string>;
 }

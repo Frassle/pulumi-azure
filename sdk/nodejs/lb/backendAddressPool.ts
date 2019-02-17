@@ -4,6 +4,39 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a Load Balancer Backend Address Pool.
+ * 
+ * > **NOTE:** When using this resource, the Load Balancer needs to have a FrontEnd IP Configuration Attached
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testPublicIp = new azure.network.PublicIp("test", {
+ *     allocationMethod: "Static",
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testLoadBalancer = new azure.lb.LoadBalancer("test", {
+ *     frontendIpConfigurations: [{
+ *         name: "PublicIPAddress",
+ *         publicIpAddressId: testPublicIp.id,
+ *     }],
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testBackendAddressPool = new azure.lb.BackendAddressPool("test", {
+ *     loadbalancerId: testLoadBalancer.id,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * ```
+ */
 export class BackendAddressPool extends pulumi.CustomResource {
     /**
      * Get an existing BackendAddressPool resource's state with the given name, ID, and optional extra
@@ -17,11 +50,26 @@ export class BackendAddressPool extends pulumi.CustomResource {
         return new BackendAddressPool(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The Backend IP Configurations associated with this Backend Address Pool.
+     */
     public /*out*/ readonly backendIpConfigurations: pulumi.Output<string[]>;
+    /**
+     * The Load Balancing Rules associated with this Backend Address Pool.
+     */
     public /*out*/ readonly loadBalancingRules: pulumi.Output<string[]>;
+    /**
+     * The ID of the Load Balancer in which to create the Backend Address Pool.
+     */
     public readonly loadbalancerId: pulumi.Output<string>;
     public readonly location: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the name of the Backend Address Pool.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the resource.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -65,11 +113,26 @@ export class BackendAddressPool extends pulumi.CustomResource {
  * Input properties used for looking up and filtering BackendAddressPool resources.
  */
 export interface BackendAddressPoolState {
+    /**
+     * The Backend IP Configurations associated with this Backend Address Pool.
+     */
     readonly backendIpConfigurations?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The Load Balancing Rules associated with this Backend Address Pool.
+     */
     readonly loadBalancingRules?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The ID of the Load Balancer in which to create the Backend Address Pool.
+     */
     readonly loadbalancerId?: pulumi.Input<string>;
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Backend Address Pool.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the resource.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -77,8 +140,17 @@ export interface BackendAddressPoolState {
  * The set of arguments for constructing a BackendAddressPool resource.
  */
 export interface BackendAddressPoolArgs {
+    /**
+     * The ID of the Load Balancer in which to create the Backend Address Pool.
+     */
     readonly loadbalancerId: pulumi.Input<string>;
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Backend Address Pool.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the resource.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

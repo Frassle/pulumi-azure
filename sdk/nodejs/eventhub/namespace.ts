@@ -4,6 +4,28 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a ServiceBus Namespace.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleNamespace = new azure.eventhub.Namespace("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: "Standard",
+ *     tags: {
+ *         source: "terraform",
+ *     },
+ * });
+ * ```
+ */
 export class Namespace extends pulumi.CustomResource {
     /**
      * Get an existing Namespace resource's state with the given name, ID, and optional extra
@@ -17,15 +39,49 @@ export class Namespace extends pulumi.CustomResource {
         return new Namespace(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the capacity, can only be set when `sku` is `Premium` namespace. Can be `1`, `2` or `4`.
+     */
     public readonly capacity: pulumi.Output<number | undefined>;
+    /**
+     * The primary connection string for the authorization
+     * rule `RootManageSharedAccessKey`.
+     */
     public /*out*/ readonly defaultPrimaryConnectionString: pulumi.Output<string>;
+    /**
+     * The primary access key for the authorization rule `RootManageSharedAccessKey`.
+     */
     public /*out*/ readonly defaultPrimaryKey: pulumi.Output<string>;
+    /**
+     * The secondary connection string for the
+     * authorization rule `RootManageSharedAccessKey`.
+     */
     public /*out*/ readonly defaultSecondaryConnectionString: pulumi.Output<string>;
+    /**
+     * The secondary access key for the authorization rule `RootManageSharedAccessKey`.
+     */
     public /*out*/ readonly defaultSecondaryKey: pulumi.Output<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies the name of the ServiceBus Namespace resource . Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the namespace.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * Defines which tier to use. Options are basic, standard or premium.
+     */
     public readonly sku: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -80,15 +136,49 @@ export class Namespace extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Namespace resources.
  */
 export interface NamespaceState {
+    /**
+     * Specifies the capacity, can only be set when `sku` is `Premium` namespace. Can be `1`, `2` or `4`.
+     */
     readonly capacity?: pulumi.Input<number>;
+    /**
+     * The primary connection string for the authorization
+     * rule `RootManageSharedAccessKey`.
+     */
     readonly defaultPrimaryConnectionString?: pulumi.Input<string>;
+    /**
+     * The primary access key for the authorization rule `RootManageSharedAccessKey`.
+     */
     readonly defaultPrimaryKey?: pulumi.Input<string>;
+    /**
+     * The secondary connection string for the
+     * authorization rule `RootManageSharedAccessKey`.
+     */
     readonly defaultSecondaryConnectionString?: pulumi.Input<string>;
+    /**
+     * The secondary access key for the authorization rule `RootManageSharedAccessKey`.
+     */
     readonly defaultSecondaryKey?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the ServiceBus Namespace resource . Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the namespace.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * Defines which tier to use. Options are basic, standard or premium.
+     */
     readonly sku?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -96,10 +186,30 @@ export interface NamespaceState {
  * The set of arguments for constructing a Namespace resource.
  */
 export interface NamespaceArgs {
+    /**
+     * Specifies the capacity, can only be set when `sku` is `Premium` namespace. Can be `1`, `2` or `4`.
+     */
     readonly capacity?: pulumi.Input<number>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies the name of the ServiceBus Namespace resource . Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the namespace.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Defines which tier to use. Options are basic, standard or premium.
+     */
     readonly sku: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

@@ -4,6 +4,48 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Traffic Manager Profile to which multiple endpoints can be attached.
+ * 
+ * ## Example Usage
+ * 
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * import * as random from "@pulumi/random";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const server = new random.RandomId("server", {
+ *     byteLength: 8,
+ *     keepers: {
+ *         azi_id: 1,
+ *     },
+ * });
+ * const testProfile = new azure.trafficmanager.Profile("test", {
+ *     dnsConfigs: [{
+ *         relativeName: server.hex,
+ *         ttl: 100,
+ *     }],
+ *     monitorConfigs: [{
+ *         path: "/",
+ *         port: 80,
+ *         protocol: "http",
+ *     }],
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ *     trafficRoutingMethod: "Weighted",
+ * });
+ * ```
+ * 
+ * ## Notes
+ * 
+ * The Traffic Manager is created with the location `global`.
+ */
 export class Profile extends pulumi.CustomResource {
     /**
      * Get an existing Profile resource's state with the given name, ID, and optional extra
@@ -17,13 +59,47 @@ export class Profile extends pulumi.CustomResource {
         return new Profile(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * This block specifies the DNS configuration of the
+     * Profile, it supports the fields documented below.
+     */
     public readonly dnsConfigs: pulumi.Output<{ relativeName: string, ttl: number }[]>;
+    /**
+     * The FQDN of the created Profile.
+     */
     public /*out*/ readonly fqdn: pulumi.Output<string>;
+    /**
+     * This block specifies the Endpoint monitoring
+     * configuration for the Profile, it supports the fields documented below.
+     */
     public readonly monitorConfigs: pulumi.Output<{ path?: string, port: number, protocol: string }[]>;
+    /**
+     * The name of the virtual network. Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The status of the profile, can be set to either
+     * `Enabled` or `Disabled`. Defaults to `Enabled`.
+     */
     public readonly profileStatus: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the virtual network.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * Specifies the algorithm used to route
+     * traffic, possible values are:
+     * - `Geographic` - Traffic is routed based on Geographic regions specified in the Endpoint.
+     * - `Performance` - Traffic is routed via the User's closest Endpoint
+     * - `Weighted` - Traffic is spread across Endpoints proportional to their `weight` value.
+     * - `Priority` - Traffic is routed to the Endpoint with the lowest `priority` value.
+     */
     public readonly trafficRoutingMethod: pulumi.Output<string>;
 
     /**
@@ -77,13 +153,47 @@ export class Profile extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Profile resources.
  */
 export interface ProfileState {
+    /**
+     * This block specifies the DNS configuration of the
+     * Profile, it supports the fields documented below.
+     */
     readonly dnsConfigs?: pulumi.Input<pulumi.Input<{ relativeName: pulumi.Input<string>, ttl: pulumi.Input<number> }>[]>;
+    /**
+     * The FQDN of the created Profile.
+     */
     readonly fqdn?: pulumi.Input<string>;
+    /**
+     * This block specifies the Endpoint monitoring
+     * configuration for the Profile, it supports the fields documented below.
+     */
     readonly monitorConfigs?: pulumi.Input<pulumi.Input<{ path?: pulumi.Input<string>, port: pulumi.Input<number>, protocol: pulumi.Input<string> }>[]>;
+    /**
+     * The name of the virtual network. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The status of the profile, can be set to either
+     * `Enabled` or `Disabled`. Defaults to `Enabled`.
+     */
     readonly profileStatus?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the virtual network.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * Specifies the algorithm used to route
+     * traffic, possible values are:
+     * - `Geographic` - Traffic is routed based on Geographic regions specified in the Endpoint.
+     * - `Performance` - Traffic is routed via the User's closest Endpoint
+     * - `Weighted` - Traffic is spread across Endpoints proportional to their `weight` value.
+     * - `Priority` - Traffic is routed to the Endpoint with the lowest `priority` value.
+     */
     readonly trafficRoutingMethod?: pulumi.Input<string>;
 }
 
@@ -91,11 +201,42 @@ export interface ProfileState {
  * The set of arguments for constructing a Profile resource.
  */
 export interface ProfileArgs {
+    /**
+     * This block specifies the DNS configuration of the
+     * Profile, it supports the fields documented below.
+     */
     readonly dnsConfigs: pulumi.Input<pulumi.Input<{ relativeName: pulumi.Input<string>, ttl: pulumi.Input<number> }>[]>;
+    /**
+     * This block specifies the Endpoint monitoring
+     * configuration for the Profile, it supports the fields documented below.
+     */
     readonly monitorConfigs: pulumi.Input<pulumi.Input<{ path?: pulumi.Input<string>, port: pulumi.Input<number>, protocol: pulumi.Input<string> }>[]>;
+    /**
+     * The name of the virtual network. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The status of the profile, can be set to either
+     * `Enabled` or `Disabled`. Defaults to `Enabled`.
+     */
     readonly profileStatus?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the virtual network.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * Specifies the algorithm used to route
+     * traffic, possible values are:
+     * - `Geographic` - Traffic is routed based on Geographic regions specified in the Endpoint.
+     * - `Performance` - Traffic is routed via the User's closest Endpoint
+     * - `Weighted` - Traffic is spread across Endpoints proportional to their `weight` value.
+     * - `Priority` - Traffic is routed to the Endpoint with the lowest `priority` value.
+     */
     readonly trafficRoutingMethod: pulumi.Input<string>;
 }

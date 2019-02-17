@@ -4,6 +4,41 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a subnet. Subnets represent network segments within the IP space defined by the virtual network.
+ * 
+ * > **NOTE on Virtual Networks and Subnet's:** Terraform currently
+ * provides both a standalone Subnet resource, and allows for Subnets to be defined in-line within the Virtual Network resource.
+ * At this time you cannot use a Virtual Network with in-line Subnets in conjunction with any Subnet resources. Doing so will cause a conflict of Subnet configurations and will overwrite Subnet's.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testVirtualNetwork = new azure.network.VirtualNetwork("test", {
+ *     addressSpaces: ["10.0.0.0/16"],
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testSubnet = new azure.network.Subnet("test", {
+ *     addressPrefix: "10.0.1.0/24",
+ *     delegations: [{
+ *         name: "acctestdelegation",
+ *         serviceDelegation: {
+ *             actions: ["Microsoft.Network/virtualNetworks/subnets/action"],
+ *             name: "Microsoft.ContainerInstance/containerGroups",
+ *         },
+ *     }],
+ *     resourceGroupName: testResourceGroup.name,
+ *     virtualNetworkName: testVirtualNetwork.name,
+ * });
+ * ```
+ */
 export class Subnet extends pulumi.CustomResource {
     /**
      * Get an existing Subnet resource's state with the given name, ID, and optional extra
@@ -17,14 +52,41 @@ export class Subnet extends pulumi.CustomResource {
         return new Subnet(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The address prefix to use for the subnet.
+     */
     public readonly addressPrefix: pulumi.Output<string>;
+    /**
+     * One or more `delegation` blocks as defined below.
+     */
     public readonly delegations: pulumi.Output<{ name: string, serviceDelegation: { actions?: string[], name: string } }[] | undefined>;
+    /**
+     * The collection of IP Configurations with IPs within this subnet.
+     */
     public readonly ipConfigurations: pulumi.Output<string[]>;
+    /**
+     * The name of the subnet. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The ID of the Network Security Group to associate with the subnet.
+     */
     public readonly networkSecurityGroupId: pulumi.Output<string | undefined>;
+    /**
+     * The name of the resource group in which to create the subnet. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The ID of the Route Table to associate with the subnet.
+     */
     public readonly routeTableId: pulumi.Output<string | undefined>;
+    /**
+     * The list of Service endpoints to associate with the subnet. Possible values include: `Microsoft.AzureActiveDirectory`, `Microsoft.AzureCosmosDB`, `Microsoft.EventHub`, `Microsoft.KeyVault`, `Microsoft.ServiceBus`, `Microsoft.Sql` and `Microsoft.Storage`.
+     */
     public readonly serviceEndpoints: pulumi.Output<string[] | undefined>;
+    /**
+     * The name of the virtual network to which to attach the subnet. Changing this forces a new resource to be created.
+     */
     public readonly virtualNetworkName: pulumi.Output<string>;
 
     /**
@@ -77,14 +139,41 @@ export class Subnet extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Subnet resources.
  */
 export interface SubnetState {
+    /**
+     * The address prefix to use for the subnet.
+     */
     readonly addressPrefix?: pulumi.Input<string>;
+    /**
+     * One or more `delegation` blocks as defined below.
+     */
     readonly delegations?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, serviceDelegation: pulumi.Input<{ actions?: pulumi.Input<pulumi.Input<string>[]>, name: pulumi.Input<string> }> }>[]>;
+    /**
+     * The collection of IP Configurations with IPs within this subnet.
+     */
     readonly ipConfigurations?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The name of the subnet. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The ID of the Network Security Group to associate with the subnet.
+     */
     readonly networkSecurityGroupId?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the subnet. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The ID of the Route Table to associate with the subnet.
+     */
     readonly routeTableId?: pulumi.Input<string>;
+    /**
+     * The list of Service endpoints to associate with the subnet. Possible values include: `Microsoft.AzureActiveDirectory`, `Microsoft.AzureCosmosDB`, `Microsoft.EventHub`, `Microsoft.KeyVault`, `Microsoft.ServiceBus`, `Microsoft.Sql` and `Microsoft.Storage`.
+     */
     readonly serviceEndpoints?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The name of the virtual network to which to attach the subnet. Changing this forces a new resource to be created.
+     */
     readonly virtualNetworkName?: pulumi.Input<string>;
 }
 
@@ -92,13 +181,40 @@ export interface SubnetState {
  * The set of arguments for constructing a Subnet resource.
  */
 export interface SubnetArgs {
+    /**
+     * The address prefix to use for the subnet.
+     */
     readonly addressPrefix: pulumi.Input<string>;
+    /**
+     * One or more `delegation` blocks as defined below.
+     */
     readonly delegations?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, serviceDelegation: pulumi.Input<{ actions?: pulumi.Input<pulumi.Input<string>[]>, name: pulumi.Input<string> }> }>[]>;
+    /**
+     * The collection of IP Configurations with IPs within this subnet.
+     */
     readonly ipConfigurations?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The name of the subnet. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The ID of the Network Security Group to associate with the subnet.
+     */
     readonly networkSecurityGroupId?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the subnet. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The ID of the Route Table to associate with the subnet.
+     */
     readonly routeTableId?: pulumi.Input<string>;
+    /**
+     * The list of Service endpoints to associate with the subnet. Possible values include: `Microsoft.AzureActiveDirectory`, `Microsoft.AzureCosmosDB`, `Microsoft.EventHub`, `Microsoft.KeyVault`, `Microsoft.ServiceBus`, `Microsoft.Sql` and `Microsoft.Storage`.
+     */
     readonly serviceEndpoints?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * The name of the virtual network to which to attach the subnet. Changing this forces a new resource to be created.
+     */
     readonly virtualNetworkName: pulumi.Input<string>;
 }

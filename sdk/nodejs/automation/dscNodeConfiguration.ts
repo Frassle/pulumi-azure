@@ -4,6 +4,59 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Automation DSC Node Configuration.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const exampleResourceGroup = new azure.core.ResourceGroup("example", {
+ *     location: "West Europe",
+ * });
+ * const exampleAccount = new azure.automation.Account("example", {
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ *     sku: {
+ *         name: "Basic",
+ *     },
+ * });
+ * const exampleDscConfiguration = new azure.automation.DscConfiguration("example", {
+ *     automationAccountName: exampleAccount.name,
+ *     contentEmbedded: "configuration test {}",
+ *     location: exampleResourceGroup.location,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * });
+ * const exampleDscNodeConfiguration = new azure.automation.DscNodeConfiguration("example", {
+ *     automationAccountName: exampleAccount.name,
+ *     contentEmbedded: `instance of MSFT_FileDirectoryConfiguration as $MSFT_FileDirectoryConfiguration1ref
+ * {
+ *   ResourceID = "[File]bla";
+ *   Ensure = "Present";
+ *   Contents = "bogus Content";
+ *   DestinationPath = "c:\\\\bogus.txt";
+ *   ModuleName = "PSDesiredStateConfiguration";
+ *   SourceInfo = "::3::9::file";
+ *   ModuleVersion = "1.0";
+ *   ConfigurationName = "bla";
+ * };
+ * instance of OMI_ConfigurationDocument
+ * {
+ *   Version="2.0.0";
+ *   MinimumCompatibleVersion = "1.0.0";
+ *   CompatibleVersionAdditionalProperties= {"Omi_BaseResource:ConfigurationName"};
+ *   Author="bogusAuthor";
+ *   GenerationDate="06/15/2018 14:06:24";
+ *   GenerationHost="bogusComputer";
+ *   Name="test";
+ * };
+ * `,
+ *     resourceGroupName: exampleResourceGroup.name,
+ * }, {dependsOn: [exampleDscConfiguration]});
+ * ```
+ */
 export class DscNodeConfiguration extends pulumi.CustomResource {
     /**
      * Get an existing DscNodeConfiguration resource's state with the given name, ID, and optional extra
@@ -17,10 +70,22 @@ export class DscNodeConfiguration extends pulumi.CustomResource {
         return new DscNodeConfiguration(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The name of the automation account in which the DSC Node Configuration is created. Changing this forces a new resource to be created.
+     */
     public readonly automationAccountName: pulumi.Output<string>;
     public /*out*/ readonly configurationName: pulumi.Output<string>;
+    /**
+     * The PowerShell DSC Node Configuration (mof content).
+     */
     public readonly contentEmbedded: pulumi.Output<string>;
+    /**
+     * Specifies the name of the DSC Node Configuration. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the DSC Node Configuration is created. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
 
     /**
@@ -65,10 +130,22 @@ export class DscNodeConfiguration extends pulumi.CustomResource {
  * Input properties used for looking up and filtering DscNodeConfiguration resources.
  */
 export interface DscNodeConfigurationState {
+    /**
+     * The name of the automation account in which the DSC Node Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly automationAccountName?: pulumi.Input<string>;
     readonly configurationName?: pulumi.Input<string>;
+    /**
+     * The PowerShell DSC Node Configuration (mof content).
+     */
     readonly contentEmbedded?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the DSC Node Configuration. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the DSC Node Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
 }
 
@@ -76,8 +153,20 @@ export interface DscNodeConfigurationState {
  * The set of arguments for constructing a DscNodeConfiguration resource.
  */
 export interface DscNodeConfigurationArgs {
+    /**
+     * The name of the automation account in which the DSC Node Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly automationAccountName: pulumi.Input<string>;
+    /**
+     * The PowerShell DSC Node Configuration (mof content).
+     */
     readonly contentEmbedded: pulumi.Input<string>;
+    /**
+     * Specifies the name of the DSC Node Configuration. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the DSC Node Configuration is created. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
 }

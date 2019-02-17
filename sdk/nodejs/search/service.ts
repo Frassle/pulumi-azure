@@ -4,6 +4,29 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Allows you to manage an Azure Search Service.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testService = new azure.search.Service("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: "Standard",
+ *     tags: {
+ *         database: "test",
+ *         environment: "staging",
+ *     },
+ * });
+ * ```
+ */
 export class Service extends pulumi.CustomResource {
     /**
      * Get an existing Service resource's state with the given name, ID, and optional extra
@@ -17,14 +40,41 @@ export class Service extends pulumi.CustomResource {
         return new Service(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The name of the Search Service. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Default is 1. Valid values include 1, 2, 3, 4, 6, or 12. Valid only when `sku` is `standard`. Changing this forces a new resource to be created.
+     */
     public readonly partitionCount: pulumi.Output<number>;
+    /**
+     * The Search Service Administration primary key.
+     */
     public /*out*/ readonly primaryKey: pulumi.Output<string>;
+    /**
+     * Default is 1. Valid values include 1 through 12. Valid only when `sku` is `standard`. Changing this forces a new resource to be created.
+     */
     public readonly replicaCount: pulumi.Output<number>;
+    /**
+     * The name of the resource group in which to create the Search Service. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The Search Service Administration secondary key.
+     */
     public /*out*/ readonly secondaryKey: pulumi.Output<string>;
+    /**
+     * Valid values are `free` and `standard`. `standard2` and `standard3` are also valid, but can only be used when it's enabled on the backend by Microsoft support. `free` provisions the service in shared clusters. `standard` provisions the service in dedicated clusters.  Changing this forces a new resource to be created.
+     */
     public readonly sku: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource. Changing this forces a new resource to be created.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -77,14 +127,41 @@ export class Service extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Service resources.
  */
 export interface ServiceState {
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The name of the Search Service. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Default is 1. Valid values include 1, 2, 3, 4, 6, or 12. Valid only when `sku` is `standard`. Changing this forces a new resource to be created.
+     */
     readonly partitionCount?: pulumi.Input<number>;
+    /**
+     * The Search Service Administration primary key.
+     */
     readonly primaryKey?: pulumi.Input<string>;
+    /**
+     * Default is 1. Valid values include 1 through 12. Valid only when `sku` is `standard`. Changing this forces a new resource to be created.
+     */
     readonly replicaCount?: pulumi.Input<number>;
+    /**
+     * The name of the resource group in which to create the Search Service. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The Search Service Administration secondary key.
+     */
     readonly secondaryKey?: pulumi.Input<string>;
+    /**
+     * Valid values are `free` and `standard`. `standard2` and `standard3` are also valid, but can only be used when it's enabled on the backend by Microsoft support. `free` provisions the service in shared clusters. `standard` provisions the service in dedicated clusters.  Changing this forces a new resource to be created.
+     */
     readonly sku?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource. Changing this forces a new resource to be created.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -92,11 +169,32 @@ export interface ServiceState {
  * The set of arguments for constructing a Service resource.
  */
 export interface ServiceArgs {
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The name of the Search Service. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Default is 1. Valid values include 1, 2, 3, 4, 6, or 12. Valid only when `sku` is `standard`. Changing this forces a new resource to be created.
+     */
     readonly partitionCount?: pulumi.Input<number>;
+    /**
+     * Default is 1. Valid values include 1 through 12. Valid only when `sku` is `standard`. Changing this forces a new resource to be created.
+     */
     readonly replicaCount?: pulumi.Input<number>;
+    /**
+     * The name of the resource group in which to create the Search Service. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * Valid values are `free` and `standard`. `standard2` and `standard3` are also valid, but can only be used when it's enabled on the backend by Microsoft support. `free` provisions the service in shared clusters. `standard` provisions the service in dedicated clusters.  Changing this forces a new resource to be created.
+     */
     readonly sku: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource. Changing this forces a new resource to be created.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

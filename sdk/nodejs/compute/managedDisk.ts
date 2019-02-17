@@ -4,6 +4,62 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a managed disk.
+ * 
+ * ## Example Usage with Create Empty
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US 2",
+ * });
+ * const testManagedDisk = new azure.compute.ManagedDisk("test", {
+ *     createOption: "Empty",
+ *     diskSizeGb: 1,
+ *     location: "West US 2",
+ *     resourceGroupName: testResourceGroup.name,
+ *     storageAccountType: "Standard_LRS",
+ *     tags: {
+ *         environment: "staging",
+ *     },
+ * });
+ * ```
+ * 
+ * ## Example Usage with Create Copy
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = new azure.core.ResourceGroup("test", {
+ *     location: "West US 2",
+ * });
+ * const source = new azure.compute.ManagedDisk("source", {
+ *     createOption: "Empty",
+ *     diskSizeGb: 1,
+ *     location: "West US 2",
+ *     resourceGroupName: test.name,
+ *     storageAccountType: "Standard_LRS",
+ *     tags: {
+ *         environment: "staging",
+ *     },
+ * });
+ * const copy = new azure.compute.ManagedDisk("copy", {
+ *     createOption: "Copy",
+ *     diskSizeGb: 1,
+ *     location: "West US 2",
+ *     resourceGroupName: test.name,
+ *     sourceResourceId: source.id,
+ *     storageAccountType: "Standard_LRS",
+ *     tags: {
+ *         environment: "staging",
+ *     },
+ * });
+ * ```
+ */
 export class ManagedDisk extends pulumi.CustomResource {
     /**
      * Get an existing ManagedDisk resource's state with the given name, ID, and optional extra
@@ -17,18 +73,63 @@ export class ManagedDisk extends pulumi.CustomResource {
         return new ManagedDisk(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The method to use when creating the managed disk. Possible values include:
+     */
     public readonly createOption: pulumi.Output<string>;
+    /**
+     * Specifies the size of the managed disk to create in gigabytes.
+     * If `create_option` is `Copy` or `FromImage`, then the value must be equal to or greater than the source's size.
+     */
     public readonly diskSizeGb: pulumi.Output<number>;
+    /**
+     * an `encryption_settings` block as defined below.
+     */
     public readonly encryptionSettings: pulumi.Output<{ diskEncryptionKey?: { secretUrl: string, sourceVaultId: string }, enabled: boolean, keyEncryptionKey?: { keyUrl: string, sourceVaultId: string } } | undefined>;
+    /**
+     * ID of an existing platform/marketplace disk image to copy when `create_option` is `FromImage`.
+     */
     public readonly imageReferenceId: pulumi.Output<string | undefined>;
+    /**
+     * Specified the supported Azure location where the resource exists.
+     * Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies the name of the managed disk. Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Specify a value when the source of an `Import` or `Copy`
+     * operation targets a source that contains an operating system. Valid values are `Linux` or `Windows`
+     */
     public readonly osType: pulumi.Output<string | undefined>;
+    /**
+     * The name of the resource group in which to create
+     * the managed disk.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * ID of an existing managed disk to copy when `create_option` is `Copy`.
+     */
     public readonly sourceResourceId: pulumi.Output<string | undefined>;
+    /**
+     * URI to a valid VHD file to be used when `create_option` is `Import`.
+     */
     public readonly sourceUri: pulumi.Output<string>;
+    /**
+     * The type of storage to use for the managed disk.
+     * Allowable values are `Standard_LRS`, `Premium_LRS`, `StandardSSD_LRS` or `UltraSSD_LRS`.
+     */
     public readonly storageAccountType: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * A collection containing the availability zone to allocate the Managed Disk in.
+     */
     public readonly zones: pulumi.Output<string | undefined>;
 
     /**
@@ -92,18 +193,63 @@ export class ManagedDisk extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ManagedDisk resources.
  */
 export interface ManagedDiskState {
+    /**
+     * The method to use when creating the managed disk. Possible values include:
+     */
     readonly createOption?: pulumi.Input<string>;
+    /**
+     * Specifies the size of the managed disk to create in gigabytes.
+     * If `create_option` is `Copy` or `FromImage`, then the value must be equal to or greater than the source's size.
+     */
     readonly diskSizeGb?: pulumi.Input<number>;
+    /**
+     * an `encryption_settings` block as defined below.
+     */
     readonly encryptionSettings?: pulumi.Input<{ diskEncryptionKey?: pulumi.Input<{ secretUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }>, enabled: pulumi.Input<boolean>, keyEncryptionKey?: pulumi.Input<{ keyUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }> }>;
+    /**
+     * ID of an existing platform/marketplace disk image to copy when `create_option` is `FromImage`.
+     */
     readonly imageReferenceId?: pulumi.Input<string>;
+    /**
+     * Specified the supported Azure location where the resource exists.
+     * Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the managed disk. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specify a value when the source of an `Import` or `Copy`
+     * operation targets a source that contains an operating system. Valid values are `Linux` or `Windows`
+     */
     readonly osType?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create
+     * the managed disk.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * ID of an existing managed disk to copy when `create_option` is `Copy`.
+     */
     readonly sourceResourceId?: pulumi.Input<string>;
+    /**
+     * URI to a valid VHD file to be used when `create_option` is `Import`.
+     */
     readonly sourceUri?: pulumi.Input<string>;
+    /**
+     * The type of storage to use for the managed disk.
+     * Allowable values are `Standard_LRS`, `Premium_LRS`, `StandardSSD_LRS` or `UltraSSD_LRS`.
+     */
     readonly storageAccountType?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * A collection containing the availability zone to allocate the Managed Disk in.
+     */
     readonly zones?: pulumi.Input<string>;
 }
 
@@ -111,17 +257,62 @@ export interface ManagedDiskState {
  * The set of arguments for constructing a ManagedDisk resource.
  */
 export interface ManagedDiskArgs {
+    /**
+     * The method to use when creating the managed disk. Possible values include:
+     */
     readonly createOption: pulumi.Input<string>;
+    /**
+     * Specifies the size of the managed disk to create in gigabytes.
+     * If `create_option` is `Copy` or `FromImage`, then the value must be equal to or greater than the source's size.
+     */
     readonly diskSizeGb?: pulumi.Input<number>;
+    /**
+     * an `encryption_settings` block as defined below.
+     */
     readonly encryptionSettings?: pulumi.Input<{ diskEncryptionKey?: pulumi.Input<{ secretUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }>, enabled: pulumi.Input<boolean>, keyEncryptionKey?: pulumi.Input<{ keyUrl: pulumi.Input<string>, sourceVaultId: pulumi.Input<string> }> }>;
+    /**
+     * ID of an existing platform/marketplace disk image to copy when `create_option` is `FromImage`.
+     */
     readonly imageReferenceId?: pulumi.Input<string>;
+    /**
+     * Specified the supported Azure location where the resource exists.
+     * Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies the name of the managed disk. Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specify a value when the source of an `Import` or `Copy`
+     * operation targets a source that contains an operating system. Valid values are `Linux` or `Windows`
+     */
     readonly osType?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create
+     * the managed disk.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * ID of an existing managed disk to copy when `create_option` is `Copy`.
+     */
     readonly sourceResourceId?: pulumi.Input<string>;
+    /**
+     * URI to a valid VHD file to be used when `create_option` is `Import`.
+     */
     readonly sourceUri?: pulumi.Input<string>;
+    /**
+     * The type of storage to use for the managed disk.
+     * Allowable values are `Standard_LRS`, `Premium_LRS`, `StandardSSD_LRS` or `UltraSSD_LRS`.
+     */
     readonly storageAccountType: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * A collection containing the availability zone to allocate the Managed Disk in.
+     */
     readonly zones?: pulumi.Input<string>;
 }

@@ -4,6 +4,39 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Version of a Shared Image within a Shared Image Gallery.
+ * 
+ * > **NOTE** Shared Image Galleries are currently in Public Preview. You can find more information, including [how to register for the Public Preview here](https://azure.microsoft.com/en-gb/blog/announcing-the-public-preview-of-shared-image-gallery/).
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const existingImage = pulumi.output(azure.compute.getImage({
+ *     name: "search-api",
+ *     resourceGroupName: "packerimages",
+ * }));
+ * const existingSharedImage = pulumi.output(azure.compute.getSharedImage({
+ *     galleryName: "existing_gallery",
+ *     name: "existing-image",
+ *     resourceGroupName: "existing-resources",
+ * }));
+ * const test = new azure.compute.SharedImageVersion("test", {
+ *     galleryName: existingSharedImage.apply(existingSharedImage => existingSharedImage.galleryName),
+ *     imageName: existingSharedImage.apply(existingSharedImage => existingSharedImage.name),
+ *     location: existingSharedImage.apply(existingSharedImage => existingSharedImage.location),
+ *     managedImageId: existingImage.apply(existingImage => existingImage.id),
+ *     resourceGroupName: existingSharedImage.apply(existingSharedImage => existingSharedImage.resourceGroupName),
+ *     targetRegions: [{
+ *         name: existingSharedImage.apply(existingSharedImage => existingSharedImage.location),
+ *         regionalReplicaCount: 5,
+ *     }],
+ * });
+ * ```
+ */
 export class SharedImageVersion extends pulumi.CustomResource {
     /**
      * Get an existing SharedImageVersion resource's state with the given name, ID, and optional extra
@@ -17,14 +50,41 @@ export class SharedImageVersion extends pulumi.CustomResource {
         return new SharedImageVersion(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Should this Image Version be excluded from the `latest` filter? If set to `true` this Image Version won't be returned for the `latest` version. Defaults to `false`.
+     */
     public readonly excludeFromLatest: pulumi.Output<boolean | undefined>;
+    /**
+     * The name of the Shared Image Gallery in which the Shared Image exists. Changing this forces a new resource to be created.
+     */
     public readonly galleryName: pulumi.Output<string>;
+    /**
+     * The name of the Shared Image within the Shared Image Gallery in which this Version should be created. Changing this forces a new resource to be created.
+     */
     public readonly imageName: pulumi.Output<string>;
+    /**
+     * The Azure Region in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The ID of the Managed Image which should be used for this Shared Image Version. Changing this forces a new resource to be created.
+     */
     public readonly managedImageId: pulumi.Output<string>;
+    /**
+     * The version number for this Image Version, such as `1.0.0`. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the Resource Group in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A collection of tags which should be applied to this resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * One or more `target_region` blocks as documented below.
+     */
     public readonly targetRegions: pulumi.Output<{ name: string, regionalReplicaCount: number }[]>;
 
     /**
@@ -86,14 +146,41 @@ export class SharedImageVersion extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SharedImageVersion resources.
  */
 export interface SharedImageVersionState {
+    /**
+     * Should this Image Version be excluded from the `latest` filter? If set to `true` this Image Version won't be returned for the `latest` version. Defaults to `false`.
+     */
     readonly excludeFromLatest?: pulumi.Input<boolean>;
+    /**
+     * The name of the Shared Image Gallery in which the Shared Image exists. Changing this forces a new resource to be created.
+     */
     readonly galleryName?: pulumi.Input<string>;
+    /**
+     * The name of the Shared Image within the Shared Image Gallery in which this Version should be created. Changing this forces a new resource to be created.
+     */
     readonly imageName?: pulumi.Input<string>;
+    /**
+     * The Azure Region in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The ID of the Managed Image which should be used for this Shared Image Version. Changing this forces a new resource to be created.
+     */
     readonly managedImageId?: pulumi.Input<string>;
+    /**
+     * The version number for this Image Version, such as `1.0.0`. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the Resource Group in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A collection of tags which should be applied to this resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * One or more `target_region` blocks as documented below.
+     */
     readonly targetRegions?: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, regionalReplicaCount: pulumi.Input<number> }>[]>;
 }
 
@@ -101,13 +188,40 @@ export interface SharedImageVersionState {
  * The set of arguments for constructing a SharedImageVersion resource.
  */
 export interface SharedImageVersionArgs {
+    /**
+     * Should this Image Version be excluded from the `latest` filter? If set to `true` this Image Version won't be returned for the `latest` version. Defaults to `false`.
+     */
     readonly excludeFromLatest?: pulumi.Input<boolean>;
+    /**
+     * The name of the Shared Image Gallery in which the Shared Image exists. Changing this forces a new resource to be created.
+     */
     readonly galleryName: pulumi.Input<string>;
+    /**
+     * The name of the Shared Image within the Shared Image Gallery in which this Version should be created. Changing this forces a new resource to be created.
+     */
     readonly imageName: pulumi.Input<string>;
+    /**
+     * The Azure Region in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The ID of the Managed Image which should be used for this Shared Image Version. Changing this forces a new resource to be created.
+     */
     readonly managedImageId: pulumi.Input<string>;
+    /**
+     * The version number for this Image Version, such as `1.0.0`. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the Resource Group in which the Shared Image Gallery exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A collection of tags which should be applied to this resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * One or more `target_region` blocks as documented below.
+     */
     readonly targetRegions: pulumi.Input<pulumi.Input<{ name: pulumi.Input<string>, regionalReplicaCount: pulumi.Input<number> }>[]>;
 }

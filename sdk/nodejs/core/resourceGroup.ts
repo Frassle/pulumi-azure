@@ -4,6 +4,23 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a resource group on Azure.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const test = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ * });
+ * ```
+ */
 export class ResourceGroup extends pulumi.CustomResource {
     /**
      * Get an existing ResourceGroup resource's state with the given name, ID, and optional extra
@@ -17,8 +34,19 @@ export class ResourceGroup extends pulumi.CustomResource {
         return new ResourceGroup(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The location where the resource group should be created.
+     * For a list of all Azure locations, please consult [this link](http://azure.microsoft.com/en-us/regions/) or run `az account list-locations --output table`.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * The name of the resource group. Must be unique on your
+     * Azure subscription.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
 
     /**
@@ -53,8 +81,19 @@ export class ResourceGroup extends pulumi.CustomResource {
  * Input properties used for looking up and filtering ResourceGroup resources.
  */
 export interface ResourceGroupState {
+    /**
+     * The location where the resource group should be created.
+     * For a list of all Azure locations, please consult [this link](http://azure.microsoft.com/en-us/regions/) or run `az account list-locations --output table`.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * The name of the resource group. Must be unique on your
+     * Azure subscription.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }
 
@@ -62,7 +101,18 @@ export interface ResourceGroupState {
  * The set of arguments for constructing a ResourceGroup resource.
  */
 export interface ResourceGroupArgs {
+    /**
+     * The location where the resource group should be created.
+     * For a list of all Azure locations, please consult [this link](http://azure.microsoft.com/en-us/regions/) or run `az account list-locations --output table`.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * The name of the resource group. Must be unique on your
+     * Azure subscription.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
 }

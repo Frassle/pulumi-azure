@@ -4,6 +4,41 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a MariaDB Server.
+ * 
+ * > **NOTE** MariaDB Server is currently in Public Preview. You can find more information, including [how to register for the Public Preview here](https://azure.microsoft.com/en-us/updates/mariadb-public-preview/).
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West Europe",
+ * });
+ * const testServer = new azure.mariadb.Server("test", {
+ *     administratorLogin: "mariadbadmin",
+ *     administratorLoginPassword: "H@Sh1CoR3!",
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     sku: {
+ *         capacity: 2,
+ *         family: "Gen5",
+ *         name: "B_Gen5_2",
+ *         tier: "Basic",
+ *     },
+ *     sslEnforcement: "Enabled",
+ *     storageProfile: {
+ *         backupRetentionDays: 7,
+ *         geoRedundantBackup: "Disabled",
+ *         storageMb: 5120,
+ *     },
+ *     version: "10.2",
+ * });
+ * ```
+ */
 export class Server extends pulumi.CustomResource {
     /**
      * Get an existing Server resource's state with the given name, ID, and optional extra
@@ -17,16 +52,49 @@ export class Server extends pulumi.CustomResource {
         return new Server(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The Administrator Login for the MariaDB Server. Changing this forces a new resource to be created.
+     */
     public readonly administratorLogin: pulumi.Output<string>;
+    /**
+     * The Password associated with the `administrator_login` for the MariaDB Server.
+     */
     public readonly administratorLoginPassword: pulumi.Output<string>;
+    /**
+     * The FQDN of the MariaDB Server.
+     */
     public /*out*/ readonly fqdn: pulumi.Output<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies the name of the MariaDB Server. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the MariaDB Server. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A `sku` block as defined below.
+     */
     public readonly sku: pulumi.Output<{ capacity: number, family: string, name: string, tier: string }>;
+    /**
+     * Specifies if SSL should be enforced on connections. Possible values are `Enabled` and `Disabled`.
+     */
     public readonly sslEnforcement: pulumi.Output<string>;
+    /**
+     * A `storage_profile` block as defined below.
+     */
     public readonly storageProfile: pulumi.Output<{ backupRetentionDays?: number, geoRedundantBackup?: string, storageMb: number }>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * Specifies the version of MariaDB to use. The valid value is `10.2`. Changing this forces a new resource to be created.
+     */
     public readonly version: pulumi.Output<string>;
 
     /**
@@ -98,16 +166,49 @@ export class Server extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Server resources.
  */
 export interface ServerState {
+    /**
+     * The Administrator Login for the MariaDB Server. Changing this forces a new resource to be created.
+     */
     readonly administratorLogin?: pulumi.Input<string>;
+    /**
+     * The Password associated with the `administrator_login` for the MariaDB Server.
+     */
     readonly administratorLoginPassword?: pulumi.Input<string>;
+    /**
+     * The FQDN of the MariaDB Server.
+     */
     readonly fqdn?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MariaDB Server. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the MariaDB Server. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A `sku` block as defined below.
+     */
     readonly sku?: pulumi.Input<{ capacity: pulumi.Input<number>, family: pulumi.Input<string>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
+    /**
+     * Specifies if SSL should be enforced on connections. Possible values are `Enabled` and `Disabled`.
+     */
     readonly sslEnforcement?: pulumi.Input<string>;
+    /**
+     * A `storage_profile` block as defined below.
+     */
     readonly storageProfile?: pulumi.Input<{ backupRetentionDays?: pulumi.Input<number>, geoRedundantBackup?: pulumi.Input<string>, storageMb: pulumi.Input<number> }>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * Specifies the version of MariaDB to use. The valid value is `10.2`. Changing this forces a new resource to be created.
+     */
     readonly version?: pulumi.Input<string>;
 }
 
@@ -115,14 +216,44 @@ export interface ServerState {
  * The set of arguments for constructing a Server resource.
  */
 export interface ServerArgs {
+    /**
+     * The Administrator Login for the MariaDB Server. Changing this forces a new resource to be created.
+     */
     readonly administratorLogin: pulumi.Input<string>;
+    /**
+     * The Password associated with the `administrator_login` for the MariaDB Server.
+     */
     readonly administratorLoginPassword: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies the name of the MariaDB Server. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the MariaDB Server. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A `sku` block as defined below.
+     */
     readonly sku: pulumi.Input<{ capacity: pulumi.Input<number>, family: pulumi.Input<string>, name: pulumi.Input<string>, tier: pulumi.Input<string> }>;
+    /**
+     * Specifies if SSL should be enforced on connections. Possible values are `Enabled` and `Disabled`.
+     */
     readonly sslEnforcement: pulumi.Input<string>;
+    /**
+     * A `storage_profile` block as defined below.
+     */
     readonly storageProfile: pulumi.Input<{ backupRetentionDays?: pulumi.Input<number>, geoRedundantBackup?: pulumi.Input<string>, storageMb: pulumi.Input<number> }>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * Specifies the version of MariaDB to use. The valid value is `10.2`. Changing this forces a new resource to be created.
+     */
     readonly version: pulumi.Input<string>;
 }

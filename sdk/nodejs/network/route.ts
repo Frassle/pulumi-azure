@@ -4,6 +4,30 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Route within a Route Table.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testRouteTable = new azure.network.RouteTable("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ * });
+ * const testRoute = new azure.network.Route("test", {
+ *     addressPrefix: "10.1.0.0/16",
+ *     nextHopType: "vnetlocal",
+ *     resourceGroupName: testResourceGroup.name,
+ *     routeTableName: testRouteTable.name,
+ * });
+ * ```
+ */
 export class Route extends pulumi.CustomResource {
     /**
      * Get an existing Route resource's state with the given name, ID, and optional extra
@@ -17,11 +41,29 @@ export class Route extends pulumi.CustomResource {
         return new Route(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The destination CIDR to which the route applies, such as `10.1.0.0/16`
+     */
     public readonly addressPrefix: pulumi.Output<string>;
+    /**
+     * The name of the route. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Contains the IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is `VirtualAppliance`.
+     */
     public readonly nextHopInIpAddress: pulumi.Output<string | undefined>;
+    /**
+     * The type of Azure hop the packet should be sent to. Possible values are `VirtualNetworkGateway`, `VnetLocal`, `Internet`, `VirtualAppliance` and `None`
+     */
     public readonly nextHopType: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to create the route. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * The name of the route table within which create the route. Changing this forces a new resource to be created.
+     */
     public readonly routeTableName: pulumi.Output<string>;
 
     /**
@@ -71,11 +113,29 @@ export class Route extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Route resources.
  */
 export interface RouteState {
+    /**
+     * The destination CIDR to which the route applies, such as `10.1.0.0/16`
+     */
     readonly addressPrefix?: pulumi.Input<string>;
+    /**
+     * The name of the route. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Contains the IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is `VirtualAppliance`.
+     */
     readonly nextHopInIpAddress?: pulumi.Input<string>;
+    /**
+     * The type of Azure hop the packet should be sent to. Possible values are `VirtualNetworkGateway`, `VnetLocal`, `Internet`, `VirtualAppliance` and `None`
+     */
     readonly nextHopType?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the route. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * The name of the route table within which create the route. Changing this forces a new resource to be created.
+     */
     readonly routeTableName?: pulumi.Input<string>;
 }
 
@@ -83,10 +143,28 @@ export interface RouteState {
  * The set of arguments for constructing a Route resource.
  */
 export interface RouteArgs {
+    /**
+     * The destination CIDR to which the route applies, such as `10.1.0.0/16`
+     */
     readonly addressPrefix: pulumi.Input<string>;
+    /**
+     * The name of the route. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Contains the IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is `VirtualAppliance`.
+     */
     readonly nextHopInIpAddress?: pulumi.Input<string>;
+    /**
+     * The type of Azure hop the packet should be sent to. Possible values are `VirtualNetworkGateway`, `VnetLocal`, `Internet`, `VirtualAppliance` and `None`
+     */
     readonly nextHopType: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to create the route. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * The name of the route table within which create the route. Changing this forces a new resource to be created.
+     */
     readonly routeTableName: pulumi.Input<string>;
 }

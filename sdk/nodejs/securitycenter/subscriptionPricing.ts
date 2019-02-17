@@ -4,6 +4,24 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages the Pricing Tier for Azure Security Center in the current subscription.
+ * 
+ * > **NOTE:** This resource requires the `Owner` permission on the Subscription.
+ * 
+ * > **NOTE:** Deletion of this resource does not change or reset the pricing tier to `Free`
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const example = new azure.securitycenter.SubscriptionPricing("example", {
+ *     tier: "Standard",
+ * });
+ * ```
+ */
 export class SubscriptionPricing extends pulumi.CustomResource {
     /**
      * Get an existing SubscriptionPricing resource's state with the given name, ID, and optional extra
@@ -17,6 +35,9 @@ export class SubscriptionPricing extends pulumi.CustomResource {
         return new SubscriptionPricing(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * The pricing tier to use. Possible values are `Free` and `Standard`.
+     */
     public readonly tier: pulumi.Output<string>;
 
     /**
@@ -47,6 +68,9 @@ export class SubscriptionPricing extends pulumi.CustomResource {
  * Input properties used for looking up and filtering SubscriptionPricing resources.
  */
 export interface SubscriptionPricingState {
+    /**
+     * The pricing tier to use. Possible values are `Free` and `Standard`.
+     */
     readonly tier?: pulumi.Input<string>;
 }
 
@@ -54,5 +78,8 @@ export interface SubscriptionPricingState {
  * The set of arguments for constructing a SubscriptionPricing resource.
  */
 export interface SubscriptionPricingArgs {
+    /**
+     * The pricing tier to use. Possible values are `Free` and `Standard`.
+     */
     readonly tier: pulumi.Input<string>;
 }

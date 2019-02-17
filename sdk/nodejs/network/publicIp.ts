@@ -4,6 +4,28 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manage a Public IP Address.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testPublicIp = new azure.network.PublicIp("test", {
+ *     allocationMethod: "Static",
+ *     location: "West US",
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         environment: "Production",
+ *     },
+ * });
+ * ```
+ */
 export class PublicIp extends pulumi.CustomResource {
     /**
      * Get an existing PublicIp resource's state with the given name, ID, and optional extra
@@ -17,19 +39,60 @@ export class PublicIp extends pulumi.CustomResource {
         return new PublicIp(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * Defines the allocation method for this IP address. Possible values are `Static` or `Dynamic`.
+     */
     public readonly allocationMethod: pulumi.Output<string>;
+    /**
+     * Label for the Domain Name. Will be used to make up the FQDN.  If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
+     */
     public readonly domainNameLabel: pulumi.Output<string | undefined>;
+    /**
+     * Fully qualified domain name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone
+     */
     public /*out*/ readonly fqdn: pulumi.Output<string>;
+    /**
+     * Specifies the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes.
+     */
     public readonly idleTimeoutInMinutes: pulumi.Output<number | undefined>;
+    /**
+     * The IP address value that was allocated.
+     */
     public /*out*/ readonly ipAddress: pulumi.Output<string>;
+    /**
+     * The IP Version to use, IPv6 or IPv4.
+     */
     public readonly ipVersion: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     public readonly location: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Public IP resource . Changing this forces a
+     * new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
     public readonly publicIpAddressAllocation: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which to
+     * create the public ip.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.
+     */
     public readonly reverseFqdn: pulumi.Output<string | undefined>;
+    /**
+     * The SKU of the Public IP. Accepted values are `Basic` and `Standard`. Defaults to `Basic`.
+     */
     public readonly sku: pulumi.Output<string | undefined>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * A collection containing the availability zone to allocate the Public IP in.
+     */
     public readonly zones: pulumi.Output<string | undefined>;
 
     /**
@@ -89,19 +152,60 @@ export class PublicIp extends pulumi.CustomResource {
  * Input properties used for looking up and filtering PublicIp resources.
  */
 export interface PublicIpState {
+    /**
+     * Defines the allocation method for this IP address. Possible values are `Static` or `Dynamic`.
+     */
     readonly allocationMethod?: pulumi.Input<string>;
+    /**
+     * Label for the Domain Name. Will be used to make up the FQDN.  If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
+     */
     readonly domainNameLabel?: pulumi.Input<string>;
+    /**
+     * Fully qualified domain name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone
+     */
     readonly fqdn?: pulumi.Input<string>;
+    /**
+     * Specifies the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes.
+     */
     readonly idleTimeoutInMinutes?: pulumi.Input<number>;
+    /**
+     * The IP address value that was allocated.
+     */
     readonly ipAddress?: pulumi.Input<string>;
+    /**
+     * The IP Version to use, IPv6 or IPv4.
+     */
     readonly ipVersion?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Public IP resource . Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
     readonly publicIpAddressAllocation?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the public ip.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.
+     */
     readonly reverseFqdn?: pulumi.Input<string>;
+    /**
+     * The SKU of the Public IP. Accepted values are `Basic` and `Standard`. Defaults to `Basic`.
+     */
     readonly sku?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * A collection containing the availability zone to allocate the Public IP in.
+     */
     readonly zones?: pulumi.Input<string>;
 }
 
@@ -109,16 +213,51 @@ export interface PublicIpState {
  * The set of arguments for constructing a PublicIp resource.
  */
 export interface PublicIpArgs {
+    /**
+     * Defines the allocation method for this IP address. Possible values are `Static` or `Dynamic`.
+     */
     readonly allocationMethod?: pulumi.Input<string>;
+    /**
+     * Label for the Domain Name. Will be used to make up the FQDN.  If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
+     */
     readonly domainNameLabel?: pulumi.Input<string>;
+    /**
+     * Specifies the timeout for the TCP idle connection. The value can be set between 4 and 30 minutes.
+     */
     readonly idleTimeoutInMinutes?: pulumi.Input<number>;
+    /**
+     * The IP Version to use, IPv6 or IPv4.
+     */
     readonly ipVersion?: pulumi.Input<string>;
+    /**
+     * Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.
+     */
     readonly location: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Public IP resource . Changing this forces a
+     * new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
     readonly publicIpAddressAllocation?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which to
+     * create the public ip.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.
+     */
     readonly reverseFqdn?: pulumi.Input<string>;
+    /**
+     * The SKU of the Public IP. Accepted values are `Basic` and `Standard`. Defaults to `Basic`.
+     */
     readonly sku?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * A collection containing the availability zone to allocate the Public IP in.
+     */
     readonly zones?: pulumi.Input<string>;
 }

@@ -4,6 +4,38 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../utilities";
 
+/**
+ * Manages a Policy within a Dev Test Policy Set.
+ * 
+ * ## Example Usage
+ * 
+ * ```typescript
+ * import * as pulumi from "@pulumi/pulumi";
+ * import * as azure from "@pulumi/azure";
+ * 
+ * const testResourceGroup = new azure.core.ResourceGroup("test", {
+ *     location: "West US",
+ * });
+ * const testLab = new azure.devtest.Lab("test", {
+ *     location: testResourceGroup.location,
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         Sydney: "Australia",
+ *     },
+ * });
+ * const testPolicy = new azure.devtest.Policy("test", {
+ *     evaluatorType: "MaxValuePolicy",
+ *     factData: "",
+ *     labName: testLab.name,
+ *     policySetName: "default",
+ *     resourceGroupName: testResourceGroup.name,
+ *     tags: {
+ *         Acceptance: "Test",
+ *     },
+ *     threshold: "999",
+ * });
+ * ```
+ */
 export class Policy extends pulumi.CustomResource {
     /**
      * Get an existing Policy resource's state with the given name, ID, and optional extra
@@ -17,14 +49,41 @@ export class Policy extends pulumi.CustomResource {
         return new Policy(name, <any>state, { ...opts, id: id });
     }
 
+    /**
+     * A description for the Policy.
+     */
     public readonly description: pulumi.Output<string | undefined>;
+    /**
+     * The Evaluation Type used for this Policy. Possible values include: 'AllowedValuesPolicy', 'MaxValuePolicy'. Changing this forces a new resource to be created.
+     */
     public readonly evaluatorType: pulumi.Output<string>;
+    /**
+     * The Fact Data for this Policy.
+     */
     public readonly factData: pulumi.Output<string | undefined>;
+    /**
+     * Specifies the name of the Dev Test Lab in which the Policy should be created. Changing this forces a new resource to be created.
+     */
     public readonly labName: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Dev Test Policy. Possible values are `GalleryImage`, `LabPremiumVmCount`, `LabTargetCost`, `LabVmCount`, `LabVmSize`, `UserOwnedLabPremiumVmCount`, `UserOwnedLabVmCount` and `UserOwnedLabVmCountInSubnet`. Changing this forces a new resource to be created.
+     */
     public readonly name: pulumi.Output<string>;
+    /**
+     * Specifies the name of the Policy Set within the Dev Test Lab where this policy should be created. Changing this forces a new resource to be created.
+     */
     public readonly policySetName: pulumi.Output<string>;
+    /**
+     * The name of the resource group in which the Dev Test Lab resource exists. Changing this forces a new resource to be created.
+     */
     public readonly resourceGroupName: pulumi.Output<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     public readonly tags: pulumi.Output<{[key: string]: any}>;
+    /**
+     * The Threshold for this Policy.
+     */
     public readonly threshold: pulumi.Output<string>;
 
     /**
@@ -83,14 +142,41 @@ export class Policy extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Policy resources.
  */
 export interface PolicyState {
+    /**
+     * A description for the Policy.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * The Evaluation Type used for this Policy. Possible values include: 'AllowedValuesPolicy', 'MaxValuePolicy'. Changing this forces a new resource to be created.
+     */
     readonly evaluatorType?: pulumi.Input<string>;
+    /**
+     * The Fact Data for this Policy.
+     */
     readonly factData?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Dev Test Lab in which the Policy should be created. Changing this forces a new resource to be created.
+     */
     readonly labName?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Dev Test Policy. Possible values are `GalleryImage`, `LabPremiumVmCount`, `LabTargetCost`, `LabVmCount`, `LabVmSize`, `UserOwnedLabPremiumVmCount`, `UserOwnedLabVmCount` and `UserOwnedLabVmCountInSubnet`. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Policy Set within the Dev Test Lab where this policy should be created. Changing this forces a new resource to be created.
+     */
     readonly policySetName?: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the Dev Test Lab resource exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName?: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The Threshold for this Policy.
+     */
     readonly threshold?: pulumi.Input<string>;
 }
 
@@ -98,13 +184,40 @@ export interface PolicyState {
  * The set of arguments for constructing a Policy resource.
  */
 export interface PolicyArgs {
+    /**
+     * A description for the Policy.
+     */
     readonly description?: pulumi.Input<string>;
+    /**
+     * The Evaluation Type used for this Policy. Possible values include: 'AllowedValuesPolicy', 'MaxValuePolicy'. Changing this forces a new resource to be created.
+     */
     readonly evaluatorType: pulumi.Input<string>;
+    /**
+     * The Fact Data for this Policy.
+     */
     readonly factData?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Dev Test Lab in which the Policy should be created. Changing this forces a new resource to be created.
+     */
     readonly labName: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Dev Test Policy. Possible values are `GalleryImage`, `LabPremiumVmCount`, `LabTargetCost`, `LabVmCount`, `LabVmSize`, `UserOwnedLabPremiumVmCount`, `UserOwnedLabVmCount` and `UserOwnedLabVmCountInSubnet`. Changing this forces a new resource to be created.
+     */
     readonly name?: pulumi.Input<string>;
+    /**
+     * Specifies the name of the Policy Set within the Dev Test Lab where this policy should be created. Changing this forces a new resource to be created.
+     */
     readonly policySetName: pulumi.Input<string>;
+    /**
+     * The name of the resource group in which the Dev Test Lab resource exists. Changing this forces a new resource to be created.
+     */
     readonly resourceGroupName: pulumi.Input<string>;
+    /**
+     * A mapping of tags to assign to the resource.
+     */
     readonly tags?: pulumi.Input<{[key: string]: any}>;
+    /**
+     * The Threshold for this Policy.
+     */
     readonly threshold: pulumi.Input<string>;
 }
