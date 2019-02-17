@@ -722,8 +722,8 @@
   version = "v1.2.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:8660493ea1e06ff1542ec095c5d160817c962ff7047e1df618f6b9f367995629"
+  branch = "dotnet"
+  digest = "1:d827f87d3416746a04e7ab517def7e1cb9f94d454bc9b1f91ace7660d2e92ec0"
   name = "github.com/pulumi/pulumi"
   packages = [
     "pkg/apitype",
@@ -770,18 +770,20 @@
     "sdk/proto/go",
   ]
   pruneopts = ""
-  revision = "406c8ea16d077a6a9a0a758d47cec5e41f3ae6dc"
+  revision = "bb29e3da66d10bfd912bac34b522a68dbc52086f"
+  source = "github.com/Frassle/pulumi"
 
 [[projects]]
-  branch = "master"
-  digest = "1:b4514ceee7c3249a5a6bd7c7b17058c33c055a451c15128b84325e5fc3df4349"
+  branch = "dotnet"
+  digest = "1:97ce20a31671f61a6fb84526336a8e2ee5eb8f4119395504affcd14edeccb310"
   name = "github.com/pulumi/pulumi-terraform"
   packages = [
     "pkg/tfbridge",
     "pkg/tfgen",
   ]
   pruneopts = ""
-  revision = "13fc8ad0d1dcc1d73aa294c71a447de579fb4a63"
+  revision = "0f8353186972ae78122728e8fb310dd5333fd759"
+  source = "github.com/Frassle/pulumi-terraform"
 
 [[projects]]
   branch = "master"
